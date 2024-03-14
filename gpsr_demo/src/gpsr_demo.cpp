@@ -5,7 +5,9 @@
 
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
+#include "gpsr_msgs/action/execute_plan.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -17,6 +19,10 @@ int main(int argc, char *argv[]) {
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
   bool execution = true;
+
+  auto action_client =
+      rclcpp_action::create_client<gpsr_msgs::action::ExecutePlan>(
+          node, "gpsr_planning");
 
   std::list<std::string> commands = {
       "Take the person wearing a blue shirt from the kitchen to the bathroom",
@@ -79,6 +85,17 @@ int main(int argc, char *argv[]) {
         std::string command = *it;
         std::cout << "Command: " << command.c_str() << std::endl;
         it = std::next(it, 1);
+
+        auto goal = gpsr_msgs::action::ExecutePlan::Goal();
+        goal.command = command;
+
+        auto future_goal_handle = action_client->async_send_goal(goal);
+
+        if (rclcpp::spin_until_future_complete(node, future_goal_handle) !=
+            rclcpp::FutureReturnCode::SUCCESS) {
+          std::cout << "Error al enviar la meta de acción" << std::endl;
+          return 1;
+        }
 
         auto blackboard = BT::Blackboard::create();
         blackboard->set("node", node);
