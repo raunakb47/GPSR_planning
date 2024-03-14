@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+    <BehaviorTree ID="BehaviorTree">
+            <Sequence>
+                <Action ID="FollowPerson"/>
+                <Action ID="Speak"/>
+                <Action ID="PickObject"/>
+                <Action ID="PlaceObject"/>
+                <Action ID="Query"/>
+            </Sequence>
+    </BehaviorTree>
+    <TreeNodesModel>
+        <Action ID="FollowPerson">
+        </Action>
+    </TreeNodesModel>
+</root>

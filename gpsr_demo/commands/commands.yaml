@@ -1,0 +1,24 @@
+gpsr_demo:
+  gpsr_demo_node:
+    ros__parameters:
+      commandss:
+        - "Take the person wearing a blue shirt from the kitchen to the bathroom"
+        - "Answer the quiz of the waving person in the bedroom"
+        - "Follow the standing person in the kitchen"
+        - "Follow Ana from the kitchen to the bedroom"
+        - "Follow the standing person at the kitchen"
+        - "Navigate to the kitchen then find a dish and take it and give it to me"
+        - "Salute the person wearing an orange t shirt in the dining room and follow them to the living room"
+        - "Escort the person wearing a yellow blouse from the kitchen to the kitchen"
+        - "Navigate to the kitchen then look for a fruit and take it and give it to me"
+        - "Get a spoon from the living room and put it on the bedroom"
+        - "Go to the living room then look for a fruit and take it and bring it to Juan in the kitchen"
+        - "Locate a plate in the dining room then get it and deliver it to me"
+        - "Lead the person wearing a gray blouse from the kitchen to the kitchen"
+        - "Navigate to the living room then locate a fruit and get it and give it to Luis in the bedroom"
+        - "Tell me what is the thinnest fruit on the bedroom"
+        - "Tell me how many persons pointing to the left are in the kitchen"
+        - "Fetch a dish from the living room and put it on the bedroom"
+        - "Tell something about yourself to the person pointing to the right in the dining room"
+        - "Answer the quiz of the person pointing to the right in the kitchen"
+        - "Lead the lying person from the kitchen to the kitchen"
