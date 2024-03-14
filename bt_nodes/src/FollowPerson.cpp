@@ -17,46 +17,31 @@
 
 #include "bt_nodes/FollowPerson.hpp"
 
-
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
-
-namespace bt_nodes
-{
+namespace bt_nodes {
 
 using namespace std::chrono_literals;
 using namespace std::placeholders;
 
-
-FollowPerson::FollowPerson(
-  const std::string & xml_tag_name,
-  const BT::NodeConfiguration & conf)
-: BT::ActionNodeBase(xml_tag_name, conf)
-{
+FollowPerson::FollowPerson(const std::string &xml_tag_name,
+                           const BT::NodeConfiguration &conf)
+    : BT::ActionNodeBase(xml_tag_name, conf) {
   config().blackboard->get("node", node_);
-
 }
 
-void
-FollowPerson::halt()
-{
+void FollowPerson::halt() {
   RCLCPP_INFO(node_->get_logger(), "FollowPerson halted");
 }
 
-BT::NodeStatus
-FollowPerson::tick()
-{
+BT::NodeStatus FollowPerson::tick() {
 
   RCLCPP_INFO(node_->get_logger(), "FollowPerson ticked");
-  return BT::NodeStatus::RUNNING;
-  
-  
+  return BT::NodeStatus::SUCCESS;
 }
 
-}  // namespace bt_nodes
+} // namespace bt_nodes
 
-
-BT_REGISTER_NODES(factory)
-{
+BT_REGISTER_NODES(factory) {
   factory.registerNodeType<bt_nodes::FollowPerson>("FollowPerson");
 }

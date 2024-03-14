@@ -17,46 +17,28 @@
 
 #include "bt_nodes/Query.hpp"
 
-
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
-
-namespace bt_nodes
-{
+namespace bt_nodes {
 
 using namespace std::chrono_literals;
 using namespace std::placeholders;
 
-
-Query::Query(
-  const std::string & xml_tag_name,
-  const BT::NodeConfiguration & conf)
-: BT::ActionNodeBase(xml_tag_name, conf)
-{
+Query::Query(const std::string &xml_tag_name, const BT::NodeConfiguration &conf)
+    : BT::ActionNodeBase(xml_tag_name, conf) {
   config().blackboard->get("node", node_);
-
 }
 
-void
-Query::halt()
-{
-  RCLCPP_INFO(node_->get_logger(), "Query halted");
-}
+void Query::halt() { RCLCPP_INFO(node_->get_logger(), "Query halted"); }
 
-BT::NodeStatus
-Query::tick()
-{
+BT::NodeStatus Query::tick() {
 
   RCLCPP_INFO(node_->get_logger(), "Query ticked");
-  return BT::NodeStatus::RUNNING;
-  
-  
+  return BT::NodeStatus::SUCCESS;
 }
 
-}  // namespace bt_nodes
+} // namespace bt_nodes
 
-
-BT_REGISTER_NODES(factory)
-{
+BT_REGISTER_NODES(factory) {
   factory.registerNodeType<bt_nodes::Query>("Query");
 }
