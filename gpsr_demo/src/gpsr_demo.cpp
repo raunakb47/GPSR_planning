@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
         if (rclcpp::spin_until_future_complete(node, future_goal_handle) !=
             rclcpp::FutureReturnCode::SUCCESS) {
-          std::cout << "Error al enviar la meta de acción" << std::endl;
+          std::cout << "Error al enviar el goal" << std::endl;
           return 1;
         }
 

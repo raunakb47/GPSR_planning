@@ -7,6 +7,10 @@ class GPSRPlanning(Node):
 
     def __init__(self):
         super().__init__('planning_node')
+        self._bt_nodes = ""
+        self._prompt = ""
+        self._grammar = ""
+
         self._action_server = ActionServer(self, ExecutePlan, 'gpsr_planning', self._execute_cb)
         
     def _execute_cb(self, goal_handle) -> ExecutePlan.Result:
