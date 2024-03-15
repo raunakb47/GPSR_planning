@@ -14,6 +14,7 @@
 
   <depend>bt_nodes</depend>
   <depend>gpsr_msgs</depend>
+  <depend>llama_msgs</depend>
 
   <export>
     <build_type>ament_python</build_type>

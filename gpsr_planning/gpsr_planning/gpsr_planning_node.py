@@ -1,8 +1,11 @@
 import json
 import rclpy
 from rclpy.node import Node
-from rclpy.action import ActionServer
-from gpsr_msgs.action import ExecutePlan
+from rclpy.action import ActionClient
+from gpsr_msgs.srv import ExecutePlan
+from rclpy.callback_groups import ReentrantCallbackGroup
+from rclpy.executors import MultiThreadedExecutor, Executor
+from llama_msgs.action import GenerateResponse
 
 class GPSRPlanning(Node):
 
@@ -67,24 +70,41 @@ class GPSRPlanning(Node):
                         "maxItems": -1
                     }
                 },
-                "required": ["team_name"],
             })
 
-        self._action_server = ActionServer(self, ExecutePlan, 'gpsr_planning', self._execute_cb)
+        self._cb_group = ReentrantCallbackGroup()
+        self._srv = self.create_service(ExecutePlan, 'gpsr_planning', callback=self._execute_cb, callback_group=self._cb_group)
+        self._action_client = ActionClient(self, GenerateResponse, "/llama/generate_response", callback_group=self._cb_group)
         
-    def _execute_cb(self, goal_handle) -> ExecutePlan.Result:
-        self.get_logger().info(f'Executing plan with the following command: {goal_handle.request.command}')
+    def _execute_cb(self, request, result):
+        self.get_logger().info(f'Executing plan with the following command: {request.command}')
 
-        self._prompt = self._prompt + "ACTIONS:\n" + self._bt_nodes + "\n\n" + "GOAL:"+ goal_handle.request.command + "\n\n" + "### Instruction:\nGenerate a plan to achieve the goal.\n\n### Response:\n"
+        self._prompt = self._prompt + "ACTIONS:\n" + self._bt_nodes + "\n\n" + "GOAL:"+ request.command + "\n\n" + "### Instruction:\nGenerate a plan to achieve the goal.\n\n### Response:\n"
         
         self.get_logger().info(f'prompt: {self._prompt}')
-        return ExecutePlan.Result()
+
+        goal_msg = GenerateResponse.Goal()
+        goal_msg.prompt = self._prompt
+        goal_msg.reset = True
+        goal_msg.sampling_config.temp = 0
+        goal_msg.sampling_config.grammar = self._grammar
+
+        self._action_client.wait_for_server()
+
+        self._action_client.send_goal_async(goal_msg)
+
+        result.success = True
+
+        return result
 
 def main(args=None):
     rclpy.init(args=args)
     node = GPSRPlanning()
-    rclpy.spin(node)
-    rclpy.shutdown()
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+    
+    executor.spin()
+    executor.shutdown()
 
 
 if __name__ == "__main__":

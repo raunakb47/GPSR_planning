@@ -5,13 +5,18 @@
 
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
-#include "gpsr_msgs/action/execute_plan.hpp"
+#include "gpsr_msgs/srv/execute_plan.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include <iostream>
 #include <iterator>
 #include <list>
 #include <string>
+#include <chrono>
+#include <cstdlib>
+#include <memory>
+
+using namespace std::chrono_literals;
 
 int main(int argc, char *argv[]) {
   rclcpp::init(argc, argv);
@@ -20,9 +25,8 @@ int main(int argc, char *argv[]) {
   BT::SharedLibrary loader;
   bool execution = true;
 
-  auto action_client =
-      rclcpp_action::create_client<gpsr_msgs::action::ExecutePlan>(
-          node, "gpsr_planning");
+  rclcpp::Client<gpsr_msgs::srv::ExecutePlan>::SharedPtr client =
+    node->create_client<gpsr_msgs::srv::ExecutePlan>("gpsr_planning");
 
   std::list<std::string> commands = {
       "Take the person wearing a blue shirt from the kitchen to the bathroom",
@@ -86,17 +90,30 @@ int main(int argc, char *argv[]) {
         std::cout << "Command: " << command.c_str() << std::endl;
         it = std::next(it, 1);
 
-        auto goal = gpsr_msgs::action::ExecutePlan::Goal();
-        goal.command = command;
+        auto request = std::make_shared<gpsr_msgs::srv::ExecutePlan::Request>();
+        request->command = command;
 
-        auto future_goal_handle = action_client->async_send_goal(goal);
-
-        if (rclcpp::spin_until_future_complete(node, future_goal_handle) !=
-            rclcpp::FutureReturnCode::SUCCESS) {
-          std::cout << "Error al enviar el goal" << std::endl;
-          return 1;
+        while (!client->wait_for_service(1s)) {
+          if (!rclcpp::ok()) {
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+            return 0;
+          }
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
         }
 
+        auto result = client->async_send_request(request);
+
+        // Wait for the result.
+        if (rclcpp::spin_until_future_complete(node, result) ==
+          rclcpp::FutureReturnCode::SUCCESS)
+        {
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Success service execute_plan");
+          std::cout << "Success service execute_plan " << std::endl;
+        } else {
+          RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service execute_plan");
+        }
+
+        std::cout << "sigo " << std::endl;
         auto blackboard = BT::Blackboard::create();
         blackboard->set("node", node);
 
