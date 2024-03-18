@@ -32,6 +32,8 @@ class GPSRPlanning(Node):
 
         moveTo_bt_node = '''move_to: Robot action to move from the waypoint where it is to another waypoint, args json schema: {\n'target_waypoint': {\n'title': 'Target Waypoint'\n'type': 'string'\n}, \n}'''
 
+        guide_bt_node = '''guide_person: Robot action to guide a person to a waypoint, args json schema: {\n'target_waypoint': {\n'title': 'Target Waypoint'\n'type': 'string'\n}, 'person': {\n'title': 'Person to guide'\n'type': 'string'\n} \n}'''
+
         offer_bt_node = '''offer: Robot action to offer an object to a person, args json schema: {\n'object': {\n'title': 'Object to be offered'\n'type': 'string'\n}, \n}'''
 
         pickO_bt_node = '''pick_object: Robot action to pick and object in the location, args json schema: {\n'object': {\n'title': 'Object to be picked'\n'type': 'string'\n}, \n}'''
@@ -44,7 +46,7 @@ class GPSRPlanning(Node):
 
         speak_bt_node = '''speak: Robot action to speak something to a person, args json schema: {\n'text': {\n'title': 'Text to tell the person'\n'type': 'string'\n}, \n}'''
 
-        bt_node_list = [count_bt_node, describeO_bt_node, describeP_node, followP_bt_node, findO_bt_node, findP_bt_node, listen_bt_node, lookAround_bt_node, lookTo_bt_node, moveTo_bt_node, offer_bt_node, pickO_bt_node, placeO_bt_node, query_bt_node, recognizeP_bt_node, speak_bt_node]
+        bt_node_list = [count_bt_node, describeO_bt_node, describeP_node, followP_bt_node, findO_bt_node, findP_bt_node, listen_bt_node, guide_bt_node, lookAround_bt_node, lookTo_bt_node, moveTo_bt_node, offer_bt_node, pickO_bt_node, placeO_bt_node, query_bt_node, recognizeP_bt_node, speak_bt_node]
         self._bt_nodes = ', '.join(bt_node_list)
         self._prompt = "You are an AI planner for a robotic assistant named TIAGo. You have to generate plans, which are sequences of actions to achieve goals. Plans may contain no actions, one action, or several actions. Use only the actions listed below. If the goal is already achieved in the world state, return an empty sequence of actions. Use the fewest actions to generate the plan. You have to response in JSON format.\n\n"
         self._grammar = json.dumps({
@@ -70,28 +72,37 @@ class GPSRPlanning(Node):
                         "maxItems": -1
                     }
                 },
+                "required": ["team_name"],
             })
 
         self._cb_group = ReentrantCallbackGroup()
-        self._srv = self.create_service(ExecutePlan, 'gpsr_planning', callback=self._execute_cb, callback_group=self._cb_group)
-        self._action_client = ActionClient(self, GenerateResponse, "/llama/generate_response", callback_group=self._cb_group)
+        self._srv = self.create_service(ExecutePlan, 'gpsr_planning', callback=self._execute_cb, callback_group= ReentrantCallbackGroup())
+        self._action_client = ActionClient(self, GenerateResponse, "/llama/generate_response", callback_group= ReentrantCallbackGroup())
+        self._action_client.wait_for_server()
         
     def _execute_cb(self, request, result):
         self.get_logger().info(f'Executing plan with the following command: {request.command}')
 
-        self._prompt = self._prompt + "ACTIONS:\n" + self._bt_nodes + "\n\n" + "GOAL:"+ request.command + "\n\n" + "### Instruction:\nGenerate a plan to achieve the goal.\n\n### Response:\n"
+        self._prompt = self._prompt + "ACTIONS:\n" + self._bt_nodes + "\n\n" + "GOAL: "+ request.command + "\n\n" + "### Instruction:\nGenerate a plan to achieve the goal.\n\n### Response:\n"
         
         self.get_logger().info(f'prompt: {self._prompt}')
 
         goal_msg = GenerateResponse.Goal()
         goal_msg.prompt = self._prompt
         goal_msg.reset = True
-        goal_msg.sampling_config.temp = 0
-        goal_msg.sampling_config.grammar = self._grammar
+        goal_msg.sampling_config.temp = 0.0
+        goal_msg.sampling_config.gramar_schema = self._grammar
+        goal_msg.sampling_config.prop_order =["reasoning", "actions", "action_name", "action_args"]
 
-        self._action_client.wait_for_server()
 
-        self._action_client.send_goal_async(goal_msg)
+        self.get_logger().info(f'manda el goal')
+
+        result = self._action_client.send_goal(goal_msg)
+        self.get_logger().info(f'{result.result.response.text}')
+
+        self.get_logger().info(f'lo mando')
+
+
 
         result.success = True
 
