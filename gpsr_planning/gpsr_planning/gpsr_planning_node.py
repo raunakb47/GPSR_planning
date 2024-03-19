@@ -6,7 +6,7 @@ from gpsr_msgs.srv import ExecutePlan
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from llama_msgs.action import GenerateResponse
-
+from xml.dom import minidom
 
 class GPSRPlanning(Node):
 
@@ -23,7 +23,7 @@ class GPSRPlanning(Node):
 
         findP_bt_node = """find_person: find a person in the room, args json schema: {'person_description': 'Description of the person to find'}"""
 
-        followP_bt_node = """follow_person: robot follows a person constantly moving behing the person, args json schema: {'person_name': 'Name of the person'}"""
+        followP_bt_node = """follow_person: the robot constantly follows the person staying behind them all the times, args json schema: {'person_name': 'Name of the person'}"""
 
         listen_bt_node = """listen: listen and transcribe what a person tells to the robot, args json schema: { }"""
 
@@ -31,9 +31,9 @@ class GPSRPlanning(Node):
 
         lookTo_bt_node = """look_to: make the robot look at the person, args json schema: {'person_name': 'Name of the person'}"""
 
-        moveTo_bt_node = """move_to: move the robot from one point to another to perform a task or to approach an object or person to interact with it, args json schema: {'destination': 'Waypoint destination'}"""
+        moveTo_bt_node = """move_to: the robot moves from its current location to a specific point to perform a task or to approach an object or person to interact with, args json schema: {'destination': 'Waypoint destination'}"""
 
-        guide_bt_node = """guide_person: take or guide a person by constantly moving the robot to the destination where the guided person has to be, args json schema: {'destination': 'Target Waypoint', 'person_description': 'Description of the person to guide'}"""
+        guide_bt_node = """guide_person: robot take or guide a person to a specific destination, continuosly moving towards the location where the guided person has to be, args json schema: {'destination': 'Target Waypoint', 'person_description': 'Description of the person to guide'}"""
 
         offer_bt_node = """offer: offer an object to a person who is at the same waypoint as the robot, args json schema: {'object': 'Object to be offered'}"""
 
@@ -95,7 +95,18 @@ You have to response in JSON format.\n\n"""
                                     "type": "string"
                                 },
                                 "action_args": {
-                                    "type": "string"
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties":{
+                                            "arg_name": {
+                                                "type": "string"
+                                            },
+                                            "arg_value": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -129,17 +140,64 @@ You have to response in JSON format.\n\n"""
         goal_msg.sampling_config.prop_order = [
             "reasoning", "actions", "action_name", "action_args"]
 
-        self.get_logger().info("manda el goal")
+        self.get_logger().info("planning...")
 
         result: GenerateResponse.Result = self._action_client.send_goal(
             goal_msg).result
         self.get_logger().info(f"{result.response.text}")
 
-        self.get_logger().info("lo mando")
+        
 
-        response.success = True
+        self.get_logger().info("finished planning")
+
+        response.bt_xml = self.action_parser(result.response.text)
 
         return response
+    
+    def action_parser(self, response_plan):
+
+
+        plan = json.loads(response_plan)
+
+        self.get_logger().info(f'{plan.get("actions")}')
+
+        bt_xml = minidom.Document()
+        
+
+        root_element = bt_xml.createElement('root')
+        root_element.setAttribute('main_tree_to_execute', 'BehaviorTree')
+        bt_element = bt_xml.createElement('BehaviorTree')
+        bt_element.setAttribute('ID', 'BehaviorTree')
+        sequence_element = bt_xml.createElement('Sequence')
+
+        
+        
+        bt_nodes = []
+
+        for action in plan.get("actions"):
+            self.get_logger().info(f'{action}')
+            action_element = bt_xml.createElement('Action')
+            action_element.setAttribute('ID', action.get("action_name"))
+            self.get_logger().info(f'{action.keys()}')
+            self.get_logger().info(f'{action.get("action_name")}')
+            self.get_logger().info(f'{action.get("action_args")}')
+
+            
+            for arg in action.get("action_args"):
+                self.get_logger().info(f'{arg}')
+                arg_key = arg.keys()
+                self.get_logger().info(f'{arg_key}')
+                action_element.setAttribute(arg.get('arg_name'), arg.get('arg_value'))
+
+            sequence_element.appendChild(action_element)
+
+        bt_element.appendChild(sequence_element)
+        root_element.appendChild(bt_element)
+        bt_xml.appendChild(root_element)
+        str_bt = bt_xml.toprettyxml(indent="\t")
+        self.get_logger().info(f'{str_bt}')
+
+        return str_bt
 
 
 def main(args=None):
