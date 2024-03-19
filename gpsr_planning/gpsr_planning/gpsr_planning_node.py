@@ -21,21 +21,21 @@ class GPSRPlanning(Node):
 
         findO_bt_node = """find_object: find an object in the room, args json schema: {'object': 'Object to be found'}"""
 
-        findP_bt_node = """find_person: find a person in the room, args json schema: {'person': 'Person to be found'}"""
+        findP_bt_node = """find_person: find a person in the room, args json schema: {'person_description': 'Description of the person to find'}"""
 
-        followP_bt_node = """follow_person: follow a person, args json schema: {'person': 'Person to be followed'}"""
+        followP_bt_node = """follow_person: robot follows a person constantly moving behing the person, args json schema: {'person_name': 'Name of the person'}"""
 
         listen_bt_node = """listen: listen and transcribe what a person tells to the robot, args json schema: { }"""
 
         lookAround_bt_node = """look_around: turn its head and look around for something, args json schema: { }"""
 
-        lookTo_bt_node = """look_to: make the robot look at the person, args json schema: {'person': 'Person to be looked'}"""
+        lookTo_bt_node = """look_to: make the robot look at the person, args json schema: {'person_name': 'Name of the person'}"""
 
-        moveTo_bt_node = """move_to: move the robot to another waypoint, args json schema: {'target_waypoint': 'Target Waypoint'}"""
+        moveTo_bt_node = """move_to: move the robot from one point to another to perform a task or to approach an object or person to interact with it, args json schema: {'destination': 'Waypoint destination'}"""
 
-        guide_bt_node = """guide_person: guide a person to a waypoint, args json schema: {'target_waypoint': 'Target Waypoint', 'person': 'Person to guide'}"""
+        guide_bt_node = """guide_person: take or guide a person by constantly moving the robot to the destination where the guided person has to be, args json schema: {'destination': 'Target Waypoint', 'person_description': 'Description of the person to guide'}"""
 
-        offer_bt_node = """offer: offer an object to a person, args json schema: {'object': 'Object to be offered'}"""
+        offer_bt_node = """offer: offer an object to a person who is at the same waypoint as the robot, args json schema: {'object': 'Object to be offered'}"""
 
         pickO_bt_node = """pick_object: pick and object in the location, args json schema: {'object': 'Object to be picked'}"""
 
@@ -117,7 +117,7 @@ You have to response in JSON format.\n\n"""
             f"Executing plan with the following command: {request.command}")
 
         prompt = self._prompt + "ACTIONS:\n" + self._bt_nodes + "\n\n" + "GOAL: " + request.command + \
-            "\n\n" + "### Instruction:\nGenerate a plan, a sequence of actions, to fully achieve the goal.\n\n### Response:\n"
+            "\n\n" + "### Instruction: Generate a plan to fully achieve the goal.\n### Response:"
 
         self.get_logger().info(f"prompt: {prompt}")
 
