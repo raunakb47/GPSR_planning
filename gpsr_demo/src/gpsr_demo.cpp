@@ -8,13 +8,13 @@
 #include "gpsr_msgs/srv/execute_plan.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include <chrono>
+#include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <list>
-#include <string>
-#include <chrono>
-#include <cstdlib>
 #include <memory>
+#include <string>
 
 using namespace std::chrono_literals;
 
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   bool execution = true;
 
   rclcpp::Client<gpsr_msgs::srv::ExecutePlan>::SharedPtr client =
-    node->create_client<gpsr_msgs::srv::ExecutePlan>("gpsr_planning");
+      node->create_client<gpsr_msgs::srv::ExecutePlan>("gpsr_planning");
 
   std::list<std::string> commands = {
       "Take the person wearing a blue shirt from the kitchen to the bathroom",
@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 
   std::list<std::string>::iterator it = commands.begin();
   factory.registerFromPlugin(loader.getOSName("follow_person_bt_node"));
+  factory.registerFromPlugin(loader.getOSName("guide_person_bt_node"));
   factory.registerFromPlugin(loader.getOSName("count_bt_node"));
   factory.registerFromPlugin(loader.getOSName("describe_object_bt_node"));
   factory.registerFromPlugin(loader.getOSName("describe_person_bt_node"));
@@ -95,29 +96,31 @@ int main(int argc, char *argv[]) {
 
         while (!client->wait_for_service(1s)) {
           if (!rclcpp::ok()) {
-            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"),
+                         "Interrupted while waiting for the service. Exiting.");
             return 0;
           }
-          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"),
+                      "service not available, waiting again...");
         }
 
         auto result = client->async_send_request(request);
 
         // Wait for the result.
         if (rclcpp::spin_until_future_complete(node, result) ==
-          rclcpp::FutureReturnCode::SUCCESS)
-        {
-          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Success service execute_plan");
+            rclcpp::FutureReturnCode::SUCCESS) {
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"),
+                      "Success service execute_plan");
           std::cout << "Success service execute_plan " << std::endl;
         } else {
-          RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service execute_plan");
+          RCLCPP_ERROR(rclcpp::get_logger("rclcpp"),
+                       "Failed to call service execute_plan");
         }
 
-        std::cout << "sigo " << std::endl;
         auto blackboard = BT::Blackboard::create();
         blackboard->set("node", node);
 
-        BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
+        BT::Tree tree = factory.createTreeFromText(result->bt_xml);
 
         auto publisher_zmq =
             std::make_shared<BT::PublisherZMQ>(tree, 10, 2666, 2667);

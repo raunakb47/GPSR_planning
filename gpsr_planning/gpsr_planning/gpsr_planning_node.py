@@ -130,7 +130,7 @@ You have to response in JSON format.\n\n"""
         prompt = self._prompt + "ACTIONS:\n" + self._bt_nodes + "\n\n" + "GOAL: " + request.command + \
             "\n\n" + "### Instruction: Generate a plan to fully achieve the goal.\n### Response:"
 
-        self.get_logger().info(f"prompt: {prompt}")
+        #self.get_logger().info(f"prompt: {prompt}")
 
         goal_msg = GenerateResponse.Goal()
         goal_msg.prompt = prompt
@@ -144,11 +144,9 @@ You have to response in JSON format.\n\n"""
 
         result: GenerateResponse.Result = self._action_client.send_goal(
             goal_msg).result
-        self.get_logger().info(f"{result.response.text}")
+        #self.get_logger().info(f"{result.response.text}")
 
-        
-
-        self.get_logger().info("finished planning")
+        self.get_logger().info("Result plan:")
 
         response.bt_xml = self.action_parser(result.response.text)
 
@@ -159,7 +157,7 @@ You have to response in JSON format.\n\n"""
 
         plan = json.loads(response_plan)
 
-        self.get_logger().info(f'{plan.get("actions")}')
+        #self.get_logger().info(f'{plan.get("actions")}')
 
         bt_xml = minidom.Document()
         
@@ -175,18 +173,18 @@ You have to response in JSON format.\n\n"""
         bt_nodes = []
 
         for action in plan.get("actions"):
-            self.get_logger().info(f'{action}')
+            #self.get_logger().info(f'{action}')
             action_element = bt_xml.createElement('Action')
             action_element.setAttribute('ID', action.get("action_name"))
-            self.get_logger().info(f'{action.keys()}')
-            self.get_logger().info(f'{action.get("action_name")}')
-            self.get_logger().info(f'{action.get("action_args")}')
+            #self.get_logger().info(f'{action.keys()}')
+            #self.get_logger().info(f'{action.get("action_name")}')
+            #self.get_logger().info(f'{action.get("action_args")}')
 
             
             for arg in action.get("action_args"):
-                self.get_logger().info(f'{arg}')
+                #self.get_logger().info(f'{arg}')
                 arg_key = arg.keys()
-                self.get_logger().info(f'{arg_key}')
+                #self.get_logger().info(f'{arg_key}')
                 action_element.setAttribute(arg.get('arg_name'), arg.get('arg_value'))
 
             sequence_element.appendChild(action_element)
@@ -195,6 +193,7 @@ You have to response in JSON format.\n\n"""
         root_element.appendChild(bt_element)
         bt_xml.appendChild(root_element)
         str_bt = bt_xml.toprettyxml(indent="\t")
+        self.get_logger().info(f'BT result:')
         self.get_logger().info(f'{str_bt}')
 
         return str_bt

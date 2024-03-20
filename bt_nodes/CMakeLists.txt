@@ -20,6 +20,9 @@ include_directories(include)
 add_library(follow_person_bt_node SHARED src/FollowPerson.cpp)
 list(APPEND plugin_libs follow_person_bt_node)
 
+add_library(guide_person_bt_node SHARED src/GuidePerson.cpp)
+list(APPEND plugin_libs guide_person_bt_node)
+
 add_library(count_bt_node SHARED src/Count.cpp)
 list(APPEND plugin_libs count_bt_node)
 
