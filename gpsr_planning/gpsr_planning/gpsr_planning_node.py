@@ -168,10 +168,6 @@ You have to response in JSON format.\n\n"""
         bt_element.setAttribute('ID', 'BehaviorTree')
         sequence_element = bt_xml.createElement('Sequence')
 
-        
-        
-        bt_nodes = []
-
         for action in plan.get("actions"):
             #self.get_logger().info(f'{action}')
             action_element = bt_xml.createElement('Action')
