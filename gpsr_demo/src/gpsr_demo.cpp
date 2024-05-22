@@ -5,7 +5,7 @@
 
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
-#include "gpsr_msgs/srv/execute_plan.hpp"
+#include "gpsr_msgs/srv/generate_plan.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include <chrono>
@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
   BT::SharedLibrary loader;
   bool execution = true;
 
-  rclcpp::Client<gpsr_msgs::srv::ExecutePlan>::SharedPtr client =
-      node->create_client<gpsr_msgs::srv::ExecutePlan>("gpsr_planning");
+  rclcpp::Client<gpsr_msgs::srv::GeneratePlan>::SharedPtr client =
+      node->create_client<gpsr_msgs::srv::GeneratePlan>("gpsr_planning");
 
   std::list<std::string> commands = {
       "Take the person wearing a blue shirt from the kitchen to the bathroom",
@@ -91,7 +91,8 @@ int main(int argc, char *argv[]) {
         std::cout << "Command: " << command.c_str() << std::endl;
         it = std::next(it, 1);
 
-        auto request = std::make_shared<gpsr_msgs::srv::ExecutePlan::Request>();
+        auto request =
+            std::make_shared<gpsr_msgs::srv::GeneratePlan::Request>();
         request->command = command;
 
         while (!client->wait_for_service(1s)) {

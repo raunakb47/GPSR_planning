@@ -7,13 +7,13 @@ from rclpy.callback_groups import ReentrantCallbackGroup
 import ament_index_python
 from xml.dom import minidom
 
-from gpsr_msgs.srv import ExecutePlan
+from gpsr_msgs.srv import GeneratePlan
 from gpsr_planning.gpsr_planner import GpsrPlanner
 
 
 class GPSRPlanningNode(Node):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("gpsr_planning_node")
 
         robot_actions_path = ament_index_python.get_package_share_directory(
@@ -24,10 +24,10 @@ class GPSRPlanningNode(Node):
 
         self.gpsr_planner = GpsrPlanner(robot_actions_path, waypoints_path)
         self._srv = self.create_service(
-            ExecutePlan, "gpsr_planning", self._execute_cb,
+            GeneratePlan, "gpsr_planning", self._execute_cb,
             callback_group=ReentrantCallbackGroup())
 
-    def _execute_cb(self, request: ExecutePlan.Request, response: ExecutePlan.Response) -> ExecutePlan.Response:
+    def _execute_cb(self, request: GeneratePlan.Request, response: GeneratePlan.Response) -> GeneratePlan.Response:
 
         self.get_logger().info("Generating GPSR plan")
 
@@ -55,7 +55,8 @@ class GPSRPlanningNode(Node):
             action_args = action[action_name]
 
             action_element = bt_xml.createElement("Action")
-            action_element.setAttribute("ID", action_name)
+            action_element.setAttribute(
+                "ID", action_name.replace("_", " ").title().replace(" ", ""))
 
             for arg_key in action_args:
                 arg_value = action_args[arg_key]
