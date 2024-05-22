@@ -1,5 +1,7 @@
 
 import json
+from typing import Dict
+
 import rclpy
 from rclpy.node import Node
 from rclpy.callback_groups import ReentrantCallbackGroup
@@ -29,7 +31,7 @@ class GpsrPlanningNode(Node):
 
     def _execute_cb(self, request: GeneratePlan.Request, response: GeneratePlan.Response) -> GeneratePlan.Response:
 
-        self.get_logger().info("Generating GPSR plan")
+        self.get_logger().info("Generating GPSR Plan")
 
         plan, _ = self.gpsr_planner.send_prompt(request.command)
         self.get_logger().info(json.dumps(plan, indent=4))
@@ -39,7 +41,7 @@ class GpsrPlanningNode(Node):
 
         return response
 
-    def action_parser(self, plan):
+    def action_parser(self, plan: Dict) -> str:
 
         bt_xml = minidom.Document()
 
@@ -72,8 +74,8 @@ class GpsrPlanningNode(Node):
         return str_bt
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
     node = GpsrPlanningNode()
     rclpy.spin(node)
     node.destroy_node()
