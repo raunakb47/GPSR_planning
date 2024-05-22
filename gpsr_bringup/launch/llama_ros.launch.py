@@ -14,8 +14,8 @@ def generate_launch_description():
 
             model_repo="TheBloke/Marcoroni-7B-v3-GGUF",
             model_filename="marcoroni-7b-v3.Q4_K_M.gguf",
-            
-            stop="\n\n\n\n",
+
+            stopping_words=["\n\n\n\n"],
 
             debug=True
         )

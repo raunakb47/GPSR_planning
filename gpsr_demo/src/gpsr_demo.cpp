@@ -120,26 +120,27 @@ int main(int argc, char *argv[]) {
         auto blackboard = BT::Blackboard::create();
         blackboard->set("node", node);
 
-        BT::Tree tree = factory.createTreeFromText(result->bt_xml);
+        // BT::Tree tree = factory.createTreeFromText(result->bt_xml);
 
-        auto publisher_zmq =
-            std::make_shared<BT::PublisherZMQ>(tree, 10, 2666, 2667);
+        // auto publisher_zmq =
+        //     std::make_shared<BT::PublisherZMQ>(tree, 10, 2666, 2667);
 
-        rclcpp::Rate rate(10);
+        // rclcpp::Rate rate(10);
 
-        BT::NodeStatus status = BT::NodeStatus::RUNNING;
-        bool finish = false;
-        while (!finish && rclcpp::ok()) {
-          status = tree.rootNode()->executeTick();
-          finish = (status == BT::NodeStatus::SUCCESS) ||
-                   (status == BT::NodeStatus::FAILURE);
+        // BT::NodeStatus status = BT::NodeStatus::RUNNING;
+        // bool finish = false;
+        // while (!finish && rclcpp::ok()) {
+        //   status = tree.rootNode()->executeTick();
+        //   finish = (status == BT::NodeStatus::SUCCESS) ||
+        //            (status == BT::NodeStatus::FAILURE);
 
-          rclcpp::spin_some(node);
-          rate.sleep();
-        }
-        std::cout << "GPSR demo Finished with status: " << status << std::endl;
-        std::cout << "Press ENTER to execute next command or 'q' to quit."
-                  << std::endl;
+        //   rclcpp::spin_some(node);
+        //   rate.sleep();
+        // }
+        // std::cout << "GPSR demo Finished with status: " << status <<
+        // std::endl; std::cout << "Press ENTER to execute next command or 'q'
+        // to quit."
+        //           << std::endl;
 
       } else {
         it = commands.begin();

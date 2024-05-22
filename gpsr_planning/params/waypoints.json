@@ -1,0 +1,22 @@
+[
+    {
+        "room": "bedroom",
+        "locations": ["bed", "bedside table", "dresser"]
+    },
+    {
+        "room": "kitchen",
+        "locations": ["sink", "fridge", "dishwasher", "kitchen table", "trash bin"]
+    },
+    {
+        "room": "office",
+        "locations": ["armchair", "cabinet", "desk", "desk chair"]
+    },
+    {
+        "room": "living room",
+        "locations": ["entrance", "wardrobe", "sofa", "tv sideboard", "coffee table", "bar", "bookshelf", "instruction point"]
+    },
+    {
+        "room": "corridor",
+        "locations": ["exit"]
+    }
+]
