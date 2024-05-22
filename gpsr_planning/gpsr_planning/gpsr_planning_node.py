@@ -11,7 +11,7 @@ from gpsr_msgs.srv import GeneratePlan
 from gpsr_planning.gpsr_planner import GpsrPlanner
 
 
-class GPSRPlanningNode(Node):
+class GpsrPlanningNode(Node):
 
     def __init__(self) -> None:
         super().__init__("gpsr_planning_node")
@@ -74,7 +74,7 @@ class GPSRPlanningNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = GPSRPlanningNode()
+    node = GpsrPlanningNode()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
