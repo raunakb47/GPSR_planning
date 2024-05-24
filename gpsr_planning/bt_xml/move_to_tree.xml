@@ -1,0 +1,8 @@
+<root>
+    <BehaviorTree ID="MoveToTree">
+        <Sequence>
+             <Action ID="MoveTo" distance_tolerance="0.0" tf_frame="{location}" will_finish="true"/>
+             <Action ID="Speak" param="" say_text="I have reached {location}"/>
+        </Sequence>
+    </BehaviorTree>
+<root>

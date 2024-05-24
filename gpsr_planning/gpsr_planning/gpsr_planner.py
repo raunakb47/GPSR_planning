@@ -57,9 +57,6 @@ class GpsrPlanner:
             "Use only the actions listed below and use the less action as you can. "
             "Use the move action before each action that requires changing the location.\n\n"
 
-            "WAYPOINTS:\n"
-            "{waypoints}\n\n"
-
             "ACTIONS:\n"
             "{actions_descriptions}\n\n"
 
@@ -70,7 +67,7 @@ class GpsrPlanner:
         )
 
         prompt = PromptTemplate(
-            input_variables=["actions_descriptions", "prompt", "waypoints"],
+            input_variables=["actions_descriptions", "prompt"],
             template=prompt_template
         )
 
@@ -91,7 +88,6 @@ class GpsrPlanner:
         response = self.chain.invoke({
             "prompt": prompt,
             "actions_descriptions": self.actions_descriptions[:-1],
-            "waypoints": self.waypoints[:-1]
         })
 
         return json.loads(response), prompt

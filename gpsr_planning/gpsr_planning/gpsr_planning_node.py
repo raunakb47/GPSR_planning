@@ -49,14 +49,15 @@ class GpsrPlanningNode(Node):
         root_element.setAttribute("main_tree_to_execute", "BehaviorTree")
         bt_element = bt_xml.createElement("BehaviorTree")
         bt_element.setAttribute("ID", "BehaviorTree")
-        sequence_element = bt_xml.createElement('Sequence')
+
+        sequence_element = bt_xml.createElement("Sequence")
 
         for action in plan["actions"]:
 
             action_name = list(action.keys())[1]
             action_args = action[action_name]
 
-            action_element = bt_xml.createElement("Action")
+            action_element = bt_xml.createElement("SubTree")
             action_element.setAttribute(
                 "ID", action_name.replace("_", " ").title().replace(" ", ""))
 
@@ -65,6 +66,11 @@ class GpsrPlanningNode(Node):
                 action_element.setAttribute(arg_key, arg_value)
 
             sequence_element.appendChild(action_element)
+
+            include = bt_xml.createElement("include")
+            include.setAttribute(
+                "path", f"{ament_index_python.get_package_share_directory('gpsr_planning')}/bt_xml/{action_name}_tree.xml")
+            root_element.appendChild(include)
 
         bt_element.appendChild(sequence_element)
         root_element.appendChild(bt_element)
