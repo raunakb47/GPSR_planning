@@ -1,0 +1,6 @@
+<root>
+    <BehaviorTree ID="GuidePerson">
+        <Action ID="Speak" param="" say_text="Now i will guide you to the destination. Please follow me."/>
+        <Action ID="MoveTo" distance_tolerance="0.0" tf_frame="{location}" will_finish="true"/>
+    </BehaviorTree>
+</root>
