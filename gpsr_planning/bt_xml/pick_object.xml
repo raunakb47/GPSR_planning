@@ -10,7 +10,7 @@
                                                    max_entities="1"
                                                    order="depth"
                                                    best_detection="{best_detection}"/>
-            <Action ID="ExtractObjectsFromScene" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
+            <Action ID="ExtractObjectsFromScene" interest_class="{selected_class}" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
             <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
         </RetryUntilSuccessful>
         <Action ID="Speak" say_text="I am detecting a " param="{out_msg}"/>

@@ -36,6 +36,8 @@ class GpsrPlanningNode(Node):
         plan, _ = self.gpsr_planner.send_prompt(request.command)
         self.get_logger().info(json.dumps(plan, indent=4))
 
+        #TODO add action_list to responde
+
         response.bt_xml = self.action_parser(plan)
         self.get_logger().info(response.bt_xml)
 

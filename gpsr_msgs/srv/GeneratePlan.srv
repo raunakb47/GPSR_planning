@@ -1,3 +1,4 @@
 string command
 ---
 string bt_xml
+string[] action_list
