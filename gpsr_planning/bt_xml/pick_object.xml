@@ -1,23 +1,69 @@
-<root>
-    <BehaviorTree ID="PickObject">
-        <Action ID="MoveTo" is_truncated="true"  distance_tolerance="1.2" tf_frame="{location}"/>
-        <RetryUntilSuccessful num_attempts="-1">
-            <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame"
-                                                   confidence="0.6"
-                                                   frames="{frames}"
-                                                   interest="{selected_class}"
-                                                   max_depth="5"
-                                                   max_entities="1"
-                                                   order="depth"
-                                                   best_detection="{best_detection}"/>
-            <Action ID="ExtractObjectsFromScene" interest_class="{selected_class}" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
-            <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
-        </RetryUntilSuccessful>
-        <Action ID="Speak" say_text="I am detecting a " param="{out_msg}"/>
-        <Action ID="Speak" say_text="Trying to pick it" param=""/>
-        <RetryUntilSuccessful num_attempts="-1">
-            <Action ID="ExtractCollisionScene" selected_object="{selected_object}"/>
-        </RetryUntilSuccessful>
+<?xml version="1.0"?>
+<root main_tree_to_execute="PickObjecTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="PickObjecTree">
+        <Sequence>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame"
+                                                        confidence="0.6"
+                                                        frames="{frames}"
+                                                        interest="{selected_class}"
+                                                        max_depth="5"
+                                                        max_entities="1"
+                                                        order="depth"
+                                                        best_detection="{best_detection}"/>
+                    <Action ID="ExtractObjectsFromScene" interest_class="{selected_class}" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
+                    <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
+                </Sequence>
+            </RetryUntilSuccessful>
+            <Action ID="Speak" say_text="I am detecting a " param="{out_msg}"/>
+            <Action ID="Speak" say_text="Trying to pick it" param=""/>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Action ID="ExtractCollisionScene" selected_object="{selected_object}"/>
+            </RetryUntilSuccessful>
             <Action ID="PickObject" object_to_pick="{selected_object}"/>
+        </Sequence>
     </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame"/>
+            <input_port name="confidence"/>
+            <input_port name="person_id"/>
+            <input_port name="interest"/>
+            <input_port name="max_depth"/>
+            <input_port name="max_entities"/>
+            <input_port name="order"/>
+            <input_port name="best_detection"/>
+            <input_port name="frames"/>
+        </Condition>
+        <Action ID="ExtractObjectsFromScene">
+            <input_port name="interest_class"/>
+            <input_port name="detected_objects"/>
+            <input_port name="objects_count"/>
+        </Action>
+        <Action ID="GenerateTextFromObjects">
+            <input_port name="selected_object"/>
+            <input_port name="detected_objects"/>
+            <input_port name="output_text"/>
+        </Action>
+        <Action ID="ExtractCollisionScene">
+            <input_port name="selected_object"/>
+        </Action>
+        <Action ID="PickObject">
+            <input_port name="object_to_pick"/>
+        </Action>
+        <Action ID="MoveTo">
+            <input_port default="0" name="distance_tolerance"/>
+            <input_port default="entrance" name="tf_frame"/>
+            <input_port default="true" name="will_finish"/>
+            <input_port default="true" name="is_truncated"/>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
 </root>

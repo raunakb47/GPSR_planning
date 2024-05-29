@@ -1,46 +1,97 @@
-<root>
-    <BehaviorTree ID="FollowPerson">
-        <Action ID="Speak" param="" say_text="Now i will follow you. Please stop at the end "/>
-        <ReactiveSequence>
-            <Action ID="LookAt" tf_frame="person_0_filtered" />
-        </ReactiveSequence>
-        <RetryUntilSuccessful num_attempts="-1">
-            <Sequence>
-                <Fallback>
+<?xml version="1.0"?>
+<root main_tree_to_execute="FollowPersonTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="FollowPersonTree">
+        <Sequence>
+            <Action ID="Speak" param="" say_text="Now i will follow you. Please stop at the end "/>
+            <ReactiveSequence>
+                <Action ID="LookAt" tf_frame="person_0_filtered" />
+            </ReactiveSequence>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <Fallback>
+                        <ReactiveSequence>
+                            <RetryUntilSuccessful num_attempts="-1">
+                                <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="6.7" max_entities="1" order="color"/>
+                            </RetryUntilSuccessful>
+                            <Action ID="FilterEntity" frame="person_0" lambda="0.1"/>
+                            <Action ID="LookAt" tf_frame="person_0_filtered"/>
+
+                            <Condition ID="IsEntityMoving" distance_tolerance="0.6" frame="person_0_filtered" check_time="9.0"/>
+                            <!-- <Condition ID="IsMoving" frame="person_0" position_buffer_dimension="50" threshold_time="4.0" velocity_tolerance="0.003"/> -->
+                            <Action ID="FollowEntity" camera_frame="head_front_camera_link_color_optical_frame"
+                            distance_tolerance="0.2"
+                            frame_to_follow="person_0_filtered"
+                            x_axis_max="{max_x}"
+                            x_axis_min="{min_x}"
+                            y_axis_max="{max_y}"
+                            y_axis_min="{min_y}"/>
+                        </ReactiveSequence>
+                        <Action ID="Speak" param="" say_text="have we arrived to the destination?"/>
+                    </Fallback>
                     <ReactiveSequence>
                         <RetryUntilSuccessful num_attempts="-1">
-                            <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="6.7" max_entities="1" order="color"/>
+                            <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
                         </RetryUntilSuccessful>
                         <Action ID="FilterEntity" frame="person_0" lambda="0.1"/>
                         <Action ID="LookAt" tf_frame="person_0_filtered"/>
-
-                        <Condition ID="IsEntityMoving" distance_tolerance="0.6" frame="person_0_filtered" check_time="9.0"/>
-                        <!-- <Condition ID="IsMoving" frame="person_0" position_buffer_dimension="50" threshold_time="4.0" velocity_tolerance="0.003"/> -->
-                        <Action ID="FollowEntity" camera_frame="head_front_camera_link_color_optical_frame"
-                        distance_tolerance="0.2"
-                        frame_to_follow="person_0_filtered"
-                        x_axis_max="{max_x}"
-                        x_axis_min="{min_x}"
-                        y_axis_max="{max_y}"
-                        y_axis_min="{min_y}"/>
+                        <ForceSuccess>
+                            <Action ID="GoalPublisher" 
+                            camera_frame="head_front_camera_link_color_optical_frame"
+                            distance_tolerance="0.8"
+                            frame_to_follow="person_0_filtered"/>  
+                        </ForceSuccess>
+                        <Action ID="DialogConfirmation"/>
                     </ReactiveSequence>
-                    <Action ID="Speak" param="" say_text="have we arrived to the destination?"/>
-                </Fallback>
-                <ReactiveSequence>
-                    <RetryUntilSuccessful num_attempts="-1">
-                        <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
-                    </RetryUntilSuccessful>
-                    <Action ID="FilterEntity" frame="person_0" lambda="0.1"/>
-                    <Action ID="LookAt" tf_frame="person_0_filtered"/>
-                    <ForceSuccess>
-                        <Action ID="GoalPublisher" 
-                        camera_frame="head_front_camera_link_color_optical_frame"
-                        distance_tolerance="0.8"
-                        frame_to_follow="person_0_filtered"/>  
-                    </ForceSuccess>
-                    <Action ID="DialogConfirmation"/>
-                </ReactiveSequence>
-            </Sequence>
-        </RetryUntilSuccessful>
+                </Sequence>
+            </RetryUntilSuccessful>
+        </Sequence>
     </BehaviorTree>
-<root>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsEntityMoving">
+            <input_port name="distance_tolerance"/>
+            <input_port name="frame"/>
+            <input_port name="check_time"/>
+        </Condition>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame"/>
+            <input_port name="confidence"/>
+            <input_port name="person_id"/>
+            <input_port name="interest"/>
+            <input_port name="max_depth"/>
+            <input_port name="max_entities"/>
+            <input_port name="order"/>
+            <input_port name="best_detection"/>
+            <input_port name="frames"/>
+        </Condition>
+        <Action ID="FollowEntity">
+            <input_port name="camera_frame"/>
+            <input_port name="distance_tolerance"/>
+            <input_port name="frame_to_follow"/>
+            <input_port name="x_axis_max"/>
+            <input_port name="x_axis_min"/>
+            <input_port name="y_axis_max"/>
+            <input_port name="y_axis_min"/>
+        </Action>
+        <Action ID="FilterEntity">
+            <input_port name="frame"/>
+            <input_port name="lambda"/>
+        </Action>
+        <Action ID="GoalPublisher">
+            <input_port name="camera_frame"/>
+            <input_port name="distance_tolerance"/>
+            <input_port name="frame_to_follow"/>
+        </Action>
+        <Action ID="DialogConfirmation">
+        </Action>
+        <Action ID="LookAt">
+            <input_port name="tf_frame"/>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>

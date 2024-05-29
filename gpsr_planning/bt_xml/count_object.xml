@@ -1,18 +1,53 @@
-<root>
-    <BehaviorTree ID="CountObject">
-        <RetryUntilSuccessful num_attempts="-1">
-            <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame"
-                                                   confidence="0.6"
-                                                   frames="{frames}"
-                                                   interest="{selected_class}"
-                                                   max_depth="5"
-                                                   max_entities="1"
-                                                   order="depth"
-                                                   best_detection="{best_detection}"/>
-            <Action ID="ExtractObjectsFromScene" interest_class="{selected_class}" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
-            <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
-        </RetryUntilSuccessful>
-        <Action ID="Speak" say_text="I am detecting " param="{objects_count}"/>
-        <Action ID="Speak" say_text="{out_msg}" param=""/>
+<?xml version="1.0"?>
+<root main_tree_to_execute="CountObjectTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="CountObjectTree">
+        <Sequence>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame"
+                                                        confidence="0.6"
+                                                        frames="{frames}"
+                                                        interest="{selected_class}"
+                                                        max_depth="5"
+                                                        max_entities="1"
+                                                        order="depth"
+                                                        best_detection="{best_detection}"/>
+                    <Action ID="ExtractObjectsFromScene" interest_class="{selected_class}" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
+                    <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
+                </Sequence>
+            </RetryUntilSuccessful>
+            <Action ID="Speak" say_text="I am detecting " param="{objects_count}"/>
+            <Action ID="Speak" say_text="{out_msg}" param=""/>
+        </Sequence>
     </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame"/>
+            <input_port name="confidence"/>
+            <input_port name="person_id"/>
+            <input_port name="interest"/>
+            <input_port name="max_depth"/>
+            <input_port name="max_entities"/>
+            <input_port name="order"/>
+            <input_port name="best_detection"/>
+            <input_port name="frames"/>
+        </Condition>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+        <Action ID="ExtractObjectsFromScene">
+            <input_port name="interest_class"/>
+            <input_port name="detected_objects"/>
+            <input_port name="objects_count"/>
+        </Action>
+        <Action ID="GenerateTextFromObjects">
+            <input_port name="selected_object"/>
+            <input_port name="detected_objects"/>
+            <input_port name="output_text"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
 </root>

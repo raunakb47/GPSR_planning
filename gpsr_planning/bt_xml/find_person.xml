@@ -30,6 +30,8 @@
             <input_port name="max_depth"/>
             <input_port name="max_entities"/>
             <input_port name="order"/>
+            <input_port name="best_detection"/>
+            <input_port name="frames"/>
         </Condition>
         <Action ID="ConvertColor">
             <input_port name="interest"/>
@@ -45,6 +47,7 @@
             <input_port default="0" name="distance_tolerance"/>
             <input_port default="entrance" name="tf_frame"/>
             <input_port default="true" name="will_finish"/>
+            <input_port default="true" name="is_truncated"/>
         </Action>
         <Action ID="Speak">
             <input_port name="say_text"/>

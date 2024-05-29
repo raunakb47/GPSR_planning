@@ -1,10 +1,32 @@
-<root>
-    <BehaviorTree ID="OfferObject">
-        <Action ID="MoveTo" is_truncated="true"  distance_tolerance="1.2" tf_frame="{location}"/>
-        <Action ID="MoveToPredefined" pose="offer" group_name="arm_torso"/>
-        <Action ID="Speak" param="" say_text="please take the object from my gripper"/>
-        <Delay delay_msec="140">
-            <Action ID="MoveToPredefined" pose="open" group_name="gripper"/>
-        </Delay>
+<?xml version="1.0"?>
+<root main_tree_to_execute="OfferObjectTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="OfferObjectTree">
+        <Sequence>
+            <Action ID="MoveTo" is_truncated="true"  distance_tolerance="1.2" tf_frame="{location}"/>
+            <Action ID="MoveToPredefined" pose="offer" group_name="arm_torso"/>
+            <Action ID="Speak" param="" say_text="please take the object from my gripper"/>
+            <Delay delay_msec="140">
+                <Action ID="MoveToPredefined" pose="open" group_name="gripper"/>
+            </Delay>
+        </Sequence>
     </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="MoveToPredefined">
+            <input_port name="pose"/>
+            <input_port name="group_name"/>
+        </Action>
+        <Action ID="MoveTo">
+            <input_port default="0" name="distance_tolerance"/>
+            <input_port default="entrance" name="tf_frame"/>
+            <input_port default="true" name="will_finish"/>
+            <input_port default="true" name="is_truncated"/>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
 </root>

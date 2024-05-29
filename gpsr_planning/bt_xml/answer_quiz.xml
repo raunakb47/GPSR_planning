@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="AnswerQuizTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="AnswerQuizTree">
+        <Sequence>
+            <Action ID="Speak" say_text="I am ready to answer your questions" param=""/>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <Action ID="Listen" listen_text="{text_value}"/>
+                    <Action ID="Query" text="{text_value}" intention="" intention_value="{answer_value}"/>
+                    <Action ID="Speak" say_text="{answer_value}"/>
+                </Sequence>
+            </RetryUntilSuccessful>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="Listen">
+            <output_port name="listen_text"/>
+        </Action>
+        <Action ID="Query">
+            <input_port name="text"/>
+            <input_port name="intention"/>
+            <output_port name="intention_value"/>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>

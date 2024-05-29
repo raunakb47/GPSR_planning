@@ -46,9 +46,9 @@
         "description": "take, escort, lead, or guide a person from a location to another location"
     },
     {
-        "name": "listen",
+        "name": "answer_quiz",
         "args": {},
-        "description": "listen to a person in a location"
+        "description": "answer a quiz to a person in a location"
     },
     {
         "name": "speak",
