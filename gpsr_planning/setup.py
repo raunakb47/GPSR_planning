@@ -13,7 +13,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join("share", package_name, "params"), glob("params/*.json")),
-        (os.path.join("share", package_name, "params"), glob("bt_xml/*.xml")),
+        (os.path.join("share", package_name, "bt_xml"), glob("bt_xml/*.xml")),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

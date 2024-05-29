@@ -36,7 +36,7 @@ class GpsrPlanningNode(Node):
         plan, _ = self.gpsr_planner.send_prompt(request.command)
         self.get_logger().info(json.dumps(plan, indent=4))
 
-        #TODO add action_list to responde
+        # TODO add action_list to responde
 
         response.bt_xml = self.action_parser(plan)
         self.get_logger().info(response.bt_xml)
@@ -61,7 +61,7 @@ class GpsrPlanningNode(Node):
 
             action_element = bt_xml.createElement("SubTree")
             action_element.setAttribute(
-                "ID", action_name.replace("_", " ").title().replace(" ", ""))
+                "ID", f"{action_name.replace("_", " ").title().replace(" ", "")}Tree")
 
             for arg_key in action_args:
                 arg_value = action_args[arg_key]
@@ -71,7 +71,7 @@ class GpsrPlanningNode(Node):
 
             include = bt_xml.createElement("include")
             include.setAttribute(
-                "path", f"{ament_index_python.get_package_share_directory('gpsr_planning')}/bt_xml/{action_name}_tree.xml")
+                "path", f"{ament_index_python.get_package_share_directory('gpsr_planning')}/bt_xml/{action_name}.xml")
             root_element.appendChild(include)
 
         bt_element.appendChild(sequence_element)

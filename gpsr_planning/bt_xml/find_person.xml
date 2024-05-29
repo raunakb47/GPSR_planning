@@ -1,15 +1,55 @@
-<root>
-    <BehaviorTree ID="FindPerson">
+<?xml version="1.0"?>
+<root main_tree_to_execute="FindPersonTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="FindPersonTree">
         <RetryUntilSuccessful num_attempts="-1">
-            <Fallback>
-                <Condition ID="IsGesturing" type="{gesture}" person_id="{person_id}"/>
-                <Action ID="ConvertColor" interest="{color_interest}" color="{color}" person_id="{person_id}"/>
-            </Fallback>
-            <ReactiveFallback>
-                <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
-                <Action ID="Pan" period="10.0" range="30" pitch_angle="-10"/>
-            </ReactiveFallback>
-            <Action ID="MoveTo" is_truncated="true"  distance_tolerance="1.5" tf_frame="person_0"/>
+            <Sequence>
+                <Fallback>
+                    <Condition ID="IsGesturing" type="{gesture}" person_id="{person_id}"/>
+                    <Action ID="ConvertColor" interest="{color_interest}" color="{color}" person_id="{person_id}"/>
+                </Fallback>
+                <ReactiveFallback>
+                    <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
+                    <Action ID="Pan" period="10.0" range="30" pitch_angle="-10"/>
+                </ReactiveFallback>
+                <Action ID="MoveTo" distance_tolerance="1.5" tf_frame="person_0"/>
+            </Sequence>
         </RetryUntilSuccessful>
     </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsGesturing">
+            <input_port name="type"/>
+            <input_port name="person_id"/>
+        </Condition>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame"/>
+            <input_port name="confidence"/>
+            <input_port name="person_id"/>
+            <input_port name="interest"/>
+            <input_port name="max_depth"/>
+            <input_port name="max_entities"/>
+            <input_port name="order"/>
+        </Condition>
+        <Action ID="ConvertColor">
+            <input_port name="interest"/>
+            <input_port name="color"/>
+            <input_port name="person_id"/>
+        </Action>
+        <Action ID="Pan">
+            <input_port name="period"/>
+            <input_port name="range"/>
+            <input_port name="pitch_angle"/>
+        </Action>
+        <Action ID="MoveTo">
+            <input_port default="0" name="distance_tolerance"/>
+            <input_port default="entrance" name="tf_frame"/>
+            <input_port default="true" name="will_finish"/>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
 </root>
