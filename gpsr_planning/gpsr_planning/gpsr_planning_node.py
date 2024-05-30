@@ -64,6 +64,7 @@ class GpsrPlanningNode(Node):
             action_element = bt_xml.createElement("SubTree")
             action_element.setAttribute(
                 "ID", f"{action_name.replace('_', ' ').title().replace(' ', '')}Tree")
+            action_element.setAttribute("__shared_blackboard", "true")
 
             for arg_key in action_args:
                 arg_value = action_args[arg_key]
