@@ -68,7 +68,11 @@ class GpsrPlanningNode(Node):
 
             for arg_key in action_args:
                 arg_value = action_args[arg_key]
-                action_element.setAttribute(arg_key, arg_value)
+
+                blackboard_set = bt_xml.createElement("SetBlackboard")
+                blackboard_set.setAttribute("output_key", arg_key)
+                blackboard_set.setAttribute("value", arg_value)
+                sequence_element.appendChild(blackboard_set)
 
             sequence_element.appendChild(action_element)
 
