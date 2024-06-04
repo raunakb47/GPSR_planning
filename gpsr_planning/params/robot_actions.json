@@ -2,21 +2,27 @@
     {
         "name": "count_object",
         "args": {
-            "object_type": "string"
+            "object_type": {
+                "type": "string"
+            }
         },
         "description": "count the objects of a specific type in a location"
     },
     {
         "name": "pick_object",
         "args": {
-            "object_to_pick": "string"
+            "object_to_pick": {
+                "type": "string"
+            }
         },
         "description": "get, fetch, grasp, pick, or take an object in a location"
     },
     {
         "name": "place_object",
         "args": {
-            "place_pose": "string"
+            "place_pose": {
+                "type": "string"
+            }
         },
         "description": "place, or put an object in a location"
     },
@@ -28,10 +34,41 @@
     {
         "name": "find_person",
         "args": {
-            "color": "string",
-            "human_sign": "string"
+            "color": {
+                "type": "string",
+                "choices": [
+                    "blue",
+                    "yellow",
+                    "black",
+                    "white",
+                    "red",
+                    "orange",
+                    "gray",
+                    "unknown"
+                ]
+            },
+            "human_sign": {
+                "type": "string",
+                "choices": [
+                    "waving persons",
+                    "persons raising their left arm",
+                    "persons raising their right arm",
+                    "persons pointing to the left",
+                    "persons pointing to the right",
+                    "unknown"
+                ]
+            },
+            "pose": {
+                "type": "string",
+                "choices": [
+                    "sitting persons",
+                    "standing persons",
+                    "lying persons",
+                    "unknown"
+                ]
+            }
         },
-        "description": "identify, look for, search for or find a person in a waypoint using a color or a human sign"
+        "description": "identify, look for, search for or find a person in a waypoint using a color or a human sign or pose"
     },
     {
         "name": "follow_person",
@@ -41,7 +78,37 @@
     {
         "name": "guide_person",
         "args": {
-            "location": "string"
+            "location": {
+                "type": "string",
+                "choices": [
+                    "bedroom",
+                    "bed",
+                    "bedside table",
+                    "dresser",
+                    "kitchen",
+                    "sink",
+                    "fridge",
+                    "dishwasher",
+                    "kitchen table",
+                    "trash bin",
+                    "office",
+                    "armchair",
+                    "cabinet",
+                    "desk",
+                    "desk chair",
+                    "living room",
+                    "entrance",
+                    "wardrobe",
+                    "sofa",
+                    "tv sideboard",
+                    "coffee table",
+                    "bar",
+                    "bookshelf",
+                    "instruction point",
+                    "corridor",
+                    "exit"
+                ]
+            }
         },
         "description": "take, escort, lead, or guide a person from a location to another location"
     },
@@ -53,14 +120,46 @@
     {
         "name": "speak",
         "args": {
-            "say_text": "string"
+            "say_text": {
+                "type": "string"
+            }
         },
         "description": "speak, or tell something to a person in a location"
     },
     {
         "name": "move_to",
         "args": {
-            "location": "string"
+            "location": {
+                "type": "string",
+                "choices": [
+                    "bedroom",
+                    "bed",
+                    "bedside table",
+                    "dresser",
+                    "kitchen",
+                    "sink",
+                    "fridge",
+                    "dishwasher",
+                    "kitchen table",
+                    "trash bin",
+                    "office",
+                    "armchair",
+                    "cabinet",
+                    "desk",
+                    "desk chair",
+                    "living room",
+                    "entrance",
+                    "wardrobe",
+                    "sofa",
+                    "tv sideboard",
+                    "coffee table",
+                    "bar",
+                    "bookshelf",
+                    "instruction point",
+                    "corridor",
+                    "exit"
+                ]
+            }
         },
         "description": "move from a location to another location"
     }

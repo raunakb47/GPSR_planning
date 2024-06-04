@@ -55,7 +55,7 @@ class GpsrPlanner:
             "You have to generate plans to achive goals. "
             "A plan is a sequence of actions. "
             "Use only the actions listed below and use the less action as you can. "
-            "Use the move action before each action that requires changing the location.\n\n"
+            "Use the move_to action before each action that requires changing the location.\n\n"
 
             "ACTIONS:\n"
             "{actions_descriptions}\n\n"
@@ -115,7 +115,10 @@ class GpsrPlanner:
             properties = {}
 
             for arg in a["args"]:
-                properties[arg] = {"type": a["args"][arg]}
+                properties[arg] = {"type": a["args"][arg]["type"]}
+
+                if "choices" in a["args"][arg]:
+                    properties[arg]["enum"] = a["args"][arg]["choices"]
 
             action_definitions[a["name"]] = {
                 "type": "object",
