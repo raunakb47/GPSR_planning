@@ -47,23 +47,23 @@
                     "unknown"
                 ]
             },
-            "human_sign": {
+            "gesture": {
                 "type": "string",
                 "choices": [
-                    "waving persons",
-                    "persons raising their left arm",
-                    "persons raising their right arm",
-                    "persons pointing to the left",
-                    "persons pointing to the right",
+                    "waving person",
+                    "person raising their left arm",
+                    "person raising their right arm",
+                    "person pointing to the left",
+                    "person pointing to the right",
                     "unknown"
                 ]
             },
             "pose": {
                 "type": "string",
                 "choices": [
-                    "sitting persons",
-                    "standing persons",
-                    "lying persons",
+                    "sitting person",
+                    "standing person",
+                    "lying person",
                     "unknown"
                 ]
             }
@@ -83,28 +83,28 @@
                 "choices": [
                     "bedroom",
                     "bed",
-                    "bedside table",
+                    "bedside_table",
                     "dresser",
                     "kitchen",
                     "sink",
                     "fridge",
                     "dishwasher",
-                    "kitchen table",
-                    "trash bin",
+                    "kitchen_table",
+                    "trash_bin",
                     "office",
                     "armchair",
                     "cabinet",
                     "desk",
-                    "desk chair",
-                    "living room",
+                    "desk_chair",
+                    "living_room",
                     "entrance",
                     "wardrobe",
                     "sofa",
-                    "tv sideboard",
-                    "coffee table",
+                    "tv_sideboard",
+                    "coffee_table",
                     "bar",
                     "bookshelf",
-                    "instruction point",
+                    "instruction_point",
                     "corridor",
                     "exit"
                 ]
@@ -134,28 +134,28 @@
                 "choices": [
                     "bedroom",
                     "bed",
-                    "bedside table",
+                    "bedside_table",
                     "dresser",
                     "kitchen",
                     "sink",
                     "fridge",
                     "dishwasher",
-                    "kitchen table",
-                    "trash bin",
+                    "kitchen_table",
+                    "trash_bin",
                     "office",
                     "armchair",
                     "cabinet",
                     "desk",
-                    "desk chair",
-                    "living room",
+                    "desk_chair",
+                    "living_room",
                     "entrance",
                     "wardrobe",
                     "sofa",
-                    "tv sideboard",
-                    "coffee table",
+                    "tv_sideboard",
+                    "coffee_table",
                     "bar",
                     "bookshelf",
-                    "instruction point",
+                    "instruction_point",
                     "corridor",
                     "exit"
                 ]
