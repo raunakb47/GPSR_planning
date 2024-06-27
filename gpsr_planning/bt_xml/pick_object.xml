@@ -3,6 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="PickObjecTree">
         <Sequence>
+            <Action ID="SetPerceptionModel" model_type="object"/>
             <RetryUntilSuccessful num_attempts="-1">
                 <Sequence>
                     <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame"

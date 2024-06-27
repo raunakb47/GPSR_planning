@@ -2,19 +2,19 @@
 <root main_tree_to_execute="FindPersonTree">
     <!-- ////////// -->
     <BehaviorTree ID="FindPersonTree">
-        <RetryUntilSuccessful num_attempts="-1">
-            <Sequence>
-                <Fallback>
-                    <Condition ID="IsGesturing" type="{gesture}" person_id="{person_id}"/>
-                    <Action ID="ConvertColor" interest="{color_interest}" color="{color}" person_id="{person_id}"/>
-                </Fallback>
-                <ReactiveFallback>
-                    <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
-                    <Action ID="Pan" period="10.0" range="30" pitch_angle="-10"/>
-                </ReactiveFallback>
-                <Action ID="MoveTo" distance_tolerance="1.5" tf_frame="person_0"/>
-            </Sequence>
-        </RetryUntilSuccessful>
+        <Sequence>
+            <Action ID="SetPerceptionModel" model_type="keypoint"/>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <ReactiveFallback>
+                        <!-- <Condition ID="IsGesturing" type="{gesture}" person_id="{person_id}"/> -->
+                        <Condition ID="IsDetected" color="{color}" gesture="{gesture}" cam_frame="base_footprint" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
+                        <Action ID="Pan" period="10.0" range="30" pitch_angle="-10"/>
+                    </ReactiveFallback>
+                    <Action ID="MoveTo" distance_tolerance="1.5" tf_frame="person_0"/>
+                </Sequence>
+            </RetryUntilSuccessful>
+        </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
@@ -33,6 +33,9 @@
             <input_port name="best_detection"/>
             <input_port name="frames"/>
         </Condition>
+        <Action ID="SetPerceptionModel">
+            <input_port name="model_name"/>
+        </Action>
         <Action ID="ConvertColor">
             <input_port name="interest"/>
             <input_port name="color"/>

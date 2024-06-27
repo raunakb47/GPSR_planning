@@ -51,8 +51,8 @@
                 "type": "string",
                 "choices": [
                     "waving",
-                    "raising_left",
-                    "raising_right",
+                    "rising_left",
+                    "rising_right",
                     "pointing_left",
                     "pointing_right",
                     "unknown"

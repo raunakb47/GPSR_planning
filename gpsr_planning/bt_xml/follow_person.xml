@@ -3,6 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="FollowPersonTree">
         <Sequence>
+            <Action ID="SetPerceptionModel" model_type="object"/>
             <Action ID="Speak" param="" say_text="Now i will follow you. Please stop at the end "/>
             <ReactiveSequence>
                 <Action ID="LookAt" tf_frame="person_0_filtered" />

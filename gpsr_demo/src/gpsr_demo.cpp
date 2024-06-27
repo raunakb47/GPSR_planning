@@ -30,6 +30,13 @@ int main(int argc, char *argv[]) {
 
   std::list<std::string> commands = {
       "Take the person wearing a blue shirt from the kitchen to the bathroom",
+      "Introduce yourself to Kyle in the livingroom and guide them to the kitchen",
+      "Look for a drink in the kitchen, then get it and deliver it to Kin in the kitchen.",
+      "Get a dice from the dishwasher and give it to the person rising their left arm in the bedroom.",
+      "Locate a bottle in the kitchen, then fetch it and place it on the bed.",
+      "Tell me the gesture of the person in the livingroom",
+      "Tell me how many snacks there are in the coffee table",
+      "Tell me how many people in the livingroom are wearing orange shirts.",
       "Answer the quiz of the waving person in the bedroom",
       "Follow the standing person in the kitchen",
       "Follow Ana from the kitchen to the bedroom",
