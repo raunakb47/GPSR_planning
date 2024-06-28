@@ -9,6 +9,43 @@
         "description": "count the objects of a specific type in a location"
     },
     {
+        "name": "find_object",
+        "args": {
+            "size": {
+                "type": "string",
+                "choices": [
+                    "big",
+                    "large",
+                    "small",
+                    "unknown"
+                ]
+            },
+            "weight": {
+                "type": "string",
+                "choices": [
+                    "heavy",
+                    "light",
+                    "thin",
+                    "unknown"
+                ]
+            },
+            "class": {
+                "type": "string",
+                "choices": [
+                    "drink",
+                    "fruit",
+                    "snack",
+                    "food",
+                    "dish",
+                    "toy",
+                    "cleaning_supply",
+                    "unknown"
+                ]
+            }
+        },
+        "description": "identify, look for, search for or find an object in a waypoint using a size, weight or or a class to which the object belongs"
+    },
+    {
         "name": "pick_object",
         "args": {
             "object_to_pick": {

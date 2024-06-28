@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="FindObjectTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="FindObjectTree">
+        <Sequence>
+            <Action ID="SetPerceptionModel" model_type="object"/>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <ReactiveFallback>
+                        <ReactiveFallback>
+                            <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.6" frames="{frames}" interest="" max_depth="5" max_entities="10" order="depth"/>
+                            <Action ID="Pan" period="10.0" range="30" pitch_angle="-10"/>
+                        </ReactiveFallback>
+                        <Action ID="FilterObject" frames="{frames}" size="{size}" weight="{weight}" class="{class}" filtered_object="{result}"/>
+                    </ReactiveFallback>
+                    <Action ID="Speak" say_text="I find a " param="{result}"/>
+                </Sequence>
+            </RetryUntilSuccessful>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame"/>
+            <input_port name="confidence"/>
+            <input_port name="person_id"/>
+            <input_port name="interest"/>
+            <input_port name="max_depth"/>
+            <input_port name="max_entities"/>
+            <input_port name="order"/>
+            <input_port name="best_detection"/>
+            <input_port name="frames"/>
+        </Condition>
+        <Action ID="SetPerceptionModel">
+            <input_port name="model_name"/>
+        </Action>
+        <Action ID="Pan">
+            <input_port name="period"/>
+            <input_port name="range"/>
+            <input_port name="pitch_angle"/>
+        </Action>
+        <Action ID="MoveTo">
+            <input_port default="0" name="distance_tolerance"/>
+            <input_port default="entrance" name="tf_frame"/>
+            <input_port default="true" name="will_finish"/>
+            <input_port default="true" name="is_truncated"/>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+        <Action ID="FilterObject">
+            <input_port name ="frames"></input_port>
+            <input_port default="unknown" name="size">size</input_port>
+            <input_port default="unknown" name="weight">weight</input_port>
+            <input_port default="unknown" name="class">class</input_port>
+            <output_port name="filtered_object"></output_port>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
