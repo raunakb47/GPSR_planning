@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="SpeakResultTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="SpeakResultTree">
+        <Sequence>
+            <Action ID="Speak" say_text="I find " param="{result}"/>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>

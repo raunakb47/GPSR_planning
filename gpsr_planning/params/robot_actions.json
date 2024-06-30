@@ -185,6 +185,11 @@
         "description": "speak, or tell something to a person in a location"
     },
     {
+        "name": "speak_result",
+        "args": {},
+        "description": "speak, or tell the result only after completing tasks like finding or counting people or objects in a different location, after returning to the person’s current location"
+    },
+    {
         "name": "move_to",
         "args": {
             "location": {
