@@ -4,20 +4,20 @@
     <BehaviorTree ID="FindPersonByNameTree">
         <Sequence>
             <Action ID="SetPerceptionModel" model_type="object"/>
-            <Action ID="SetHeadJointPosition" vertical="-0.25"/>
-            <Action ID="SetTorsoHeight" height="0.1"/>
+            <Action ID="SetHeadJointPosition" vertical="0.0"/>
+            <Action ID="SetTorsoHeight" height="0.12"/>
             <Action ID="InitProtectedQueue" port="prev_frames"/>
 
             <!-- Make a Loop -->
             <Fallback>
-                <RetryUntilSuccessful num_attempts="43"> <!-- 43 attempts at 0.15 rad == 1 turn -->
+                <RetryUntilSuccessful num_attempts="38"> <!-- 43 attempts at 0.15 rad == 1 turn -->
                     <Sequence>
                         <ReactiveFallback>
                             <ForceFailure>
                                 <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="5" order="color" frames="{new_frames}"/>
                             </ForceFailure>
                             <ForceFailure>
-                                <Action ID="FilterPrevDetections" prev_detections="{prev_frames}" new_detections="{new_frames}" margin="0.3" frame_id="map"/>
+                                <Action ID="FilterPrevDetections" prev_detections="{prev_frames}" new_detections="{new_frames}" margin="0.5" frame_id="map"/>
                             </ForceFailure>
                             <ForceFailure>
                                 <Action ID="Rotate" angle="0.15" speed='0.3'/>
@@ -30,17 +30,21 @@
 
             <!-- For loop. ConsumeQueue will exit if failure, so when the person is found, it will exit. Therefore, the outer inverter is used -->
             <Inverter>
-                <ConsumeQueue queue="prev_frames" popped_item="transform">
-                    <Sequence>
-                        <Action ID="PublishTF" transform="{transform}" frame_id="frame"/>
-                        <Action ID="FilterEntity" frame="{frame}" lambda="0.1"/>
-                        <Action ID="MoveTo" distance_tolerance="1.0" tf_frame="{frame}" />
-                        <Action ID="Speak" say_text="Hello, are you " param="{person_name}" />
-                        <Inverter>
-                            <Action ID="dialogConfirmation"/>
-                        </Inverter>
-                    </Sequence>
-                </ConsumeQueue>
+                <Sequence>
+                    <ConsumeQueue queue="{prev_frames}" popped_item="{transform}">
+                        <Sequence>
+                            <Action ID="PublishTF" transform="{transform}" frame_id="{frame}"/>
+                            <Action ID="FilterEntity" frame="{frame}" lambda="0.1"/>
+                            <Action ID="MoveTo" distance_tolerance="2.0" tf_frame="{frame}" />
+                            <Action ID="Speak" say_text="Hello, are you " param="{person_name}" />
+                            <Inverter>
+                                <Action ID="DialogConfirmation"/>
+                            </Inverter>
+                            <Speak say_text="Oh sorry! You are not the person I am looking for." param="" />
+                        </Sequence>
+                    </ConsumeQueue>
+                    <Action ID="Speak" say_text="I couldn't find you, cancelling mission."/>
+                </Sequence>
             </Inverter>
 
             <Action ID="Speak" say_text="I found you, " param="{person_name}"/>
