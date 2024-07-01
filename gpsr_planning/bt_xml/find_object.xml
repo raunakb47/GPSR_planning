@@ -11,7 +11,7 @@
                             <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.6" frames="{frames}" interest="" max_depth="5" max_entities="10" order="depth"/>
                             <Action ID="Pan" period="10.0" range="30" pitch_angle="-10"/>
                         </ReactiveFallback>
-                        <Action ID="FilterObject" frames="{frames}" size="{size}" weight="{weight}" class="{class}" cam_frame="base_footprint" filtered_object="{result}"/>
+                        <Action ID="FilterObject" frames="{frames}" size="{size}" weight="{weight}" class="{class}" filtered_object="{result}"/>
                     </ReactiveFallback>
                     <Action ID="Speak" say_text="I find a " param="{result}"/>
                 </Sequence>
@@ -54,7 +54,7 @@
             <input_port default="unknown" name="size">size</input_port>
             <input_port default="unknown" name="weight">weight</input_port>
             <input_port default="unknown" name="class">class</input_port>
-            <input_port name="cam_frame"/>
+            <output_port name="objects_count"></output_port>
             <output_port name="filtered_object"></output_port>
         </Action>
     </TreeNodesModel>
