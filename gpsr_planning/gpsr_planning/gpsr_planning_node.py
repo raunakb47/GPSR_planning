@@ -61,6 +61,9 @@ class GpsrPlanningNode(Node):
             action_name = list(action.keys())[1]
             action_args = action[action_name]
 
+            if action_name == "find_person" and "unknown" != action_args["person_name"]:
+                action_name = "find_person_by_name"
+
             action_element = bt_xml.createElement("SubTree")
             action_element.setAttribute(
                 "ID", f"{action_name.replace('_', ' ').title().replace(' ', '')}Tree")

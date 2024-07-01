@@ -69,27 +69,6 @@
         "description": "deliver, offer, or bring an object to a person in a location"
     },
     {
-        "name": "find_person_by_name",
-        "args": {
-            "person_name": {
-                "type": "string",
-                "choices": [
-                    "Adel",
-                    "Angel",
-                    "Axel",
-                    "Charlie",
-                    "Jane",
-                    "Jules",
-                    "Morgan",
-                    "Paris",
-                    "Robin",
-                    "Simone"
-                ]
-            }
-        },
-        "description": "meet or find a person by name in a location"
-    },
-    {
         "name": "find_person",
         "args": {
             "color": {
@@ -124,9 +103,26 @@
                     "lying",
                     "unknown"
                 ]
+            },
+            "person_name": {
+                "type": "string",
+                "choices": [
+                    "Adel",
+                    "Angel",
+                    "Axel",
+                    "Charlie",
+                    "Jane",
+                    "Jules",
+                    "Morgan",
+                    "Paris",
+                    "Robin",
+                    "Simone",
+                    "Irene",
+                    "unknown"
+                ]
             }
         },
-        "description": "identify, look for, search for or find a person in a waypoint using a color or a human sign or pose"
+        "description": "identify, look for, search for or find a person in a waypoint using a color or a human sign or pose or a name."
     },
     {
         "name": "follow_person",
