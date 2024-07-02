@@ -4,6 +4,20 @@
         "args": {
             "object_type": {
                 "type": "string"
+            },
+            "class": {
+                "type": "string",
+                "choices": [
+                    "drink",
+                    "fruit",
+                    "snack",
+                    "food",
+                    "dish",
+                    "toy",
+                    "cleaning_supply",
+                    "unknown"
+                ]
+
             }
         },
         "description": "count the objects of a specific type in a location"

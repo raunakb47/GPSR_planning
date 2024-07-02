@@ -14,11 +14,12 @@
                                                         max_entities="15"
                                                         order="depth"
                                                         best_detection="{best_detection}"/>
-                    <Action ID="ExtractObjectsFromScene" interest_class="{object_type}" detected_objects="{detected_objects}" objects_count="{objects_count}"/>
+                    <Action ID="ExtractObjectsFromScene" interest_class="{object_type}" detected_objects="{detected_objects}" objects_count="{result}"/>
                     <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
+                    <Action ID="FilterObject" frames="{frames}" class="{class}" objects_count="{result}"/>
                 </Sequence>
             </RetryUntilSuccessful>
-            <Action ID="Speak" say_text="I am detecting " param="{objects_count}"/>
+            <Action ID="Speak" say_text="I am detecting " param="{result}"/>
             <Action ID="Speak" say_text="{out_msg}" param=""/>
         </Sequence>
     </BehaviorTree>
@@ -48,6 +49,14 @@
             <input_port name="selected_object"/>
             <input_port name="detected_objects"/>
             <input_port name="output_text"/>
+        </Action>
+        <Action ID="FilterObject">
+            <input_port name ="frames"></input_port>
+            <input_port default="unknown" name="size">size</input_port>
+            <input_port default="unknown" name="weight">weight</input_port>
+            <input_port default="unknown" name="class">class</input_port>
+            <output_port name="objects_count"></output_port>
+            <output_port name="filtered_object"></output_port>
         </Action>
     </TreeNodesModel>
     <!-- ////////// -->
