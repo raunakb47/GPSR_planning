@@ -139,6 +139,20 @@
         "description": "identify, look for, search for or find a person in a waypoint using a color or a human sign or pose or a name."
     },
     {
+        "name": "describe_person",
+        "args": {
+            "interest": {
+                "type": "string",
+                "choices": [
+                    "pose",
+                    "gesture",
+                    "unknown"
+                ]
+            }
+        },
+        "description": "describe the pose that the person is in at a location, or the gesture that the person is making"
+    },
+    {
         "name": "follow_person",
         "args": {},
         "description": "walk behind a person from a location to another location"

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="DescribePersonTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="DescribePersonTree">
+        <Sequence>
+            <RetryUntilSuccessful num_attempts="-1">
+                <Sequence>
+                    <Condition ID="IsDetected" confidence="0.4"
+                                            interest="person"
+                                            max_depth="6"
+                                            max_entities="1"
+                                            order="depth"
+                                            best_detection="{best_detection}"
+                                            cam_frame="base_footprint"/>
+                    <Action ID="ExtractPersonDescription" person_id="{best_detection}" interest="{interest}" description="{result}"/>
+                    <Action ID="Speak" say_text="The person is " param="{result}"/>
+                </Sequence>
+            </RetryUntilSuccessful>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame"/>
+            <input_port name="confidence"/>
+            <input_port name="person_id"/>
+            <input_port name="interest"/>
+            <input_port name="max_depth"/>
+            <input_port name="max_entities"/>
+            <input_port name="order"/>
+            <input_port name="best_detection"/>
+            <input_port name="frames"/>
+        </Condition>
+        <Action ID="Speak">
+            <input_port name="say_text"/>
+            <input_port name="param"/>
+        </Action>
+        <Action ID="ExtractPersonDescription">
+            <input_port default="person" name="person_id"></input_port>
+            <input_port name="interest"></input_port>
+            <output_port name="description"></output_port>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
