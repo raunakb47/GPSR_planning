@@ -28,6 +28,7 @@ from typing import Tuple
 from llama_ros.langchain import LlamaROS
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+import datetime as dt
 
 
 class GpsrPlanner:
@@ -49,12 +50,20 @@ class GpsrPlanner:
             grammar_schema=self.grammar_schema
         )
 
+        time_h = dt.datetime.now().strftime("%H:%M")
+        tomorrow = (dt.datetime.now() + dt.timedelta(days=1)).strftime("%A")
+        day = dt.datetime.now().strftime("%A")
+        
+        print(time_h)
+
         # create a prompt template
         prompt_template = (
-            "You are a robot named Tiago from the Gentlebots team. "
+            "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, made up of the Rey Juan Carlos University of Madrid and the University of León. "
             "You have to generate plans to achive goals. "
             "A plan is a sequence of actions. "
             "Use only the actions listed below and use the less action as you can. "
+            "When the action requires say the day is, remember that today is "+day+" and tomorrow is "+tomorrow+". "
+            "When the action requires say what time is it, you remember that the time now is "+time_h+" h. " 
             "Use the move_to action before each action that requires changing the location.\n\n"
 
             "ACTIONS:\n"

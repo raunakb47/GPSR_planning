@@ -122,6 +122,7 @@
                 "type": "string",
                 "choices": [
                     "Adel",
+                    "Abel",
                     "Angel",
                     "Axel",
                     "Charlie",
@@ -136,7 +137,7 @@
                 ]
             }
         },
-        "description": "identify, look for, search for or find a person in a waypoint using a color or a human sign or pose or a name."
+        "description": "identify, look for, search for or find a person in a waypoint using only one of the following: a color, a human sign, a pose, or a name"
     },
     {
         "name": "describe_person",
@@ -150,7 +151,7 @@
                 ]
             }
         },
-        "description": "describe the pose that the person is in at a location, or the gesture that the person is making"
+        "description": "describe and obtain the pose of the person in a location, or the gesture that the person is making"
     },
     {
         "name": "follow_person",
@@ -211,7 +212,7 @@
     {
         "name": "speak_result",
         "args": {},
-        "description": "speak, or tell the result only after completing tasks like finding or counting people or objects in a different location, after returning to the person’s current location"
+        "description": "speak, or tell the result only after completing tasks like finding or counting people or objects, after returning to the instruction point"
     },
     {
         "name": "move_to",

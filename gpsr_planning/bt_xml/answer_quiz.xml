@@ -6,7 +6,7 @@
             <Action ID="Speak" say_text="I am ready to answer your questions" param=""/>
             <RetryUntilSuccessful num_attempts="-1">
                 <Sequence>
-                    <Action ID="Listen" listen_text="{text_value}"/>
+                    <!-- <Action ID="Listen" listen_text="{text_value}"/> -->
                     <Action ID="Query" text="{text_value}" intention="" intention_value="{answer_value}"/>
                     <Action ID="Speak" say_text="{answer_value}"/>
                 </Sequence>

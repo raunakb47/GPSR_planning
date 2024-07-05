@@ -10,23 +10,28 @@
 
             <!-- Make a Loop -->
             <Fallback>
-                <RetryUntilSuccessful num_attempts="38"> <!-- 43 attempts at 0.15 rad == 1 turn -->
+                <RetryUntilSuccessful num_attempts="6"> <!-- 43 attempts at 0.15 rad == 1 turn -->
                     <Sequence>
-                        <ReactiveFallback>
+                        <Fallback>
                             <ForceFailure>
-                                <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="5" order="color" frames="{new_frames}"/>
+                                <Action ID="Sleep" time="1.0"/>
                             </ForceFailure>
                             <ForceFailure>
-                                <Action ID="FilterPrevDetections" prev_detections="{prev_frames}" new_detections="{new_frames}" margin="0.5" frame_id="map"/>
+                                <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.7" person_id="{person_id}" interest="person" max_depth="2.0" max_entities="5" order="depth" frames="{new_frames}"/>
                             </ForceFailure>
                             <ForceFailure>
-                                <Action ID="Rotate" angle="0.15" speed='0.3'/>
+                                <Action ID="FilterPrevDetections" prev_detections="{prev_frames}" new_detections="{new_frames}" margin="1.0" frame_id="map"/>
                             </ForceFailure>
-                        </ReactiveFallback>
+                            <ForceFailure>
+                                <Action ID="Rotate" angle="1.20" speed='0.3'/>
+                            </ForceFailure>
+                        </Fallback>
                     </Sequence>
                 </RetryUntilSuccessful>
                 <Action ID="AlwaysSuccess"/>
             </Fallback>
+
+            <SetBlackboard value="failure" output_key="success"/>
 
             <!-- For loop. ConsumeQueue will exit if failure, so when the person is found, it will exit. Therefore, the outer inverter is used -->
             <Inverter>
@@ -35,18 +40,23 @@
                         <Sequence>
                             <Action ID="PublishTF" transform="{transform}" frame_id="{frame}"/>
                             <Action ID="FilterEntity" frame="{frame}" lambda="0.1"/>
-                            <Action ID="MoveTo" distance_tolerance="2.0" tf_frame="{frame}" />
+                            <Action ID="MoveTo" distance_tolerance="0.4" tf_frame="{frame}" is_truncated="true" />
                             <Action ID="Speak" say_text="Hello, are you " param="{person_name}" />
                             <Inverter>
-                                <Action ID="DialogConfirmation"/>
+                                <Sequence>
+                                    <Action ID="DialogConfirmation"/>
+                                    <SetBlackboard value="success" output_key="success"/>
+                                </Sequence>
                             </Inverter>
                             <Speak say_text="Oh sorry! You are not the person I am looking for." param="" />
                         </Sequence>
                     </ConsumeQueue>
+
                     <Action ID="Speak" say_text="I couldn't find you, cancelling mission."/>
                 </Sequence>
             </Inverter>
 
+            <BlackboardCheckString value_A="{success}" value_B="success" return_on_mismatch="FAILURE"/>
             <Action ID="Speak" say_text="I found you, " param="{person_name}"/>
         </Sequence>
     </BehaviorTree>
