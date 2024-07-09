@@ -56,8 +56,9 @@
                 </Sequence>
             </Inverter>
 
-            <BlackboardCheckString value_A="{success}" value_B="success" return_on_mismatch="FAILURE"/>
-            <Action ID="Speak" say_text="I found you, " param="{person_name}"/>
+            <BlackboardCheckString value_A="{success}" value_B="success" return_on_mismatch="FAILURE">
+                <Action ID="Speak" say_text="I found you, " param="{person_name}"/>
+            </BlackboardCheckString>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
