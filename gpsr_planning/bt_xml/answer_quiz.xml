@@ -11,7 +11,7 @@
                         <Action ID="Speak" say_text="Did you say " param="{command}"/>
                         <Action ID="DialogConfirmation"/>
                     </RetryUntilSuccessful>
-                    <Action ID="Listen" listen_text="{text_value}"/>
+                    <!-- <Action ID="Listen" listen_text="{text_value}"/> -->
                     <Action ID="Query" text="{text_value}" intention="" intention_value="{answer_value}"/>
                     <Action ID="Speak" say_text="{answer_value}"/>
                 </Sequence>
