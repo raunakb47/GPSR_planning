@@ -3,7 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="DescribePersonTree">
         <Sequence>
-            <RetryUntilSuccessful num_attempts="-1">
+            <RetryUntilSuccessful num_attempts="1000">
                 <Sequence>
                     <Condition ID="IsDetected" confidence="0.4"
                                             interest="person"

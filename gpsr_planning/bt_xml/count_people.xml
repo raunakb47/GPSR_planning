@@ -1,26 +1,18 @@
 <?xml version="1.0"?>
-<root main_tree_to_execute="CountObjectTree">
+<root main_tree_to_execute="CountPeopleTree">
     <!-- ////////// -->
-    <BehaviorTree ID="CountObjectTree">
+    <BehaviorTree ID="CountPeopleTree">
         <Sequence>
-            <Action ID="SetPerceptionModel" model_type="object"/>
-            <RetryUntilSuccessful num_attempts="3000">
+            <Repeat num_cycles="4">
                 <Sequence>
-                    <Condition ID="IsDetected" cam_frame="head_front_camera_link_color_optical_frame"
-                                                        confidence="0.6"
-                                                        frames="{frames}"
-                                                        interest="{object_type}"
-                                                        max_depth="5"
-                                                        max_entities="15"
-                                                        order="depth"
-                                                        best_detection="{best_detection}"/>
-                    <Action ID="ExtractObjectsFromScene" interest_class="{object_type}" detected_objects="{detected_objects}" objects_count="{result}"/>
-                    <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
-                    <Action ID="FilterObject" frames="{frames}" class="{class}" objects_count="{result}"/>
+                    <Action ID="SetPerceptionModel" model_type="object"/>
+                    <Delay delay_msec="1000">
+                        <Action ID="Rotate" angle="1.57" speed='0.3' />
+                    </Delay>
+                    <Condition ID="CountPeople" confidence="0.6" cam_frame="base_link" max_entities="15" gesture="{gesture}" color="{color}" pose="{pose}" input_num_person="{result}" num_person="{result}" />
                 </Sequence>
-            </RetryUntilSuccessful>
-            <Action ID="Speak" say_text="I am detecting " param="{result}"/>
-            <Action ID="Speak" say_text="{out_msg}" param=""/>
+            </Repeat>
+            <Action ID="Speak" say_text="I have detected " />
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->

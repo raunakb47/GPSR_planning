@@ -20,7 +20,46 @@
 
             }
         },
-        "description": "count the objects of a specific type in a location"
+        "description": "count the number of objects or classes of a specific type in a location. After counting, speak the result of the count."
+    },
+    {
+        "name": "count_people",
+        "args": {
+            "gesture": {
+                "type": "string",
+                "choices": [
+                    "waving",
+                    "rising_left",
+                    "rising_right",
+                    "pointing_left",
+                    "pointing_right",
+                    "unknown"
+                ]
+            },
+            "pose": {
+                "type": "string",
+                "choices": [
+                    "sitting",
+                    "standing",
+                    "lying",
+                    "unknown"
+                ]
+            },
+            "color": {
+                "type": "string",
+                "choices": [
+                    "blue",
+                    "yellow",
+                    "black",
+                    "white",
+                    "red",
+                    "orange",
+                    "gray",
+                    "unknown"
+                ]
+            }
+        },
+        "description": "count the number of people in a location using only one of the following: a color, a human sign, or a pose. After counting you must speak the total. "
     },
     {
         "name": "find_object",
@@ -57,7 +96,7 @@
                 ]
             }
         },
-        "description": "identify, look for, search for or find an object in a waypoint using a size, weight or or a class to which the object belongs"
+        "description": "identify, look for, search for or find an object in a waypoint using a size, weight or or a class to which the object belongs. This action is a thinking action, so you will not speak."
     },
     {
         "name": "pick_object",
@@ -66,7 +105,7 @@
                 "type": "string"
             }
         },
-        "description": "get, fetch, grasp, pick, or take an object in a location"
+        "description": "get, fetch, grasp, pick, or take an object in a location. You will need to move after this action."
     },
     {
         "name": "place_object",
@@ -130,6 +169,8 @@
                     "Jules",
                     "Morgan",
                     "Paris",
+                    "Kyle",
+                    "Unique",
                     "Robin",
                     "Simone",
                     "Irene",
@@ -137,7 +178,7 @@
                 ]
             }
         },
-        "description": "identify, look for, search for or find a person in a waypoint using only one of the following: a color, a human sign, a pose, or a name"
+        "description": "identify, meet, look for, search for or find a person in a waypoint using only one of the following: a color, a human sign, a pose, or a name. This action is a thinking action, so you will not speak."
     },
     {
         "name": "describe_person",
@@ -151,7 +192,7 @@
                 ]
             }
         },
-        "description": "describe and obtain the pose of the person in a location, or the gesture that the person is making"
+        "description": "describe and obtain the pose of the person in a location, or the gesture that the person is making. This action is a thinking action, so you will need to speak the result afterwards."
     },
     {
         "name": "follow_person",
@@ -207,17 +248,20 @@
                 "type": "string"
             }
         },
-        "description": "speak, or tell something to a person in a location"
+        "description": "speak, or tell something to a person in a location. this action is not used for asking. Remember you know data like datetime, team affiliation, nationality and your name."
     },
     {
         "name": "speak_result",
         "args": {},
-        "description": "speak, or tell the result only after completing tasks like finding or counting people or objects, after returning to the instruction point"
+        "description": "speak, or tell the result after completing tasks like finding, describing or counting the number of people or the number of items/objects. "
     },
     {
         "name": "move_to",
         "args": {
-            "location": {
+            "origin": {
+                "type": "string"
+            },
+            "destination": {
                 "type": "string",
                 "choices": [
                     "bedroom",
@@ -250,6 +294,6 @@
                 ]
             }
         },
-        "description": "move from a location to another location"
+        "description": "move from a location to another location. Don't use it if you are already in the location."
     }
 ]

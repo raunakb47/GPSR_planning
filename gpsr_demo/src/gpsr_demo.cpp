@@ -29,11 +29,11 @@ int main(int argc, char *argv[]) {
       node->create_client<gpsr_msgs::srv::GeneratePlan>("gpsr_planning");
 
   std::list<std::string> commands = {
+      "Tell me how many people in the livingroom are wearing orange shirts.",
+      "Tell me how many snacks there are in the coffee table",
       "Say the day of the week to the person pointing to the left in the bedroom",
       "Say what day is tomorrow to the waving person in the kitchen",
             "Tell me the gesture of the person in the livingroom",
-      "Tell me how many snacks there are in the coffee table",
-      "Tell me how many people in the livingroom are wearing orange shirts.",
       "Say your teams name to the person raising their right arm in the bedroom",
       "Say your teams country to the person raising their left arm in the living room",
       "Say what day is today to the waving person in the bedroom",

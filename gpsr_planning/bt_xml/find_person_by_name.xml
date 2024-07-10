@@ -10,7 +10,7 @@
 
             <!-- Make a Loop -->
             <Fallback>
-                <RetryUntilSuccessful num_attempts="6"> <!-- 43 attempts at 0.15 rad == 1 turn -->
+                <RetryUntilSuccessful num_attempts="6"> <!-- 6 attempts at 1.047 rad == 1 turn -->
                     <Sequence>
                         <Fallback>
                             <ForceFailure>
@@ -23,7 +23,7 @@
                                 <Action ID="FilterPrevDetections" prev_detections="{prev_frames}" new_detections="{new_frames}" margin="1.0" frame_id="map"/>
                             </ForceFailure>
                             <ForceFailure>
-                                <Action ID="Rotate" angle="1.20" speed='0.3'/>
+                                <Action ID="Rotate" angle="1.047" speed='0.3'/>
                             </ForceFailure>
                         </Fallback>
                     </Sequence>
@@ -56,8 +56,9 @@
                 </Sequence>
             </Inverter>
 
-            <BlackboardCheckString value_A="{success}" value_B="success" return_on_mismatch="FAILURE"/>
-            <Action ID="Speak" say_text="I found you, " param="{person_name}"/>
+            <BlackboardCheckString value_A="{success}" value_B="success" return_on_mismatch="FAILURE">
+                <Action ID="Speak" say_text="I found you, " param="{person_name}"/>
+            </BlackboardCheckString>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
