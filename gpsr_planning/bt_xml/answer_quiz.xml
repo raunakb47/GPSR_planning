@@ -4,9 +4,9 @@
     <BehaviorTree ID="AnswerQuizTree">
         <Sequence>
             <Action ID="Speak" say_text="I am ready to answer your questions" param=""/>
-            <RetryUntilSuccessful num_attempts="-1">
+            <RetryUntilSuccessful num_attempts="2">
                 <Sequence>
-                    <RetryUntilSuccessful num_attempts="-1">
+                    <RetryUntilSuccessful num_attempts="3">
                         <Action ID="Listen" listen_text="{command}"/>
                         <Action ID="Speak" say_text="Did you say " param="{command}"/>
                         <Action ID="DialogConfirmation"/>

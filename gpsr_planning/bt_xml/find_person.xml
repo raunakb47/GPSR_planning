@@ -4,7 +4,7 @@
     <BehaviorTree ID="FindPersonTree">
         <Sequence>
             <Action ID="SetPerceptionModel" model_type="keypoint"/>
-            <Action ID="SetHeadJointPosition" vertical="-0.25"/>
+            <Action ID="SetHeadJointPosition" vertical="-0.15"/>
             <Action ID="SetTorsoHeight" height="0.1"/>
 
             <RetryUntilSuccessful num_attempts="86"> <!-- 43 attempts at 0.15 rad == 1 turn -->
@@ -18,6 +18,8 @@
                 <Action ID="Speak" say_text="I found you." param=""/>
                 </Sequence>
             </RetryUntilSuccessful>
+            <Action ID="SetHeadJointPosition" vertical="0.0"/>
+            <Action ID="SetTorsoHeight" height="0.15"/>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->

@@ -3,7 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="SpeakResultTree">
         <Sequence>
-            <Action ID="Speak" say_text="I find " param="{result}"/>
+            <Action ID="Speak" say_text="The result is " param="{result}"/>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
