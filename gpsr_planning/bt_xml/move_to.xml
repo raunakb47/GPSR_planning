@@ -3,8 +3,8 @@
     <!-- ////////// -->
     <BehaviorTree ID="MoveToTree">
         <Sequence>
-            <Action ID="MoveTo" distance_tolerance="0" tf_frame="{location}"/>
-            <Action ID="Speak" say_text="I have reached " param="{location}"/>
+            <Action ID="MoveTo" distance_tolerance="0" tf_frame="{destination_waypoint}"/>
+            <Action ID="Speak" say_text="I have reached " param="{destination_waypoint}"/>
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->

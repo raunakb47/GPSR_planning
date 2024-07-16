@@ -46,7 +46,7 @@ class GpsrPlanner:
         self.load_waypoints()
 
         self.llm = LlamaROS(
-            temp=0.60,
+            temp=0.40,
             grammar_schema=self.grammar_schema
         )
 

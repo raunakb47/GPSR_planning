@@ -64,6 +64,9 @@ class GpsrPlanningNode(Node):
             if action_name == "find_person" and "unknown" != action_args["person_name"]:
                 action_name = "find_person_by_name"
                         
+            if (action_name == "find_object" or action_name == "count_object") and "none" == action_args["object_type"]:
+                action_args["object_type"] = ""
+                        
             if 'search_by' in action_args.keys() and action_args['search_by'] != 'none':
                 filter = action_args['search_by']
                 action_args.pop('search_by')
