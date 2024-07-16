@@ -86,6 +86,7 @@
                     "dish",
                     "toy",
                     "cleaning_supply",
+                    "decoration",
                     "unknown"
                 ]
 
@@ -182,6 +183,7 @@
                     "dish",
                     "toy",
                     "cleaning_supply",
+                    "decoration",
                     "unknown"
                 ]
             },
