@@ -46,7 +46,7 @@ class GpsrPlanner:
         self.load_waypoints()
 
         self.llm = LlamaROS(
-            temp=0.0,
+            temp=0.40,
             grammar_schema=self.grammar_schema
         )
 
@@ -59,15 +59,19 @@ class GpsrPlanner:
         # create a prompt template
         prompt_template = (
             "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, made up of the Rey Juan Carlos University of Madrid and the University of León. "
-            "You have to generate plans to achive goals. "
-            "A plan is a sequence of actions. "
-            "Only use one action at a time. "
+            "You have to generate plans, sequence of actions, to achive goals. "
+            # "A plan is a sequence of actions. "
+            # "Only use one action at a time. "
+            "Use the least number of actions as possible. "
             "Use only the actions listed below and try to speak as much as you can. "
-            "Don't move to get to a person. "
-            "Speak the result of some actions, like counting. "
+            # "Some actions require arguments. If they are empty, unknown or they are not explicit defined, answer unknown. "
+            "Some action arguments may be unknown, if so, answer unknown. "
             "Today is " + day +", tomorrow is " + tomorrow + " and the time is " + time_h + ". "
-            "Use the move_to action before each action that requires changing the location. "
-            "Remember you can answer questions with the action answer_quiz.\n\n"
+            "You start at the instruction point. "
+            "Use the move_to action before each action that requires changing the waypoint. "
+            # "You know the waypoint of all rooms, furniture, tables and in the house. Do not need to find these waypoint. "
+            # "Remember you can answer questions with the action answer_quiz."
+            "\n\n"
 
             "ACTIONS:\n"
             "{actions_descriptions}\n\n"

@@ -2,8 +2,79 @@
     {
         "name": "count_object",
         "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "object_type",
+                    "class"
+                ]
+            },
             "object_type": {
-                "type": "string"
+                "type": "string",
+                "choices": [
+                    "7up",
+                    "apple",
+                    "bag",
+                    "ball",
+                    "banana",
+                    "baseball",
+                    "big_coke",
+                    "bowl",
+                    "candle",
+                    "candy",
+                    "cheezit",
+                    "chocolate_jello",
+                    "cleanser",
+                    "crisps",
+                    "coffe_grounds",
+                    "cola",
+                    "cornflakes",
+                    "curry",
+                    "cup",
+                    "dice",
+                    "dishwasher_tab",
+                    "dubbelfris",
+                    "fanta",
+                    "fork",
+                    "hagelslag",
+                    "iced_tea",
+                    "juice_pack",
+                    "knife",
+                    "lemon",
+                    "liquorice",
+                    "mayonaise",
+                    "milk",
+                    "mustard",
+                    "orange",
+                    "orange_juice",
+                    "pancake_mix",
+                    "peach",
+                    "pear",
+                    "pea_soup",
+                    "plate",
+                    "plum",
+                    "pringles",
+                    "red_wine",
+                    "rubiks_cube",
+                    "sausages",
+                    "soap",
+                    "soccer_ball",
+                    "spam",
+                    "sponge",
+                    "spoon",
+                    "strawberry",
+                    "strawberry_jello",
+                    "stroopwafel",
+                    "sugar",
+                    "tennis_ball",
+                    "tictac",
+                    "tomato_soup",
+                    "tropical_juice",
+                    "tuna",
+                    "washcloth",
+                    "water",
+                    "unknown"
+                ]
             },
             "class": {
                 "type": "string",
@@ -15,16 +86,26 @@
                     "dish",
                     "toy",
                     "cleaning_supply",
+                    "decoration",
                     "unknown"
                 ]
 
             }
         },
-        "description": "count the number of objects or classes of a specific type in a location. After counting, speak the result of the count."
+        "description": "count the number of objects or classes of a specific type in a waypoint. This action has a result to tell."
     },
     {
         "name": "count_people",
         "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "color",
+                    "gesture",
+                    "pose",
+                    "none"
+                ]
+            },
             "gesture": {
                 "type": "string",
                 "choices": [
@@ -59,11 +140,21 @@
                 ]
             }
         },
-        "description": "count the number of people in a location using only one of the following: a color, a human sign, or a pose. After counting you must speak the total. "
+        "description": "find and count the number of people in a waypoint using color or gesture or pose. This action has a result to tell."
     },
     {
         "name": "find_object",
         "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "size",
+                    "weight",
+                    "class",
+                    "object_type",
+                    "none"
+                ]
+            },
             "size": {
                 "type": "string",
                 "choices": [
@@ -92,38 +183,180 @@
                     "dish",
                     "toy",
                     "cleaning_supply",
+                    "decoration",
+                    "unknown"
+                ]
+            },
+            "object_type": {
+                "type": "string",
+                "choices": [
+                    "7up",
+                    "apple",
+                    "bag",
+                    "ball",
+                    "banana",
+                    "baseball",
+                    "big_coke",
+                    "bowl",
+                    "candle",
+                    "candy",
+                    "cheezit",
+                    "chocolate_jello",
+                    "cleanser",
+                    "crisps",
+                    "coffe_grounds",
+                    "cola",
+                    "cornflakes",
+                    "curry",
+                    "cup",
+                    "dice",
+                    "dishwasher_tab",
+                    "dubbelfris",
+                    "fanta",
+                    "fork",
+                    "hagelslag",
+                    "iced_tea",
+                    "juice_pack",
+                    "knife",
+                    "lemon",
+                    "liquorice",
+                    "mayonaise",
+                    "milk",
+                    "mustard",
+                    "orange",
+                    "orange_juice",
+                    "pancake_mix",
+                    "peach",
+                    "pear",
+                    "pea_soup",
+                    "plate",
+                    "plum",
+                    "pringles",
+                    "red_wine",
+                    "rubiks_cube",
+                    "sausages",
+                    "soap",
+                    "soccer_ball",
+                    "spam",
+                    "sponge",
+                    "spoon",
+                    "strawberry",
+                    "strawberry_jello",
+                    "stroopwafel",
+                    "sugar",
+                    "tennis_ball",
+                    "tictac",
+                    "tomato_soup",
+                    "tropical_juice",
+                    "tuna",
+                    "washcloth",
+                    "water",
                     "unknown"
                 ]
             }
         },
-        "description": "identify, look for, search for or find an object in a waypoint using a size, weight or or a class to which the object belongs. This action is a thinking action, so you will not speak."
+        "description": "identify, look for, search for or find one object in a waypoint using a size or weight or class to which the object belongs."
     },
     {
         "name": "pick_object",
         "args": {
             "object_to_pick": {
-                "type": "string"
+                "type": "string",
+                "choices": [
+                    "7up",
+                    "apple",
+                    "bag",
+                    "ball",
+                    "banana",
+                    "baseball",
+                    "big_coke",
+                    "bowl",
+                    "candle",
+                    "candy",
+                    "cheezit",
+                    "chocolate_jello",
+                    "cleanser",
+                    "crisps",
+                    "coffe_grounds",
+                    "cola",
+                    "cornflakes",
+                    "curry",
+                    "cup",
+                    "dice",
+                    "dishwasher_tab",
+                    "dubbelfris",
+                    "fanta",
+                    "fork",
+                    "hagelslag",
+                    "iced_tea",
+                    "juice_pack",
+                    "knife",
+                    "lemon",
+                    "liquorice",
+                    "mayonaise",
+                    "milk",
+                    "mustard",
+                    "orange",
+                    "orange_juice",
+                    "pancake_mix",
+                    "peach",
+                    "pear",
+                    "pea_soup",
+                    "plate",
+                    "plum",
+                    "pringles",
+                    "red_wine",
+                    "rubiks_cube",
+                    "sausages",
+                    "soap",
+                    "soccer_ball",
+                    "spam",
+                    "sponge",
+                    "spoon",
+                    "strawberry",
+                    "strawberry_jello",
+                    "stroopwafel",
+                    "sugar",
+                    "tennis_ball",
+                    "tictac",
+                    "tomato_soup",
+                    "tropical_juice",
+                    "tuna",
+                    "washcloth",
+                    "water",
+                    "unknown"
+                ]
             }
         },
-        "description": "get, fetch, grasp, pick, or take an object in a location. You will need to move after this action."
+        "description": "get, fetch, grasp, pick, or take an object in a waypoint. You will need to move after this action."
     },
     {
         "name": "place_object",
         "args": {
-            "place_pose": {
+            "place_location": {
                 "type": "string"
             }
         },
-        "description": "place, or put an object in a location"
+        "description": "place, or put an object in a waypoint."
     },
     {
         "name": "offer_object",
         "args": {},
-        "description": "deliver, offer, or bring an object to a person in a location"
+        "description": "deliver, offer, or bring an object to a person in a waypoint"
     },
     {
         "name": "find_person",
         "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "color",
+                    "gesture",
+                    "pose",
+                    "person_name",
+                    "none"
+                ]
+            },
             "color": {
                 "type": "string",
                 "choices": [
@@ -160,25 +393,31 @@
             "person_name": {
                 "type": "string",
                 "choices": [
-                    "Adel",
-                    "Abel",
-                    "Angel",
-                    "Axel",
-                    "Charlie",
-                    "Jane",
-                    "Jules",
-                    "Morgan",
-                    "Paris",
-                    "Kyle",
-                    "Unique",
+                    "Sophie",
+                    "Julia",
+                    "Emma",
+                    "Sara",
+                    "Laura",
+                    "Hayley",
+                    "Susan",
+                    "Fleur",
+                    "Gabriëlle",
                     "Robin",
-                    "Simone",
-                    "Irene",
+                    "John",
+                    "Liam",
+                    "Lucas",
+                    "William",
+                    "Kevin",
+                    "Jesse",
+                    "Noah",
+                    "Harrie",
+                    "Peter",
+                    "Robin",
                     "unknown"
                 ]
             }
         },
-        "description": "identify, meet, look for, search for or find a person in a waypoint using only one of the following: a color, a human sign, a pose, or a name. This action is a thinking action, so you will not speak."
+        "description": "identify, meet, look for, search for or find one person in a waypoint using color or human sign or pose or name."
     },
     {
         "name": "describe_person",
@@ -192,54 +431,52 @@
                 ]
             }
         },
-        "description": "describe and obtain the pose of the person in a location, or the gesture that the person is making. This action is a thinking action, so you will need to speak the result afterwards."
+        "description": "describe and obtain the pose or the gesture of a person in a waypoint. This action has a result to tell."
     },
     {
         "name": "follow_person",
         "args": {},
-        "description": "walk behind a person from a location to another location"
+        "description": "walk behind a person from a waypoint to another waypoint"
     },
     {
         "name": "guide_person",
         "args": {
-            "location": {
+            "initial_waypoint": {
+                "type": "string"
+            },
+            "destination_waypoint": {
                 "type": "string",
                 "choices": [
-                    "bedroom",
-                    "bed",
-                    "bedside_table",
-                    "dresser",
-                    "kitchen",
-                    "sink",
-                    "fridge",
-                    "dishwasher",
-                    "kitchen_table",
-                    "trash_bin",
-                    "office",
-                    "armchair",
-                    "cabinet",
-                    "desk",
-                    "desk_chair",
-                    "living_room",
-                    "entrance",
-                    "wardrobe",
-                    "sofa",
-                    "tv_sideboard",
-                    "coffee_table",
-                    "bar",
-                    "bookshelf",
                     "instruction_point",
-                    "corridor",
-                    "exit"
+                    "hallway",
+                    "office",
+                    "kitchen",
+                    "living_room",
+                    "hallway_cabinet",
+                    "entrance",
+                    "desk",
+                    "shelf",
+                    "coathanger",
+                    "exit",
+                    "tv_table",
+                    "lounge_chair",
+                    "lamp",
+                    "couch",
+                    "coffe_table",
+                    "trashcan",
+                    "kitchen_cabinet",
+                    "dinner_table",
+                    "dishwasher",
+                    "kitchen_counter"
                 ]
             }
         },
-        "description": "take, escort, lead, or guide a person from a location to another location"
+        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. waypoints can be forniture or rooms."
     },
     {
         "name": "answer_quiz",
         "args": {},
-        "description": "answer a quiz to a person in a location"
+        "description": "answer a quiz to a person in a waypoint"
     },
     {
         "name": "speak",
@@ -248,52 +485,46 @@
                 "type": "string"
             }
         },
-        "description": "speak, or tell something to a person in a location. this action is not used for asking. Remember you know data like datetime, team affiliation, nationality and your name."
+        "description": "speak, or tell something to a person in a waypoint. This action is not used for asking. Use it for datetime, day of the week, team affiliation, nationality and your name."
     },
     {
         "name": "speak_result",
         "args": {},
-        "description": "speak, or tell the result after completing tasks like finding, describing or counting the number of people or the number of items/objects. "
+        "description": "speak, or tell the result of an action to a person in a waypoint. Use it when you have a result to tell. "
     },
     {
         "name": "move_to",
         "args": {
-            "origin": {
+            "origin_waypoint": {
                 "type": "string"
             },
-            "destination": {
+            "destination_waypoint": {
                 "type": "string",
                 "choices": [
-                    "bedroom",
-                    "bed",
-                    "bedside_table",
-                    "dresser",
-                    "cabinet",
-                    "kitchen",
-                    "sink",
-                    "fridge",
-                    "dishwasher",
-                    "kitchen_table",
-                    "trash_bin",
-                    "office",
-                    "armchair",
-                    "cabinet",
-                    "desk",
-                    "desk_chair",
-                    "living_room",
-                    "entrance",
-                    "wardrobe",
-                    "sofa",
-                    "tv_sideboard",
-                    "coffee_table",
-                    "bar",
-                    "bookshelf",
                     "instruction_point",
-                    "corridor",
-                    "exit"
+                    "hallway",
+                    "office",
+                    "kitchen",
+                    "living_room",
+                    "hallway_cabinet",
+                    "entrance",
+                    "desk",
+                    "shelf",
+                    "coathanger",
+                    "exit",
+                    "tv_table",
+                    "lounge_chair",
+                    "lamp",
+                    "couch",
+                    "coffe_table",
+                    "trashcan",
+                    "kitchen_cabinet",
+                    "dinner_table",
+                    "dishwasher",
+                    "kitchen_counter"
                 ]
             }
         },
-        "description": "move from a location to another location. Don't use it if you are already in the location."
+        "description": "move from a waypoint to another waypoint. Don't use it if you are already in the waypoint."
     }
 ]

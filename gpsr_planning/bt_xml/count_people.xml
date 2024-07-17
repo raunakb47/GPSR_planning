@@ -10,7 +10,7 @@
                     <Delay delay_msec="1000">
                         <Action ID="Rotate" angle="1.57" speed='0.3' />
                     </Delay>
-                    <Condition ID="CountPeople" confidence="0.6" cam_frame="head_front_camera_color_optical_frame" max_entities="15" gesture="{gesture}" color="{color}" pose="{pose}" input_num_person="{result_int}" num_person="{result_int}" />
+                    <Condition ID="CountPeople" confidence="0.6" cam_frame="base_footprint" max_entities="15" gesture="{gesture}" color="{color}" pose="{pose}" input_num_person="{result}" num_person="{result}" />
                 </Sequence>
             </Repeat>
             <SetBlackboard output_key="result" value="{result_int}"/>
