@@ -11,7 +11,7 @@
                                             max_entities="1"
                                             order="depth"
                                             best_detection="{best_detection}"
-                                            cam_frame="base_footprint"/>
+                                            cam_frame="head_front_camera_color_optical_frame"/>
                     <Action ID="ExtractPersonDescription" person_id="{best_detection}" interest="{interest}" description="{result}"/>
                     <Action ID="Speak" say_text="The person is " param="{result}"/>
                 </Sequence>
