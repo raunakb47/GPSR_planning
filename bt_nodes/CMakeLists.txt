@@ -9,11 +9,13 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_cascade_lifecycle REQUIRED)
 
 
 set(dependencies
 rclcpp
-behaviortree_cpp_v3)
+behaviortree_cpp_v3
+rclcpp_cascade_lifecycle)
 
 include_directories(include)
 

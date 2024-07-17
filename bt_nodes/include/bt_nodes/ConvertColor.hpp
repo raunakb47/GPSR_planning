@@ -20,8 +20,7 @@
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
-
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
 
 namespace bt_nodes {
 
@@ -36,7 +35,8 @@ public:
   static BT::PortsList providedPorts() { return BT::PortsList({}); }
 
 private:
-  rclcpp::Node::SharedPtr node_;
+  rclcpp_cascade_lifecycle::CascadeLifecycleNode::SharedPtr node_;
+
 };
 
 } // namespace bt_nodes
