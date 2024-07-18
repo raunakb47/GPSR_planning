@@ -6,7 +6,7 @@
             <Action ID="SetPerceptionModel" model_type="object"/>
             <RetryUntilSuccessful num_attempts="-1">
                 <Sequence>
-                    <Condition ID="IsDetected" cam_frame="base_footprint"
+                    <Condition ID="IsDetected" cam_frame="head_front_camera_rgb_optical_frame"
                                                         confidence="0.6"
                                                         frames="{frames}"
                                                         interest="{object_to_pick}"

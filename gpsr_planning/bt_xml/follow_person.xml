@@ -13,7 +13,7 @@
                     <Fallback>
                         <ReactiveSequence>
                             <RetryUntilSuccessful num_attempts="-1">
-                                <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.3" person_id="{person_id}" interest="person" max_depth="6.7" max_entities="1" order="color"/>
+                                <Condition ID="IsDetected" cam_frame="head_front_camera_rgb_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="6.7" max_entities="1" order="color"/>
                             </RetryUntilSuccessful>
                             <Action ID="FilterEntity" frame="person_0" lambda="0.1"/>
                             <Action ID="LookAt" tf_frame="person_0_filtered"/>
@@ -32,7 +32,7 @@
                     </Fallback>
                     <ReactiveSequence>
                         <RetryUntilSuccessful num_attempts="-1">
-                            <Condition ID="IsDetected" cam_frame="base_footprint" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
+                            <Condition ID="IsDetected" cam_frame="head_front_camera_rgb_optical_frame" confidence="0.3" person_id="{person_id}" interest="person" max_depth="2.5" max_entities="1" order="color"/>
                         </RetryUntilSuccessful>
                         <Action ID="FilterEntity" frame="person_0" lambda="0.1"/>
                         <Action ID="LookAt" tf_frame="person_0_filtered"/>

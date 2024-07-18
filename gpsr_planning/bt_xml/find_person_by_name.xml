@@ -17,7 +17,7 @@
                                 <Action ID="Sleep" time="1.0"/>
                             </ForceFailure>
                             <ForceFailure>
-                                <Condition ID="IsDetected" cam_frame="head_front_camera_color_optical_frame" confidence="0.7" person_id="{person_id}" interest="person" max_depth="2.0" max_entities="5" order="depth" frames="{new_frames}"/>
+                                <Condition ID="IsDetected" cam_frame="head_front_camera_rgb_optical_frame" confidence="0.7" person_id="{person_id}" interest="person" max_depth="2.0" max_entities="5" order="depth" frames="{new_frames}"/>
                             </ForceFailure>
                             <ForceFailure>
                                 <Action ID="FilterPrevDetections" prev_detections="{prev_frames}" new_detections="{new_frames}" margin="1.0" frame_id="map"/>
