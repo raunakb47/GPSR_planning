@@ -1,0 +1,368 @@
+{
+    "actions": [
+        {
+            "command": "Tell me what is the thinnest object on the dinner table",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point dinner_table",
+                    "FindObjectTree small unknown unknown unknown",
+                    "MoveToTree dinner_table instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Locate a fruit in the kitchen then take it and give it to me",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point kitchen",
+                    "FindObjectTree unknown unknown fruit unknown",
+                    "PickObjectTree result_tf",
+                    "MoveToTree kitchen instruction_point",
+                    "OfferObjectTree"
+                ]
+            }
+        },
+        {
+            "command": "Locate a chocolate jello in the kitchen then grasp it and place it on the TV table",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point kitchen",
+                    "FindObjectTree unknown unknown unknown chocolate_jello",
+                    "PickObjectTree chocolate_jello",
+                    "MoveToTree kitchen tv_table",
+                    "PlaceObjectTree tv_table"
+                ]
+            }
+        },
+        {
+            "command": "Fetch a spam from the shelf and deliver it to me",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point shelf",
+                    "FindObjectTree unknown unknown unknown spam",
+                    "PickObjectTree spam",
+                    "MoveToTree shelf instruction_point",
+                    "OfferObjectTree"
+                ]
+            }
+        },
+        {
+            "command": "Say hello to the person wearing a black shirt in the office and lead them to the living room",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point office",
+                    "FindPersonTree black unknown unknown unknown",
+                    "SpeakTree Hello!",
+                    "GuidePersonTree office living_room"
+                ]
+            }
+        },
+        {
+            "command": "Tell the name of the person at the coffee table to the person at the trashcan",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point coffee_table",
+                    "FindPersonTree unknown unknown unknown unknown",
+                    "DescribePersonTree",
+                    "MoveToTree coffee_table trashcan",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me what is the lightest snack on the hallway cabinet",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway_cabinet",
+                    "FindObjectTree unknown light snack unknown",
+                    "MoveToTree hallway_cabinet instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Take the lying person from the kitchen counter to the kitchen",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point kitchen_counter",
+                    "FindPersonTree unknown unknown lying unknown",
+                    "GuidePersonTree kitchen_counter kitchen"
+                ]
+            }
+        },
+        {
+            "command": "Escort the person wearing a gray shirt from the lamp to the office",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point lamp",
+                    "FindPersonTree gray unknown unknown unknown",
+                    "GuidePersonTree lamp office"
+                ]
+            }
+        },
+        {
+            "command": "Tell me how many cleaning supplies there are on the hallway cabinet",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway_cabinet",
+                    "CountObjectTree unknown cleaning_supply",
+                    "MoveToTree hallway_cabinet instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me how many foods there are on the hallway cabinet",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway_cabinet",
+                    "FindObjectTree unknown unknown food unknown",
+                    "MoveToTree hallway_cabinet instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Answer the question of the person raising their right arm in the hallway",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway",
+                    "FindPersonTree unknown rising_right unknown unknown",
+                    "AnswerQuizTree"
+                ]
+            }
+        },
+        {
+            "command": "Locate a fruit in the hallway then grasp it and give it to Emma in the hallway",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway",
+                    "FindObjectTree unknown unknown fruit unknown",
+                    "PickObjectTree result_tf",
+                    "MoveToTree hallway hallway",
+                    "OfferObjectTree"
+                ]
+            }
+        },
+        {
+            "command": "Escort the person wearing a red shirt from the desk to the office",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point desk",
+                    "FindPersonTree red unknown unknown unknown",
+                    "GuidePersonTree desk office"
+                ]
+            }
+        },
+        {
+            "command": "Tell me how many people in the office are wearing blue t shirts",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point office",
+                    "CountPeopleTree unknown unknown blue",
+                    "MoveToTree office instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me how many cleaning supplies there are on the dishwasher",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point dishwasher",
+                    "CountObjectTree unknown cleaning_supply",
+                    "MoveToTree dishwasher instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Go to the kitchen counter then locate a sugar and grasp it and give it to the standing person in the hallway",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point kitchen_counter",
+                    "FindObjectTree unknown unknown unknown sugar",
+                    "PickObjectTree sugar",
+                    "MoveToTree kitchen_counter hallway",
+                    "FindPersonTree unknown unknown standing unknown",
+                    "OfferObjectTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me what is the lightest object on the coffee table",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point coffe_table",
+                    "FindObjectTree unknown light unknown unknown",
+                    "MoveToTree coffe_table instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me what is the lightest cleaning supply on the dishwasher",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point dishwasher",
+                    "FindObjectTree light unknown cleaning_supply unknown",
+                    "PickObjectTree result_tf",
+                    "MoveToTree dishwasher instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Guide the person raising their right arm from the couch to the coffee table",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point couch",
+                    "FindPersonTree unknown rising_right unknown unknown",
+                    "GuidePersonTree couch coffe_table"
+                ]
+            }
+        },
+        {
+            "command": "Tell me what is the biggest object on the dishwasher",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point dishwasher",
+                    "FindObjectTree big unknown dish unknown",
+                    "MoveToTree dishwasher instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Give me a mustard from the hallway cabinet",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway",
+                    "FindObjectTree unknown unknown unknown mustard",
+                    "PickObjectTree mustard",
+                    "MoveToTree hallway instruction_point",
+                    "OfferObjectTree"
+                ]
+            }
+        },
+        {
+            "command": "Say hello to the person wearing a black blouse in the hallway and answer a quiz",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway",
+                    "FindPersonTree black unknown unknown unknown",
+                    "SpeakTree Hello!",
+                    "AnswerQuizTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me how many people in the hallway are wearing black shirts",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway",
+                    "CountPeopleTree unknown unknown black",
+                    "MoveToTree hallway instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Look for a chocolate jello in the hallway then get it and give it to me",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point hallway",
+                    "FindObjectTree unknown unknown unknown chocolate_jello",
+                    "PickObjectTree chocolate_jello",
+                    "MoveToTree hallway instruction_point",
+                    "OfferObjectTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me what is the heaviest object on the TV table",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point tv_table",
+                    "FindObjectTree unknown heavy unknown unknown",
+                    "MoveToTree tv_table instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Escort the lying person from the dinner table to the kitchen",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point dinner_table",
+                    "FindPersonTree unknown unknown lying unknown",
+                    "GuidePersonTree dinner_table kitchen"
+                ]
+            }
+        },
+        {
+            "command": "Tell me how many toys there are on the shelf",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point shelf",
+                    "CountObjectTree unknown toys",
+                    "MoveToTree shelf instruction_point",
+                    "SpeakResultTree"
+                ]
+            }
+        },
+        {
+            "command": "Tell me what is the thinnest food on the TV table",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point tv_table",
+                    "FindObjectTree unknown unknown food unknown",
+                    "CountObjectTree unknown food",
+                    "MoveToTree tv_table instruction_point",
+                    "SpeakTree The_thinnest_food_on_the_TV_table_is_unknown."
+                ]
+            }
+        },
+        {
+            "command": "Navigate to the TV table then meet Noah and take them to the desk",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point tv_table",
+                    "FindPersonByNameTree unknown unknown unknown Noah",
+                    "GuidePersonTree tv_table desk"
+                ]
+            }
+        },
+        {
+            "command": "Say the day of the week to the person pointing to the left in the bedroom",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point bedroom",
+                    "FindPersonTree unknown pointing_left unknown unknown",
+                    "SpeakTree Day."
+                ]
+            }
+        },
+        {
+            "command": "Meet Unique in the office and tell your teams affiliation",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point office",
+                    "FindPersonByNameTree unknown unknown unknown Unique",
+                    "SpeakTree Gentlebots."
+                ]
+            }
+        },
+        {
+            "command": "Follow Ana from the kitchen to the bedroom",
+            "result": {
+                "actions": [
+                    "MoveToTree instruction_point kitchen",
+                    "FindPersonTree unknown unknown unknown Ana",
+                    "FollowPersonTree"
+                ]
+            }
+        }
+    ]
+}

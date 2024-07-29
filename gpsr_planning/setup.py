@@ -14,6 +14,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join("share", package_name, "params"), glob("params/*.json")),
         (os.path.join("share", package_name, "bt_xml"), glob("bt_xml/*.xml")),
+        (os.path.join("share", package_name, "test"), glob("test/*.txt")),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,7 +25,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "planning_node = gpsr_planning.gpsr_planning_node:main"
+            "planning_node = gpsr_planning.gpsr_planning_node:main",
+            "generate_json_node = gpsr_planning.generate_json:main"
         ],
     },
 )
