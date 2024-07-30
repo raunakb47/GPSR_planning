@@ -5,6 +5,7 @@
         <Sequence>
             <Action ID="MoveTo" distance_tolerance="0" tf_frame="{destination_waypoint}"/>
             <Action ID="Speak" say_text="I have reached " param="{destination_waypoint}"/>
+            <SetBlackboard output_key="current_position" value="{destination_waypoint}" />
         </Sequence>
     </BehaviorTree>
     <!-- ////////// -->

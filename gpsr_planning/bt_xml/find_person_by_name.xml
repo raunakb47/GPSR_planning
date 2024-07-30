@@ -101,6 +101,44 @@
             <input_port name="say_text"/>
             <input_port name="param"/>
         </Action>
+        <Action ID="FilterEntity">
+            <input_port name="frame"/>
+            <input_port name="lambda"/>
+        </Action>
+        <Action ID="FilterPrevDetections">
+            <input_port name="prev_detections"/>
+            <input_port name="new_detections"/>
+            <input_port name="margin"/>
+            <input_port name="frame_id"/>
+        </Action>
+        <Action ID="Rotate">
+            <input_port name="angle"/>
+            <input_port name="speed"/>
+        </Action>
+        <Action ID="DialogConfirmation">
+            <input_port name="question"/>
+            <input_port name="answer"/>
+        </Action>
+        <Action ID="PublishTF">
+            <input_port name="transform"/>
+            <input_port name="frame_id"/>
+        </Action>
+        <Action ID="SetHeadJointPosition">
+            <input_port name="vertical"/>
+        </Action>
+        <Action ID="SetTorsoHeight">
+            <input_port name="height"/>
+        </Action>
+        <Action ID="InitProtectedQueue">
+            <input_port name="port"/>
+        </Action>
+        <Action ID="Sleep">
+            <input_port name="time"/>
+        </Action>
+        <Decorator ID="ConsumeQueue">
+            <input_port name="queue"/>
+            <output_port name="popped_item"/>
+        </Decorator>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

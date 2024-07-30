@@ -28,3 +28,6 @@ Escort the lying person from the dinner table to the kitchen
 Tell me how many toys there are on the shelf
 Tell me what is the thinnest food on the TV table
 Navigate to the TV table then meet Noah and take them to the desk
+Say the day of the week to the person pointing to the left in the bedroom
+Meet Peter in the office and tell your teams affiliation
+Follow Harrie from the kitchen to the bedroom

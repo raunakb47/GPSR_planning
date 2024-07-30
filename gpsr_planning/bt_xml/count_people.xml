@@ -3,14 +3,14 @@
     <!-- ////////// -->
     <BehaviorTree ID="CountPeopleTree">
         <Sequence>
-        <SetBlackboardInt output_key="result_int" value="0"/>
+            <Action ID="SetBlackboardInt" output_key="result_int" value="0"/>
             <Repeat num_cycles="4">
                 <Sequence>
                     <Action ID="SetPerceptionModel" model_type="object"/>
                     <Delay delay_msec="1000">
                         <Action ID="Rotate" angle="1.57" speed='0.3' />
                     </Delay>
-                    <Condition ID="CountPeople" confidence="0.6" cam_frame="head_front_camera_rgb_optical_frame" max_entities="15" gesture="{gesture}" color="{color}" pose="{pose}" input_num_person="{result}" num_person="{result}" />
+                    <Condition ID="CountPeople" confidence="0.6" cam_frame="head_front_camera_rgb_optical_frame" max_entities="15" gesture="{arm_position}" color="{color}" pose="{pose}" input_num_person="{result}" num_person="{result}" />
                 </Sequence>
             </Repeat>
             <SetBlackboard output_key="result" value="{result_int}"/>
@@ -19,38 +19,30 @@
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
-        <Condition ID="IsDetected">
-            <input_port name="cam_frame"/>
+        <Action ID="SetBlackboardInt">
+            <input_port name="value"/>
+            <input_port name="output_key"/>
+        </Action>
+        <Action ID="SetPerceptionModel">
+            <input_port name="model_type"/>
+        </Action>
+        <Action ID="Rotate">
+            <input_port name="angle"/>
+            <input_port name="speed"/>
+        </Action>
+        <Condition ID="CountPeople">
             <input_port name="confidence"/>
-            <input_port name="person_id"/>
-            <input_port name="interest"/>
-            <input_port name="max_depth"/>
+            <input_port name="cam_frame"/>
             <input_port name="max_entities"/>
-            <input_port name="order"/>
-            <input_port name="best_detection"/>
-            <input_port name="frames"/>
+            <input_port name="gesture"/>
+            <input_port name="color"/>
+            <input_port name="pose"/>
+            <input_port name="input_num_person"/>
+            <output_port name="num_person"/>
         </Condition>
         <Action ID="Speak">
             <input_port name="say_text"/>
             <input_port name="param"/>
-        </Action>
-        <Action ID="ExtractObjectsFromScene">
-            <input_port name="interest_class"/>
-            <input_port name="detected_objects"/>
-            <input_port name="objects_count"/>
-        </Action>
-        <Action ID="GenerateTextFromObjects">
-            <input_port name="selected_object"/>
-            <input_port name="detected_objects"/>
-            <input_port name="output_text"/>
-        </Action>
-        <Action ID="FilterObject">
-            <input_port name ="frames"></input_port>
-            <input_port default="unknown" name="size">size</input_port>
-            <input_port default="unknown" name="weight">weight</input_port>
-            <input_port default="unknown" name="class">class</input_port>
-            <output_port name="objects_count"></output_port>
-            <output_port name="filtered_object"></output_port>
         </Action>
     </TreeNodesModel>
     <!-- ////////// -->

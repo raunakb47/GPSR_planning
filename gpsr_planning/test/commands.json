@@ -349,7 +349,7 @@
             "result": {
                 "actions": [
                     "MoveToTree instruction_point office",
-                    "FindPersonByNameTree unknown unknown unknown Unique",
+                    "FindPersonByNameTree unknown unknown unknown Peter",
                     "SpeakTree Gentlebots."
                 ]
             }
@@ -359,7 +359,7 @@
             "result": {
                 "actions": [
                     "MoveToTree instruction_point kitchen",
-                    "FindPersonTree unknown unknown unknown Ana",
+                    "FindPersonByNameTree unknown unknown unknown Harry",
                     "FollowPersonTree"
                 ]
             }
