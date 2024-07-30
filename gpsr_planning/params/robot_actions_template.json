@@ -1,0 +1,261 @@
+[
+    {
+        "name": "count_object",
+        "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "object_type",
+                    "class"
+                ]
+            },
+            "object_type": {
+                "type": "string",
+                "choices": "<objects>"
+            },
+            "class": {
+                "type": "string",
+                "choices": "<object_classes>"
+            }
+        },
+        "description": "count the number of objects or classes of a specific type in a waypoint. This action has a result to tell."
+    },
+    {
+        "name": "count_people",
+        "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "color",
+                    "arm_position",
+                    "pose",
+                    "none"
+                ]
+            },
+            "arm_position": {
+                "type": "string",
+                "choices": [
+                    "waving",
+                    "rising_left",
+                    "rising_right",
+                    "pointing_left",
+                    "pointing_right",
+                    "unknown"
+                ]
+            },
+            "pose": {
+                "type": "string",
+                "choices": [
+                    "sitting",
+                    "standing",
+                    "lying",
+                    "unknown"
+                ]
+            },
+            "color": {
+                "type": "string",
+                "choices": [
+                    "blue",
+                    "yellow",
+                    "black",
+                    "white",
+                    "red",
+                    "orange",
+                    "gray",
+                    "unknown"
+                ]
+            }
+        },
+        "description": "find and count the number of people in a waypoint using color or arm_position or pose. This action has a result to tell."
+    },
+    {
+        "name": "find_object",
+        "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "size",
+                    "weight",
+                    "class",
+                    "object_type",
+                    "none"
+                ]
+            },
+            "size": {
+                "type": "string",
+                "choices": [
+                    "big",
+                    "large",
+                    "small",
+                    "unknown"
+                ]
+            },
+            "weight": {
+                "type": "string",
+                "choices": [
+                    "heavy",
+                    "light",
+                    "thin",
+                    "unknown"
+                ]
+            },
+            "class": {
+                "type": "string",
+                "choices": "<object_classes>"
+            },
+            "object_type": {
+                "type": "string",
+                "choices": "<objects>"
+            }
+        },
+        "description": "identify, look for, search for or find one object in a waypoint using a size or weight or class to which the object belongs."
+    },
+    {
+        "name": "pick_object",
+        "args": {
+            "object_to_pick": {
+                "type": "string",
+                "choices": "<objects>"
+            }
+        },
+        "description": "get, fetch, grasp, pick, or take an object in a waypoint. You will need to move after this action."
+    },
+    {
+        "name": "place_object",
+        "args": {
+            "place_location": {
+                "type": "string"
+            }
+        },
+        "description": "place, or put an object in a waypoint."
+    },
+    {
+        "name": "offer_object",
+        "args": {},
+        "description": "deliver, offer, or bring an object to a person in a waypoint"
+    },
+    {
+        "name": "find_person",
+        "args": {
+            "search_by": {
+                "type": "string",
+                "choices": [
+                    "color",
+                    "arm_position",
+                    "pose",
+                    "person_name",
+                    "none"
+                ]
+            },
+            "color": {
+                "type": "string",
+                "choices": [
+                    "blue",
+                    "yellow",
+                    "black",
+                    "white",
+                    "red",
+                    "orange",
+                    "gray",
+                    "unknown"
+                ]
+            },
+            "arm_position": {
+                "type": "string",
+                "choices": [
+                    "waving",
+                    "rising_left",
+                    "rising_right",
+                    "pointing_left",
+                    "pointing_right",
+                    "unknown"
+                ]
+            },
+            "pose": {
+                "type": "string",
+                "choices": [
+                    "sitting",
+                    "standing",
+                    "lying",
+                    "unknown"
+                ]
+            },
+            "person_name": {
+                "type": "string",
+                "choices": "<names>"
+            }
+        },
+        "description": "identify, meet, look for, search for or find one person in a waypoint using color or human sign or pose or name."
+    },
+    {
+        "name": "describe_person",
+        "args": {
+            "interest": {
+                "type": "string",
+                "choices": [
+                    "pose",
+                    "arm_position",
+                    "person_name",
+                    "unknown"
+                ]
+            }
+        },
+        "description": "describe and obtain the pose, name or the arm_position of a person in a waypoint. This action has a result to tell."
+    },
+    {
+        "name": "follow_person",
+        "args": {},
+        "description": "walk behind a person from a waypoint to another waypoint"
+    },
+    {
+        "name": "guide_person",
+        "args": {
+            "initial_waypoint": {
+                "type": "string",
+                "choices": "<waypoints>"
+            },
+            "destination_waypoint": {
+                "type": "string",
+                "choices": "<waypoints>"
+            }
+        },
+        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. waypoints can be forniture or rooms."
+    },
+    {
+        "name": "answer_quiz",
+        "args": {},
+        "description": "answer a quiz to a person in a waypoint"
+    },
+    {
+        "name": "speak",
+        "args": {
+            "say_text": {
+                "type": "string"
+            }
+        },
+        "description": "speak, or tell something to a person in a waypoint. This action is not used for asking. Use it for datetime, day of the week, team affiliation, nationality and your name."
+    },
+    {
+        "name": "speak_result",
+        "args": {
+            "waypoint": {
+                "type": "string",
+                "choices": "<waypoints>"
+            }
+        },
+        "description": "speak, or tell the result of an action to a person in a waypoint. Use it when you have a result to tell. "
+    },
+    {
+        "name": "move_to",
+        "args": {
+            "origin_waypoint": {
+                "type": "string"
+            },
+            "destination_waypoint": {
+                "type": "string",
+                "choices": "<waypoints>"
+            }
+        },
+        "description": "move from a waypoint to another waypoint. Don't use it if you are already in the waypoint."
+    }
+]

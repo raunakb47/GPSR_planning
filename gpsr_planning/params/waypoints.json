@@ -1,19 +1,19 @@
 [
     {
         "room": "bedroom",
-        "locations": ["bed", "bedside table", "dresser"]
+        "locations": ["bed", "bedside_table", "dresser"]
     },
     {
         "room": "kitchen",
-        "locations": ["sink", "fridge", "dishwasher", "kitchen table", "trash bin"]
+        "locations": ["sink", "fridge", "dishwasher", "kitchen_table", "trash_bin"]
     },
     {
         "room": "office",
-        "locations": ["armchair", "cabinet", "desk", "desk chair"]
+        "locations": ["armchair", "cabinet", "desk", "desk_chair"]
     },
     {
-        "room": "living room",
-        "locations": ["entrance", "wardrobe", "sofa", "tv sideboard", "coffee table", "bar", "bookshelf", "instruction point"]
+        "room": "living_room",
+        "locations": ["entrance", "wardrobe", "sofa", "tv_sideboard", "coffee_table", "bar", "bookshelf", "instruction_point"]
     },
     {
         "room": "corridor",
