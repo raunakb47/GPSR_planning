@@ -29,6 +29,7 @@
                     "color",
                     "arm_position",
                     "pose",
+                    "undefined",
                     "none"
                 ]
             },
@@ -36,8 +37,8 @@
                 "type": "string",
                 "choices": [
                     "waving",
-                    "rising_left",
-                    "rising_right",
+                    "raising_left",
+                    "raising_right",
                     "pointing_left",
                     "pointing_right",
                     "unknown"
@@ -66,7 +67,7 @@
                 ]
             }
         },
-        "description": "find and count the number of people in a waypoint using color or arm_position or pose. This action has a result to tell."
+        "description": "count the number of people in a waypoint using color or arm_position or pose. This action has a result to tell."
     },
     {
         "name": "find_object",
@@ -164,8 +165,8 @@
                 "type": "string",
                 "choices": [
                     "waving",
-                    "rising_left",
-                    "rising_right",
+                    "raising_left",
+                    "raising_right",
                     "pointing_left",
                     "pointing_right",
                     "unknown"
@@ -185,7 +186,7 @@
                 "choices": "<names>"
             }
         },
-        "description": "identify, meet, look for, search for or find one person in a waypoint using color or human sign or pose or name."
+        "description": "identify, meet, look for, search for or find one person in a waypoint using color or arm position or name or pose or name."
     },
     {
         "name": "describe_person",
@@ -200,7 +201,7 @@
                 ]
             }
         },
-        "description": "describe and obtain the pose, name or the arm_position of a person in a waypoint. This action has a result to tell."
+        "description": "describe and obtain the pose or person name or the arm_position of a person in a waypoint. This action has a result to tell."
     },
     {
         "name": "follow_person",

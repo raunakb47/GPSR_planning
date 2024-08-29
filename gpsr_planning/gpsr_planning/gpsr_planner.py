@@ -25,8 +25,8 @@
 
 import json
 from typing import Tuple
-from llama_ros.langchain import LlamaROS
-from langchain.prompts import PromptTemplate
+from llama_ros.langchain import ChatLlamaROS
+from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import datetime as dt
 
@@ -45,8 +45,8 @@ class GpsrPlanner:
         self.create_grammar()
         self.load_waypoints()
 
-        self.llm = LlamaROS(
-            temp=0.40,
+        self.llm = ChatLlamaROS(
+            temp=0.60,
             grammar_schema=self.grammar_schema
         )
 
@@ -56,52 +56,38 @@ class GpsrPlanner:
         
         print(time_h)
 
-        # create a prompt template
-        prompt_template = (
-            # "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
-            "<|im_start|>system\n"
-            # "<s>"
-            "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, made up of the Rey Juan Carlos University of Madrid and the University of León. "
-            "You have to generate plans, sequence of actions, to achive goals. "
-            # "A plan is a sequence of actions. "
-            # "Output one action at a time. "
-            "Use the least number of actions as possible and try to speak as much as you can. "
-            "Use only the actions listed below. "
-            "The format of the output of the plan should be a list of action names and its explanation. "
-            "Actions are performed at waypoints. "
-            "Use the move_to action before each action that requires changing the waypoint. "
-            # "Print only the plan. "
-            # "Try to speak as much as you can. "
-            "Some action arguments may be unknown, if so, answer unknown. "
-            "Today is " + day +", tomorrow is " + tomorrow + " and the time is " + time_h + ". "
-            "You start at the instruction point. "
-            "You know the waypoint of all rooms, furniture, tables and in the house. Do not need to find these waypoint. "
-            # "Remember you can answer questions with the action answer_quiz."
-            "\n\n"
+        chat_prompt_template = ChatPromptTemplate.from_messages([
+            SystemMessagePromptTemplate.from_template(
+                "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, made up of the Rey Juan Carlos University of Madrid and the University of León. "
+                "You have to generate plans, sequence of actions, to achive goals. "
+                # "A plan is a sequence of actions. "
+                # "Output one action at a time. "
+                "Use the least number of actions as possible and try to speak as much as you can. "
+                "Use only the actions listed below. "
+                "The format of the output of the plan should be a JSON object with the key 'actions' and a list of actions. An action has {{explaination_of_next_actions, action}}, where explaination_of_next_actions you need to explain why you choose the action and action you output the action and its parameters. "
+                "Actions are performed at waypoints. "
+                "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
+                # "Print only the plan. "
+                # "Try to speak as much as you can. "
+                "Some action arguments may be unknown, if so, answer unknown. "
+                "Today is " + day +", tomorrow is " + tomorrow + " and the time is " + time_h + ". "
+                "You start at the instruction point. "
+                "You know the waypoint of all rooms, furniture, tables and in the house. Do not need to find these waypoint. "
+                # "Remember you can answer questions with the action answer_quiz."
+                "\n\n"
 
-            "ACTIONS:\n"
-            "{actions_descriptions}"
+                "ACTIONS:\n"
+                "{actions_descriptions}"
+            ),
+            HumanMessagePromptTemplate.from_template(
+                "You are at the instruction point, generate a plan to achieve your goal: {prompt}"
+            )
+        ])
 
-            # "<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
-            "<|im_end|>\n<|im_start|>user\n"
-            # "[INST] "
-            # "### Instruction:\n"
-            
-            "You are at the instruction point, generate a plan to achieve your goal: {prompt}"
-
-            # "<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
-            "<|im_end|>\n<|im_start|>assistant\n"
-            # "[/INST] "
-            # "### Response:\n"
-        )
-
-        prompt = PromptTemplate(
-            input_variables=["actions_descriptions", "prompt"],
-            template=prompt_template
-        )
+        
 
         # create a chain with the llm and the prompt template
-        self.chain = prompt | self.llm | StrOutputParser()
+        self.chain = chat_prompt_template | self.llm | StrOutputParser()
 
     def cancel(self) -> None:
         self.llm.cancel()
@@ -110,7 +96,7 @@ class GpsrPlanner:
 
         prompt = prompt + " "
         prompt = prompt.replace(
-            " me ", " to the person at the instruction point ").replace("to to", "to")
+            " me ", " at the instruction point ").replace("to to", "to")
         prompt = prompt.replace("them", "him")
         prompt = prompt.strip()
 
