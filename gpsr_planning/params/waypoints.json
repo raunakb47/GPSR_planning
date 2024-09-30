@@ -1,22 +1,23 @@
 [
-    {
-        "room": "bedroom",
-        "locations": ["bed", "bedside_table", "dresser"]
-    },
-    {
-        "room": "kitchen",
-        "locations": ["sink", "fridge", "dishwasher", "kitchen_table", "trash_bin"]
-    },
-    {
-        "room": "office",
-        "locations": ["armchair", "cabinet", "desk", "desk_chair"]
-    },
-    {
-        "room": "living_room",
-        "locations": ["entrance", "wardrobe", "sofa", "tv_sideboard", "coffee_table", "bar", "bookshelf", "instruction_point"]
-    },
-    {
-        "room": "corridor",
-        "locations": ["exit"]
-    }
+    "TV table",
+    "couch",
+    "trashcan",
+    "kitchen counter",
+    "coathanger",
+    "shelf",
+    "coffee table",
+    "lamp",
+    "lounge chair",
+    "office",
+    "hallway",
+    "hallway cabinet",
+    "kitchen",
+    "dinner table",
+    "dishwasher",
+    "entrance",
+    "exit",
+    "living room",
+    "kitchen cabinet",
+    "instruction point",
+    "desk"
 ]

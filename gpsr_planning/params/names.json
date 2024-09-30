@@ -8,7 +8,6 @@
         "Hayley",
         "Susan",
         "Fleur",
-        "Gabriëlle",
         "Robin",
         "John",
         "Liam",
@@ -20,6 +19,6 @@
         "Harrie",
         "Peter",
         "Robin",
-        "unknown"
+        "undefined"
     ]
 }

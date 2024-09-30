@@ -27,13 +27,12 @@
                 "type": "string",
                 "choices": [
                     "color",
-                    "arm_position",
-                    "pose",
-                    "undefined",
+                    "arm_gesture",
+                    "body_posture",
                     "none"
                 ]
             },
-            "arm_position": {
+            "arm_gesture": {
                 "type": "string",
                 "choices": [
                     "waving",
@@ -41,16 +40,16 @@
                     "raising_right",
                     "pointing_left",
                     "pointing_right",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "pose": {
+            "body_posture": {
                 "type": "string",
                 "choices": [
                     "sitting",
                     "standing",
                     "lying",
-                    "unknown"
+                    "undefined"
                 ]
             },
             "color": {
@@ -63,32 +62,22 @@
                     "red",
                     "orange",
                     "gray",
-                    "unknown"
+                    "undefined"
                 ]
             }
         },
-        "description": "count the number of people in a waypoint using color or arm_position or pose. This action has a result to tell."
+        "description": "count the number of people in a waypoint using color or arm gesture or body posture. This action has a result to tell."
     },
     {
         "name": "find_object",
         "args": {
-            "search_by": {
-                "type": "string",
-                "choices": [
-                    "size",
-                    "weight",
-                    "class",
-                    "object_type",
-                    "none"
-                ]
-            },
             "size": {
                 "type": "string",
                 "choices": [
                     "big",
                     "large",
                     "small",
-                    "unknown"
+                    "undefined"
                 ]
             },
             "weight": {
@@ -97,7 +86,7 @@
                     "heavy",
                     "light",
                     "thin",
-                    "unknown"
+                    "undefined"
                 ]
             },
             "class": {
@@ -113,19 +102,15 @@
     },
     {
         "name": "pick_object",
-        "args": {
-            "object_to_pick": {
-                "type": "string",
-                "choices": "<objects>"
-            }
-        },
-        "description": "get, fetch, grasp, pick, or take an object in a waypoint. You will need to move after this action."
+        "args": {},
+        "description": "get, fetch, grasp, pick, or take an object previously found in a waypoint. You will need to move after this action."
     },
     {
         "name": "place_object",
         "args": {
             "place_location": {
-                "type": "string"
+                "type": "string",
+                "choices": "<waypoints>"
             }
         },
         "description": "place, or put an object in a waypoint."
@@ -142,9 +127,9 @@
                 "type": "string",
                 "choices": [
                     "color",
-                    "arm_position",
-                    "pose",
-                    "person_name",
+                    "arm_gesture",
+                    "body_posture",
+                    "name",
                     "none"
                 ]
             },
@@ -158,10 +143,10 @@
                     "red",
                     "orange",
                     "gray",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "arm_position": {
+            "arm_gesture": {
                 "type": "string",
                 "choices": [
                     "waving",
@@ -169,24 +154,24 @@
                     "raising_right",
                     "pointing_left",
                     "pointing_right",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "pose": {
+            "body_posture": {
                 "type": "string",
                 "choices": [
                     "sitting",
                     "standing",
                     "lying",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "person_name": {
+            "name": {
                 "type": "string",
                 "choices": "<names>"
             }
         },
-        "description": "identify, meet, look for, search for or find one person in a waypoint using color or arm position or name or pose or name."
+        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using color or arm gesture or name or body posture."
     },
     {
         "name": "describe_person",
@@ -194,18 +179,27 @@
             "interest": {
                 "type": "string",
                 "choices": [
-                    "pose",
-                    "arm_position",
-                    "person_name",
-                    "unknown"
+                    "body_posture",
+                    "arm_gesture",
+                    "name",
+                    "undefined"
                 ]
             }
         },
-        "description": "describe and obtain the pose or person name or the arm_position of a person in a waypoint. This action has a result to tell."
+        "description": "describe or obtain the body posture or name or the arm gesture of a person in a waypoint. This action has a result to tell."
     },
     {
         "name": "follow_person",
-        "args": {},
+        "args": {
+            "initial_waypoint": {
+                "type": "string",
+                "choices": "<waypoints>"
+            },
+            "destination_waypoint": {
+                "type": "string",
+                "choices": "<waypoints>"
+            }
+        },
         "description": "walk behind a person from a waypoint to another waypoint"
     },
     {
@@ -220,7 +214,7 @@
                 "choices": "<waypoints>"
             }
         },
-        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. waypoints can be forniture or rooms."
+        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. Waypoints can be forniture or rooms."
     },
     {
         "name": "answer_quiz",
@@ -250,7 +244,8 @@
         "name": "move_to",
         "args": {
             "origin_waypoint": {
-                "type": "string"
+                "type": "string",
+                "choices": "<waypoints>"
             },
             "destination_waypoint": {
                 "type": "string",

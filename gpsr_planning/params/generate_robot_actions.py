@@ -1,10 +1,10 @@
 import json
 import os
-import re
 
 file_path = os.path.dirname(os.path.realpath(__file__))
 
 template_file = os.path.join(file_path, "robot_actions_template.json")
+robot_actions_file = os.path.join(file_path, "robot_actions.json")
 objects_file = os.path.join(file_path, "objects.json")
 names_file = os.path.join(file_path, "names.json")
 waypoints_file = os.path.join(file_path, "waypoints.json")
@@ -13,9 +13,10 @@ waypoints = []
 with open(waypoints_file, 'r') as f:
     wp_json = json.load(f)
     for wp in wp_json:
-        waypoints.append(wp['room'])
-        for l in wp['locations']:
-            waypoints.append(l)
+        waypoints.append(wp)
+        
+waypoints = sorted(waypoints)
+waypoints = [w.replace(" ", "_") for w in waypoints]
 
 objects = []
 classes = []
@@ -24,10 +25,17 @@ with open(objects_file, 'r') as f:
     objects = obj_json['items']
     classes = obj_json['categories']
 
+objects = sorted(objects)
+objects = [o.replace(" ", "_") for o in objects]
+classes = sorted(classes)
+classes = [c.replace(" ", "_") for c in classes]
+
 names = []
 with open(names_file, 'r') as f:
     names_json = json.load(f)
     names = names_json['names']
+    
+names = sorted(names)
 
 with open(template_file, 'r') as f:
     template_json = json.load(f)
@@ -47,7 +55,7 @@ with open(template_file, 'r') as f:
                 elif type == '<waypoints>':
                     arg['choices'] = waypoints
     
-    with open('robot_actions.json', 'w') as f:
+    with open(robot_actions_file, 'w') as f:
         json.dump(actions, f, indent=4)
 
 

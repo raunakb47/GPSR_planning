@@ -12,59 +12,59 @@
             "object_type": {
                 "type": "string",
                 "choices": [
-                    "dishwasher_tab",
-                    "soap",
-                    "sponge",
-                    "washcloth",
-                    "candle",
-                    "bowl",
-                    "cup",
-                    "fork",
-                    "knife",
-                    "plate",
-                    "spoon",
-                    "big_coke",
-                    "cola",
-                    "dubbelfris",
-                    "fanta",
-                    "ice_tea",
-                    "milk",
-                    "water",
-                    "cornflakes",
-                    "curry",
-                    "hagelslag",
-                    "mayonaise",
-                    "pancake_mix",
-                    "pea_soup",
-                    "sausages",
                     "apple",
                     "banana",
+                    "baseball",
+                    "bowl",
+                    "cheezit",
+                    "chocolate_jello",
+                    "cleanser",
+                    "coffee_grounds",
+                    "cola",
+                    "cornflakes",
+                    "cup",
+                    "dice",
+                    "fork",
+                    "iced_tea",
+                    "juice_pack",
+                    "knife",
                     "lemon",
+                    "milk",
+                    "mustard",
                     "orange",
+                    "orange_juice",
                     "peach",
                     "pear",
+                    "plate",
                     "plum",
-                    "strawberry",
-                    "candy",
-                    "crisps",
-                    "liquorice",
                     "pringles",
-                    "stroopwafel",
-                    "tictac",
-                    "unknown"
+                    "red_wine",
+                    "rubiks_cube",
+                    "soccer_ball",
+                    "spam",
+                    "sponge",
+                    "spoon",
+                    "strawberry",
+                    "strawberry_jello",
+                    "sugar",
+                    "tennis_ball",
+                    "tomato_soup",
+                    "tropical_juice",
+                    "tuna",
+                    "undefined"
                 ]
             },
             "class": {
                 "type": "string",
                 "choices": [
                     "cleaning_supply",
-                    "decoration",
                     "dish",
                     "drink",
                     "food",
                     "fruit",
                     "snack",
-                    "unknown"
+                    "toy",
+                    "undefined"
                 ]
             }
         },
@@ -77,29 +77,29 @@
                 "type": "string",
                 "choices": [
                     "color",
-                    "arm_position",
-                    "pose",
+                    "arm_gesture",
+                    "body_posture",
                     "none"
                 ]
             },
-            "arm_position": {
+            "arm_gesture": {
                 "type": "string",
                 "choices": [
                     "waving",
-                    "rising_left",
-                    "rising_right",
+                    "raising_left",
+                    "raising_right",
                     "pointing_left",
                     "pointing_right",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "pose": {
+            "body_posture": {
                 "type": "string",
                 "choices": [
                     "sitting",
                     "standing",
                     "lying",
-                    "unknown"
+                    "undefined"
                 ]
             },
             "color": {
@@ -112,32 +112,22 @@
                     "red",
                     "orange",
                     "gray",
-                    "unknown"
+                    "undefined"
                 ]
             }
         },
-        "description": "find and count the number of people in a waypoint using color or arm_position or pose. This action has a result to tell."
+        "description": "count the number of people in a waypoint using color or arm gesture or body posture. This action has a result to tell."
     },
     {
         "name": "find_object",
         "args": {
-            "search_by": {
-                "type": "string",
-                "choices": [
-                    "size",
-                    "weight",
-                    "class",
-                    "object_type",
-                    "none"
-                ]
-            },
             "size": {
                 "type": "string",
                 "choices": [
                     "big",
                     "large",
                     "small",
-                    "unknown"
+                    "undefined"
                 ]
             },
             "weight": {
@@ -146,65 +136,65 @@
                     "heavy",
                     "light",
                     "thin",
-                    "unknown"
+                    "undefined"
                 ]
             },
             "class": {
                 "type": "string",
                 "choices": [
                     "cleaning_supply",
-                    "decoration",
                     "dish",
                     "drink",
                     "food",
                     "fruit",
                     "snack",
-                    "unknown"
+                    "toy",
+                    "undefined"
                 ]
             },
             "object_type": {
                 "type": "string",
                 "choices": [
-                    "dishwasher_tab",
-                    "soap",
-                    "sponge",
-                    "washcloth",
-                    "candle",
-                    "bowl",
-                    "cup",
-                    "fork",
-                    "knife",
-                    "plate",
-                    "spoon",
-                    "big_coke",
-                    "cola",
-                    "dubbelfris",
-                    "fanta",
-                    "ice_tea",
-                    "milk",
-                    "water",
-                    "cornflakes",
-                    "curry",
-                    "hagelslag",
-                    "mayonaise",
-                    "pancake_mix",
-                    "pea_soup",
-                    "sausages",
                     "apple",
                     "banana",
+                    "baseball",
+                    "bowl",
+                    "cheezit",
+                    "chocolate_jello",
+                    "cleanser",
+                    "coffee_grounds",
+                    "cola",
+                    "cornflakes",
+                    "cup",
+                    "dice",
+                    "fork",
+                    "iced_tea",
+                    "juice_pack",
+                    "knife",
                     "lemon",
+                    "milk",
+                    "mustard",
                     "orange",
+                    "orange_juice",
                     "peach",
                     "pear",
+                    "plate",
                     "plum",
-                    "strawberry",
-                    "candy",
-                    "crisps",
-                    "liquorice",
                     "pringles",
-                    "stroopwafel",
-                    "tictac",
-                    "unknown"
+                    "red_wine",
+                    "rubiks_cube",
+                    "soccer_ball",
+                    "spam",
+                    "sponge",
+                    "spoon",
+                    "strawberry",
+                    "strawberry_jello",
+                    "sugar",
+                    "tennis_ball",
+                    "tomato_soup",
+                    "tropical_juice",
+                    "tuna",
+                    "undefined"
                 ]
             }
         },
@@ -212,61 +202,37 @@
     },
     {
         "name": "pick_object",
-        "args": {
-            "object_to_pick": {
-                "type": "string",
-                "choices": [
-                    "result",
-                    "dishwasher_tab",
-                    "soap",
-                    "sponge",
-                    "washcloth",
-                    "candle",
-                    "bowl",
-                    "cup",
-                    "fork",
-                    "knife",
-                    "plate",
-                    "spoon",
-                    "big_coke",
-                    "cola",
-                    "dubbelfris",
-                    "fanta",
-                    "ice_tea",
-                    "milk",
-                    "water",
-                    "cornflakes",
-                    "curry",
-                    "hagelslag",
-                    "mayonaise",
-                    "pancake_mix",
-                    "pea_soup",
-                    "sausages",
-                    "apple",
-                    "banana",
-                    "lemon",
-                    "orange",
-                    "peach",
-                    "pear",
-                    "plum",
-                    "strawberry",
-                    "candy",
-                    "crisps",
-                    "liquorice",
-                    "pringles",
-                    "stroopwafel",
-                    "tictac",
-                    "unknown"
-                ]
-            }
-        },
-        "description": "get, fetch, grasp, pick, or take an object in a waypoint. You will need to move after this action."
+        "args": {},
+        "description": "get, fetch, grasp, pick, or take an object previously found in a waypoint. You will need to move after this action."
     },
     {
         "name": "place_object",
         "args": {
             "place_location": {
-                "type": "string"
+                "type": "string",
+                "choices": [
+                    "TV_table",
+                    "coathanger",
+                    "coffee_table",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
+                    "instruction_point",
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
+                ]
             }
         },
         "description": "place, or put an object in a waypoint."
@@ -283,9 +249,9 @@
                 "type": "string",
                 "choices": [
                     "color",
-                    "arm_position",
-                    "pose",
-                    "person_name",
+                    "arm_gesture",
+                    "body_posture",
+                    "name",
                     "none"
                 ]
             },
@@ -299,57 +265,56 @@
                     "red",
                     "orange",
                     "gray",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "arm_position": {
+            "arm_gesture": {
                 "type": "string",
                 "choices": [
                     "waving",
-                    "rising_left",
-                    "rising_right",
+                    "raising_left",
+                    "raising_right",
                     "pointing_left",
                     "pointing_right",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "pose": {
+            "body_posture": {
                 "type": "string",
                 "choices": [
                     "sitting",
                     "standing",
                     "lying",
-                    "unknown"
+                    "undefined"
                 ]
             },
-            "person_name": {
+            "name": {
                 "type": "string",
                 "choices": [
-                    "Sophie",
-                    "Julia",
                     "Emma",
-                    "Sara",
-                    "Laura",
-                    "Hayley",
-                    "Susan",
                     "Fleur",
-                    "Gabrielle",
-                    "Robin",
+                    "Harrie",
+                    "Hayley",
+                    "Jesse",
                     "John",
+                    "Julia",
+                    "Kevin",
+                    "Laura",
                     "Liam",
                     "Lucas",
-                    "William",
-                    "Kevin",
-                    "Jesse",
                     "Noah",
-                    "Harrie",
                     "Peter",
                     "Robin",
-                    "unknown"
+                    "Robin",
+                    "Sara",
+                    "Sophie",
+                    "Susan",
+                    "William",
+                    "undefined"
                 ]
             }
         },
-        "description": "identify, meet, look for, search for or find one person in a waypoint using color or human sign or pose or name."
+        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using color or arm gesture or name or body posture."
     },
     {
         "name": "describe_person",
@@ -357,18 +322,71 @@
             "interest": {
                 "type": "string",
                 "choices": [
-                    "pose",
-                    "arm_position",
-                    "person_name",
-                    "unknown"
+                    "body_posture",
+                    "arm_gesture",
+                    "name",
+                    "undefined"
                 ]
             }
         },
-        "description": "describe and obtain the pose, name or the arm_position of a person in a waypoint. This action has a result to tell."
+        "description": "describe or obtain the body posture or name or the arm gesture of a person in a waypoint. This action has a result to tell."
     },
     {
         "name": "follow_person",
-        "args": {},
+        "args": {
+            "initial_waypoint": {
+                "type": "string",
+                "choices": [
+                    "TV_table",
+                    "coathanger",
+                    "coffee_table",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
+                    "instruction_point",
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
+                ]
+            },
+            "destination_waypoint": {
+                "type": "string",
+                "choices": [
+                    "TV_table",
+                    "coathanger",
+                    "coffee_table",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
+                    "instruction_point",
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
+                ]
+            }
+        },
         "description": "walk behind a person from a waypoint to another waypoint"
     },
     {
@@ -377,67 +395,57 @@
             "initial_waypoint": {
                 "type": "string",
                 "choices": [
-                    "bedroom",
-                    "bed",
-                    "bedside_table",
-                    "dresser",
-                    "kitchen",
-                    "sink",
-                    "fridge",
-                    "dishwasher",
-                    "kitchen_table",
-                    "trash_bin",
-                    "office",
-                    "armchair",
-                    "cabinet",
-                    "desk",
-                    "desk_chair",
-                    "living_room",
-                    "entrance",
-                    "wardrobe",
-                    "sofa",
-                    "tv_sideboard",
+                    "TV_table",
+                    "coathanger",
                     "coffee_table",
-                    "bar",
-                    "bookshelf",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
                     "instruction_point",
-                    "corridor",
-                    "exit"
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
                 ]
             },
             "destination_waypoint": {
                 "type": "string",
                 "choices": [
-                    "bedroom",
-                    "bed",
-                    "bedside_table",
-                    "dresser",
-                    "kitchen",
-                    "sink",
-                    "fridge",
-                    "dishwasher",
-                    "kitchen_table",
-                    "trash_bin",
-                    "office",
-                    "armchair",
-                    "cabinet",
-                    "desk",
-                    "desk_chair",
-                    "living_room",
-                    "entrance",
-                    "wardrobe",
-                    "sofa",
-                    "tv_sideboard",
+                    "TV_table",
+                    "coathanger",
                     "coffee_table",
-                    "bar",
-                    "bookshelf",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
                     "instruction_point",
-                    "corridor",
-                    "exit"
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
                 ]
             }
         },
-        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. waypoints can be forniture or rooms."
+        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. Waypoints can be forniture or rooms."
     },
     {
         "name": "answer_quiz",
@@ -459,32 +467,27 @@
             "waypoint": {
                 "type": "string",
                 "choices": [
-                    "bedroom",
-                    "bed",
-                    "bedside_table",
-                    "dresser",
-                    "kitchen",
-                    "sink",
-                    "fridge",
-                    "dishwasher",
-                    "kitchen_table",
-                    "trash_bin",
-                    "office",
-                    "armchair",
-                    "cabinet",
-                    "desk",
-                    "desk_chair",
-                    "living_room",
-                    "entrance",
-                    "wardrobe",
-                    "sofa",
-                    "tv_sideboard",
+                    "TV_table",
+                    "coathanger",
                     "coffee_table",
-                    "bar",
-                    "bookshelf",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
                     "instruction_point",
-                    "corridor",
-                    "exit"
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
                 ]
             }
         },
@@ -494,40 +497,58 @@
         "name": "move_to",
         "args": {
             "origin_waypoint": {
-                "type": "string"
+                "type": "string",
+                "choices": [
+                    "TV_table",
+                    "coathanger",
+                    "coffee_table",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
+                    "instruction_point",
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
+                ]
             },
             "destination_waypoint": {
                 "type": "string",
                 "choices": [
-                    "bedroom",
-                    "bed",
-                    "bedside_table",
-                    "dresser",
-                    "kitchen",
-                    "sink",
-                    "fridge",
-                    "dishwasher",
-                    "kitchen_table",
-                    "trash_bin",
-                    "office",
-                    "armchair",
-                    "cabinet",
-                    "desk",
-                    "desk_chair",
-                    "living_room",
-                    "entrance",
-                    "wardrobe",
-                    "sofa",
-                    "tv_sideboard",
+                    "TV_table",
+                    "coathanger",
                     "coffee_table",
-                    "bar",
-                    "bookshelf",
+                    "couch",
+                    "desk",
+                    "dinner_table",
+                    "dishwasher",
+                    "entrance",
+                    "exit",
+                    "hallway",
+                    "hallway_cabinet",
                     "instruction_point",
-                    "corridor",
-                    "exit"
+                    "kitchen",
+                    "kitchen_cabinet",
+                    "kitchen_counter",
+                    "lamp",
+                    "living_room",
+                    "lounge_chair",
+                    "office",
+                    "shelf",
+                    "trashcan"
                 ]
             }
         },
-        "description": "move from an origin waypoint to a destination waypoint. Don't use it if you are already in the waypoint."
+        "description": "move from a waypoint to another waypoint. Don't use it if you are already in the waypoint."
     }
 ]
