@@ -50,30 +50,28 @@ class GpsrPlanner:
             grammar_schema=self.grammar_schema
         )
 
-        time_h = dt.datetime.now().strftime("%H:%M")
-        tomorrow = (dt.datetime.now() + dt.timedelta(days=1)).strftime("%A")
-        day = dt.datetime.now().strftime("%A")
-        
-        print(time_h)
-
         chat_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
-                "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, made up of the Rey Juan Carlos University of Madrid and the University of León. "
+                "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, "
+                "made up of the Rey Juan Carlos University of Madrid and the University of León. "
                 "You have to generate plans, sequence of actions, to achive goals. "
-                # "A plan is a sequence of actions. "
-                # "Output one action at a time. "
                 "Use the least number of actions as possible and try to speak as much as you can. "
                 "Use only the actions listed below. "
-                "The format of the output of the plan should be a JSON object with the key 'actions' and a list of actions. An action has {{explaination_of_next_actions, action}}, where explaination_of_next_actions you need to explain why you choose the action and action you output the action and its parameters. "
+                
+                
+                "The format of the output of the plan should be a JSON object with the key 'actions' and a list of actions. "
+                "An action has {{explaination_of_next_actions, action}}, where explaination_of_next_actions you need to explain why you choose the action and action you output the action and its parameters. "
+
+                # theorically better buy worse results
+                # "The format of the output of the plan should be {{explaination_of_next_actions, action}}[], "
+                # "where explaination_of_next_actions is a string with an explanation on why you choose the action, the action object key is the action name and the value is an object with the action parameters."
+                
                 "Actions are performed at waypoints. "
+                "Rooms, furniture and tables are considered as waypoints. "
                 "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
-                # "Print only the plan. "
-                # "Try to speak as much as you can. "
                 "Some action arguments may be unknown, if so, answer unknown. "
-                "Today is " + day +", tomorrow is " + tomorrow + " and the time is " + time_h + ". "
+                "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
                 "You start at the instruction point. "
-                "You know the waypoint of all rooms, furniture, tables and in the house. Do not need to find these waypoint. "
-                # "Remember you can answer questions with the action answer_quiz."
                 "\n\n"
 
                 "ACTIONS:\n"
@@ -99,10 +97,21 @@ class GpsrPlanner:
             " me ", " at the instruction point ").replace("to to", "to")
         prompt = prompt.replace("them", "him")
         prompt = prompt.strip()
+        
+        today_dt = dt.datetime.now()
+        day_suffix = lambda day: 'th' if 11 <= day <= 13 else {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+        day = today_dt.strftime(f"%A {today_dt.day}{day_suffix(today_dt.day)}")
+        
+        time_h = today_dt.strftime("%H:%M")
+        tomorrow = (today_dt + dt.timedelta(days=1)).strftime("%A")
+
 
         response = self.chain.invoke({
             "prompt": prompt,
             "actions_descriptions": self.actions_descriptions[:-1],
+            "day": day,
+            "tomorrow": tomorrow,
+            "time_h": time_h
         })
 
         return json.loads(response), prompt

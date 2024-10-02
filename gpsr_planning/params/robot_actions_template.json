@@ -5,20 +5,20 @@
             "search_by": {
                 "type": "string",
                 "choices": [
-                    "object_type",
-                    "class"
+                    "specific_item",
+                    "category"
                 ]
             },
-            "object_type": {
+            "specific_item": {
                 "type": "string",
-                "choices": "<objects>"
+                "choices": "<items>"
             },
-            "class": {
+            "category": {
                 "type": "string",
-                "choices": "<object_classes>"
+                "choices": "<categories>"
             }
         },
-        "description": "count the number of objects or classes of a specific type in a waypoint. This action has a result to tell."
+        "description": "count objects using either a category or a specific item in a waypoint. This action has a result to tell."
     },
     {
         "name": "count_people",
@@ -66,7 +66,7 @@
                 ]
             }
         },
-        "description": "count the number of people in a waypoint using color or arm gesture or body posture. This action has a result to tell."
+        "description": "count the number of people in a waypoint using either color or arm gesture or body posture. This action has a result to tell."
     },
     {
         "name": "find_object",
@@ -89,16 +89,16 @@
                     "undefined"
                 ]
             },
-            "class": {
+            "category": {
                 "type": "string",
-                "choices": "<object_classes>"
+                "choices": "<categories>"
             },
-            "object_type": {
+            "specific_item": {
                 "type": "string",
-                "choices": "<objects>"
+                "choices": "<items>"
             }
         },
-        "description": "identify, look for, search for or find one object in a waypoint using a size or weight or class to which the object belongs."
+        "description": "identify, look for, search for or find one object in a waypoint using a size or weight or or item name or category to which it belongs."
     },
     {
         "name": "pick_object",
@@ -169,9 +169,12 @@
             "name": {
                 "type": "string",
                 "choices": "<names>"
+            },
+            "previously_found": {
+                "type": "boolean"
             }
         },
-        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using color or arm gesture or name or body posture."
+        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using either color or arm gesture or name or body posture. Can find an already found person."
     },
     {
         "name": "describe_person",

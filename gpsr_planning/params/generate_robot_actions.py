@@ -46,9 +46,9 @@ with open(template_file, 'r') as f:
         for arg in args.values():
             if 'choices' in arg:
                 type = arg['choices']
-                if type == '<objects>':
+                if type == '<items>':
                     arg['choices'] = objects
-                elif type == '<object_classes>':
+                elif type == '<categories>':
                     arg['choices'] = classes
                 elif type == '<names>':
                     arg['choices'] = names
