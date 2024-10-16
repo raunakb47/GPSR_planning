@@ -116,7 +116,7 @@
                 ]
             }
         },
-        "description": "count the number of people in a waypoint using either color or arm gesture or body posture. This action has a result to tell."
+        "description": "count the number of people in a waypoint using either color or arm gesture or body posture or none of this parameters. This action has a result to tell."
     },
     {
         "name": "find_object",
@@ -241,7 +241,7 @@
     {
         "name": "offer_object",
         "args": {},
-        "description": "deliver, offer, or bring an object to a person in a waypoint"
+        "description": "deliver, offer, or bring an object to a person in a waypoint."
     },
     {
         "name": "find_person",
@@ -253,6 +253,7 @@
                     "arm_gesture",
                     "body_posture",
                     "name",
+                    "undefined",
                     "none"
                 ]
             },
@@ -318,7 +319,7 @@
                 "type": "boolean"
             }
         },
-        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using either color or arm gesture or name or body posture. Can find an already found person."
+        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using either color or arm gesture or name or body posture or without defining any of these parameters. Can find an previously found person."
     },
     {
         "name": "describe_person",
@@ -338,33 +339,6 @@
     {
         "name": "follow_person",
         "args": {
-            "initial_waypoint": {
-                "type": "string",
-                "choices": [
-                    "TV_table",
-                    "coathanger",
-                    "coffee_table",
-                    "couch",
-                    "desk",
-                    "dinner_table",
-                    "dishwasher",
-                    "entrance",
-                    "exit",
-                    "hallway",
-                    "hallway_cabinet",
-                    "instruction_point",
-                    "kitchen",
-                    "kitchen_cabinet",
-                    "kitchen_counter",
-                    "lamp",
-                    "living_room",
-                    "lounge_chair",
-                    "office",
-                    "shelf",
-                    "trashcan",
-                    "undefined"
-                ]
-            },
             "destination_waypoint": {
                 "type": "string",
                 "choices": [
@@ -393,38 +367,11 @@
                 ]
             }
         },
-        "description": "walk behind a person from a waypoint to another waypoint"
+        "description": "walk behind a person from a waypoint to another waypoint."
     },
     {
         "name": "guide_person",
         "args": {
-            "initial_waypoint": {
-                "type": "string",
-                "choices": [
-                    "TV_table",
-                    "coathanger",
-                    "coffee_table",
-                    "couch",
-                    "desk",
-                    "dinner_table",
-                    "dishwasher",
-                    "entrance",
-                    "exit",
-                    "hallway",
-                    "hallway_cabinet",
-                    "instruction_point",
-                    "kitchen",
-                    "kitchen_cabinet",
-                    "kitchen_counter",
-                    "lamp",
-                    "living_room",
-                    "lounge_chair",
-                    "office",
-                    "shelf",
-                    "trashcan",
-                    "undefined"
-                ]
-            },
             "destination_waypoint": {
                 "type": "string",
                 "choices": [
@@ -453,85 +400,27 @@
                 ]
             }
         },
-        "description": "take, escort, lead, or guide a person from a initial waypoint to a destination waypoint. Waypoints can be forniture or rooms."
+        "description": "take, escort, lead, or guide a person from your location to a destination waypoint. Waypoints can be forniture or rooms."
     },
     {
         "name": "answer_quiz",
         "args": {},
-        "description": "answer a quiz to a person in a waypoint"
+        "description": "answer a quiz to a person in a waypoint."
     },
     {
         "name": "speak",
         "args": {
             "say_text": {
-                "type": "string"
-            }
-        },
-        "description": "speak, or tell something to a person in a waypoint. This action is not used for asking. Use it for datetime, day of the week, team affiliation, nationality and your name."
-    },
-    {
-        "name": "speak_result",
-        "args": {
-            "waypoint": {
                 "type": "string",
-                "choices": [
-                    "TV_table",
-                    "coathanger",
-                    "coffee_table",
-                    "couch",
-                    "desk",
-                    "dinner_table",
-                    "dishwasher",
-                    "entrance",
-                    "exit",
-                    "hallway",
-                    "hallway_cabinet",
-                    "instruction_point",
-                    "kitchen",
-                    "kitchen_cabinet",
-                    "kitchen_counter",
-                    "lamp",
-                    "living_room",
-                    "lounge_chair",
-                    "office",
-                    "shelf",
-                    "trashcan",
-                    "undefined"
-                ]
+                "minLength": 1,
+                "maxLength": 150
             }
         },
-        "description": "speak, or tell the result of an action to a person in a waypoint. Use it when you have a result to tell. "
+        "description": "speak or tell something in a waypoint. To speak to a person, you need to find it first. You can refer to the result of a previous action using '<result>' or speaking a fact like datetime, day of the week, team affiliation, nationality, or your name."
     },
     {
         "name": "move_to",
         "args": {
-            "origin_waypoint": {
-                "type": "string",
-                "choices": [
-                    "TV_table",
-                    "coathanger",
-                    "coffee_table",
-                    "couch",
-                    "desk",
-                    "dinner_table",
-                    "dishwasher",
-                    "entrance",
-                    "exit",
-                    "hallway",
-                    "hallway_cabinet",
-                    "instruction_point",
-                    "kitchen",
-                    "kitchen_cabinet",
-                    "kitchen_counter",
-                    "lamp",
-                    "living_room",
-                    "lounge_chair",
-                    "office",
-                    "shelf",
-                    "trashcan",
-                    "undefined"
-                ]
-            },
             "destination_waypoint": {
                 "type": "string",
                 "choices": [

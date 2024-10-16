@@ -29,6 +29,7 @@ from llama_ros.langchain import ChatLlamaROS
 from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import datetime as dt
+import re
 
 
 class GpsrPlanner:
@@ -93,10 +94,8 @@ class GpsrPlanner:
     def send_prompt(self, prompt: str) -> Tuple[dict | str]:
 
         prompt = prompt + " "
-        prompt = prompt.replace(
-            " me ", " at the instruction point ").replace("to to", "to")
-        prompt = prompt.replace("them", "him")
-        prompt = prompt.strip()
+        prompt = re.sub(r'\b(?:tell|say)\s+me\b', lambda match: match.group(0).replace("me", "at the instruction point"), prompt, flags=re.IGNORECASE)
+        prompt = prompt.replace("to to", "to").replace("them", "him").strip()
         
         today_dt = dt.datetime.now()
         day_suffix = lambda day: 'th' if 11 <= day <= 13 else {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
