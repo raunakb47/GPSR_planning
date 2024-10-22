@@ -6,8 +6,7 @@
         "food",
         "dish",
         "toy",
-        "cleaning supply",
-        "undefined"
+        "cleaning supply"
     ],
     "items": [
         "orange juice",
@@ -48,7 +47,6 @@
         "tennis ball",
         "baseball",
         "cleanser",
-        "sponge",
-        "undefined"
+        "sponge"
     ]
 }

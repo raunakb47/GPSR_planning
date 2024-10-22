@@ -30,6 +30,7 @@ from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTempla
 from langchain_core.output_parsers import StrOutputParser
 import datetime as dt
 import re
+from itertools import product
 
 
 class GpsrPlanner:
@@ -44,10 +45,11 @@ class GpsrPlanner:
         self.waypoints_path = waypoints_path
 
         self.create_grammar()
-        self.load_waypoints()
+        print(self.grammar_schema)
+        # self.load_waypoints()
 
         self.llm = ChatLlamaROS(
-            temp=0.60,
+            temp=0.20,
             grammar_schema=self.grammar_schema
         )
 
@@ -55,13 +57,13 @@ class GpsrPlanner:
             SystemMessagePromptTemplate.from_template(
                 "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, "
                 "made up of the Rey Juan Carlos University of Madrid and the University of León. "
-                "You have to generate plans, sequence of actions, to achive goals. "
-                "Use the least number of actions as possible and try to speak as much as you can. "
-                "Use only the actions listed below. "
+                # "You have to generate plans, sequence of actions, to achive goals. "
+                # "Use the least number of actions as possible and try to speak as much as you can. "
+                # "Use only the actions listed below. "
                 
                 
-                "The format of the output of the plan should be a JSON object with the key 'actions' and a list of actions. "
-                "An action has {{explaination_of_next_actions, action}}, where explaination_of_next_actions you need to explain why you choose the action and action you output the action and its parameters. "
+                # "The format of the output of the plan should be a JSON object with the key 'actions' and a list of actions. "
+                # "An action has {{explaination_of_next_actions, action}}, where explaination_of_next_actions you need to explain why you choose the action and action you output the action and its parameters. "
 
                 # theorically better buy worse results
                 # "The format of the output of the plan should be {{explaination_of_next_actions, action}}[], "
@@ -69,14 +71,14 @@ class GpsrPlanner:
                 
                 "Actions are performed at waypoints. "
                 "Rooms, furniture and tables are considered as waypoints. "
-                "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
-                "Some action arguments may be unknown, if so, answer unknown. "
+                # "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
+                # "Some action arguments may be unknown, if so, answer unknown. "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
                 "You start at the instruction point. "
-                "\n\n"
+                # "\n\n"
 
-                "ACTIONS:\n"
-                "{actions_descriptions}"
+                # "ACTIONS:\n"
+                # "{actions_descriptions}"
             ),
             HumanMessagePromptTemplate.from_template(
                 "You are at the instruction point, generate a plan to achieve your goal: {prompt}"
@@ -112,6 +114,8 @@ class GpsrPlanner:
             "tomorrow": tomorrow,
             "time_h": time_h
         })
+        
+        print(response)
 
         return json.loads(response), prompt
 
@@ -127,36 +131,93 @@ class GpsrPlanner:
     def create_grammar(self) -> None:
         self.actions_descriptions = ""
         actions_refs = []
-        for a in self.robot_actions:
-            self.actions_descriptions += f"- {a['name']}: {a['description']}\n"
-            actions_refs.append({"$ref": f"#/definitions/{a['name']}"})
+        for robot_act in self.robot_actions:
+            # self.actions_descriptions += f"- {a['name']}: {a['description']}\n"
+            self.actions_descriptions += f"{robot_act['name']}, "
+            actions_refs.append({"$ref": f"#/definitions/{robot_act['name']}"})
 
         action_definitions = {}
-        for a in self.robot_actions:
+        for robot_act in self.robot_actions:
+            action_args = {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
 
-            required = [arg for arg in a["args"]]
-            properties = {}
+            if robot_act['arg_case'] == 'allOf' and len(robot_act['args'].keys()) != 0:                            
+                for arg in robot_act["args"]:
+                    action_args['properties'][arg] = {"type": robot_act["args"][arg]["type"]}
+                    action_args['required'].append(arg)
+                    if "choices" in robot_act["args"][arg]:
+                        action_args["properties"][arg]["enum"] = robot_act["args"][arg]["choices"]                
+                
+            elif robot_act['arg_case'] == 'anyOf' and robot_act['name'] == 'find_object':
+                action_args['oneOf'] = []
+                
+                item_list = ['specific_item', 'category']
+                size_list = ['size', 'weight']
+                
+                args_obj = {}
+                for arg in robot_act["args"]:
+                    args_obj[arg] = {"type": robot_act["args"][arg]["type"], "enum": robot_act["args"][arg]["choices"]}
+                
+                for item, size in product(item_list, size_list):
+                    action_args['oneOf'].append({
+                        "properties": {k: args_obj[k] for k in [item, size]},
+                        "required": []
+                    })
+                
+            elif robot_act['arg_case'] == 'anyOf':
+                for arg in robot_act["args"]:
+                    action_args['properties'][arg] = {"type": robot_act["args"][arg]["type"]}
+                    if "choices" in robot_act["args"][arg]:
+                        action_args["properties"][arg]["enum"] = robot_act["args"][arg]["choices"]
 
-            for arg in a["args"]:
-                properties[arg] = {"type": a["args"][arg]["type"]}
-
-                if "choices" in a["args"][arg]:
-                    properties[arg]["enum"] = a["args"][arg]["choices"]
-
-            action_definitions[a["name"]] = {
+            elif robot_act['arg_case'] == 'oneOf':
+                action_args['oneOf'] = []
+                del action_args['properties']
+                del action_args['required']
+                
+                for search_by_option in robot_act['args']['search_by']['choices']:
+                    option_obj = {
+                        "properties": {
+                            "search_by": {
+                                "const": search_by_option
+                            }
+                        },
+                        "required": ['search_by']
+                    }
+                    
+                    if search_by_option != 'none':
+                        option_obj['properties'][search_by_option] = {
+                            'type': robot_act['args'][search_by_option]['type'],
+                            'enum': robot_act['args'][search_by_option]['choices']
+                        }
+                        
+                    # idk if we should let this here
+                    if 'previously_found' in robot_act['args']:
+                        # option_obj["required"].append('previously_found')
+                        option_obj["properties"]['previously_found'] = {
+                            'type': 'boolean'
+                        }
+                        option_obj['required'].append(search_by_option)
+                
+                    action_args['oneOf'].append(option_obj)
+            
+            action_def = {
                 "type": "object",
                 "properties": {
                     "explaination_of_next_actions": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 200
                     },
-                    a["name"]: {
-                        "type": "object",
-                        "properties": properties,
-                        "required": required
-                    }
+                    robot_act['name']: action_args
                 },
-                "required": [a["name"], "explaination_of_next_actions"]
+                "required": ['explaination_of_next_actions', robot_act['name']]
             }
+            
+            action_definitions[robot_act["name"]] = action_def
+
 
         self.grammar_schema = json.dumps({
             "definitions": action_definitions,

@@ -61,20 +61,8 @@ class GpsrPlanningNode(Node):
             action_name = list(action.keys())[1]
             action_args = action[action_name]
 
-            if action_name == "find_person" and "unknown" != action_args["person_name"]:
+            if action_name == "find_person" and "name" == action_args["search_by"]:
                 action_name = "find_person_by_name"
-                        
-            if (action_name == "find_object" or action_name == "count_object") and "none" == action_args["object_type"]:
-                action_args["object_type"] = ""
-                        
-            if 'search_by' in action_args.keys() and action_args['search_by'] != 'none':
-                filter = action_args['search_by']
-                action_args.pop('search_by')
-                for key in action_args.keys():
-                    if key == 'search_by':  
-                        continue
-                    elif key != filter:
-                        action_args[key] = 'unknown'
                 
             action_element = bt_xml.createElement("SubTree")
             action_element.setAttribute(
@@ -82,7 +70,7 @@ class GpsrPlanningNode(Node):
             action_element.setAttribute("__shared_blackboard", "true")
 
             for arg_key in action_args:
-                arg_value = action_args[arg_key]
+                arg_value = str(action_args[arg_key])
 
                 blackboard_set = bt_xml.createElement("SetBlackboard")
                 blackboard_set.setAttribute("output_key", arg_key)

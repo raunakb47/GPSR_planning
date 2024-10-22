@@ -50,8 +50,7 @@
                     "tennis_ball",
                     "tomato_soup",
                     "tropical_juice",
-                    "tuna",
-                    "undefined"
+                    "tuna"
                 ]
             },
             "category": {
@@ -63,11 +62,11 @@
                     "food",
                     "fruit",
                     "snack",
-                    "toy",
-                    "undefined"
+                    "toy"
                 ]
             }
         },
+        "arg_case": "oneOf",
         "description": "count objects using either a category or a specific item in a waypoint. This action has a result to tell."
     },
     {
@@ -89,8 +88,7 @@
                     "raising_left",
                     "raising_right",
                     "pointing_left",
-                    "pointing_right",
-                    "undefined"
+                    "pointing_right"
                 ]
             },
             "body_posture": {
@@ -98,8 +96,7 @@
                 "choices": [
                     "sitting",
                     "standing",
-                    "lying",
-                    "undefined"
+                    "lying"
                 ]
             },
             "color": {
@@ -111,11 +108,11 @@
                     "white",
                     "red",
                     "orange",
-                    "gray",
-                    "undefined"
+                    "gray"
                 ]
             }
         },
+        "arg_case": "oneOf",
         "description": "count the number of people in a waypoint using either color or arm gesture or body posture or none of this parameters. This action has a result to tell."
     },
     {
@@ -126,8 +123,7 @@
                 "choices": [
                     "big",
                     "large",
-                    "small",
-                    "undefined"
+                    "small"
                 ]
             },
             "weight": {
@@ -135,8 +131,7 @@
                 "choices": [
                     "heavy",
                     "light",
-                    "thin",
-                    "undefined"
+                    "thin"
                 ]
             },
             "category": {
@@ -148,8 +143,7 @@
                     "food",
                     "fruit",
                     "snack",
-                    "toy",
-                    "undefined"
+                    "toy"
                 ]
             },
             "specific_item": {
@@ -193,16 +187,17 @@
                     "tennis_ball",
                     "tomato_soup",
                     "tropical_juice",
-                    "tuna",
-                    "undefined"
+                    "tuna"
                 ]
             }
         },
+        "arg_case": "anyOf",
         "description": "identify, look for, search for or find one object in a waypoint using a size or weight or or item name or category to which it belongs."
     },
     {
         "name": "pick_object",
         "args": {},
+        "arg_case": "allOf",
         "description": "get, fetch, grasp, pick, or take an object previously found in a waypoint. You will need to move after this action."
     },
     {
@@ -231,16 +226,17 @@
                     "lounge_chair",
                     "office",
                     "shelf",
-                    "trashcan",
-                    "undefined"
+                    "trashcan"
                 ]
             }
         },
+        "arg_case": "allOf",
         "description": "place, or put an object in a waypoint."
     },
     {
         "name": "offer_object",
         "args": {},
+        "arg_case": "allOf",
         "description": "deliver, offer, or bring an object to a person in a waypoint."
     },
     {
@@ -253,7 +249,6 @@
                     "arm_gesture",
                     "body_posture",
                     "name",
-                    "undefined",
                     "none"
                 ]
             },
@@ -266,8 +261,7 @@
                     "white",
                     "red",
                     "orange",
-                    "gray",
-                    "undefined"
+                    "gray"
                 ]
             },
             "arm_gesture": {
@@ -277,8 +271,7 @@
                     "raising_left",
                     "raising_right",
                     "pointing_left",
-                    "pointing_right",
-                    "undefined"
+                    "pointing_right"
                 ]
             },
             "body_posture": {
@@ -286,8 +279,7 @@
                 "choices": [
                     "sitting",
                     "standing",
-                    "lying",
-                    "undefined"
+                    "lying"
                 ]
             },
             "name": {
@@ -311,14 +303,14 @@
                     "Sara",
                     "Sophie",
                     "Susan",
-                    "William",
-                    "undefined"
+                    "William"
                 ]
             },
             "previously_found": {
                 "type": "boolean"
             }
         },
+        "arg_case": "oneOf",
         "description": "identify, locate, meet, look for, search for or find one person in a waypoint using either color or arm gesture or name or body posture or without defining any of these parameters. Can find an previously found person."
     },
     {
@@ -329,11 +321,11 @@
                 "choices": [
                     "body_posture",
                     "arm_gesture",
-                    "name",
-                    "undefined"
+                    "name"
                 ]
             }
         },
+        "arg_case": "allOf",
         "description": "describe or obtain the body posture or name or the arm gesture of a person in a waypoint. This action has a result to tell."
     },
     {
@@ -362,11 +354,11 @@
                     "lounge_chair",
                     "office",
                     "shelf",
-                    "trashcan",
-                    "undefined"
+                    "trashcan"
                 ]
             }
         },
+        "arg_case": "allOf",
         "description": "walk behind a person from a waypoint to another waypoint."
     },
     {
@@ -395,16 +387,17 @@
                     "lounge_chair",
                     "office",
                     "shelf",
-                    "trashcan",
-                    "undefined"
+                    "trashcan"
                 ]
             }
         },
+        "arg_case": "allOf",
         "description": "take, escort, lead, or guide a person from your location to a destination waypoint. Waypoints can be forniture or rooms."
     },
     {
         "name": "answer_quiz",
         "args": {},
+        "arg_case": "allOf",
         "description": "answer a quiz to a person in a waypoint."
     },
     {
@@ -416,6 +409,7 @@
                 "maxLength": 150
             }
         },
+        "arg_case": "allOf",
         "description": "speak or tell something in a waypoint. To speak to a person, you need to find it first. You can refer to the result of a previous action using '<result>' or speaking a fact like datetime, day of the week, team affiliation, nationality, or your name."
     },
     {
@@ -444,11 +438,11 @@
                     "lounge_chair",
                     "office",
                     "shelf",
-                    "trashcan",
-                    "undefined"
+                    "trashcan"
                 ]
             }
         },
+        "arg_case": "allOf",
         "description": "move from a waypoint to another waypoint. Don't use it if you are already in the waypoint."
     }
 ]
