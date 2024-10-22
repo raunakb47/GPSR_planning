@@ -9,6 +9,8 @@ import warnings
 import time
 from gpsr_msgs.srv import GeneratePlan
 from gpsr_demo.CommandGenerator.gpsr_commands import CommandGenerator 
+from pynput import keyboard
+from threading import Event
 
 class GPSRGenerator(Node):
     def __init__(self):
@@ -32,28 +34,58 @@ class GPSRGenerator(Node):
         self.generate_client = self.create_client(GeneratePlan, 'gpsr_planning')
         
         self.num_commands = 10
-        self.predef_commands = []
+        self.predef_commands = [
+            "tell me what is the heaviest dish on the desk"
+        ]
         
-    def send_batch(self):
-        for i in range(self.num_commands):
-            command = ''
-            if i < len(self.predef_commands):
-                command = self.predef_commands[i]
-            else:
-                command = self.generator.generate_command_start(cmd_category="")
-            
-            self.get_logger().info(f'Command: {command}')
+        self.command_event = Event()
+        self.finish_command = Event()
+        
+    def on_press(self, key):
+        self.command_event.wait()
+        
+        if key == keyboard.Key.esc:
+            self.get_logger().info('Exiting...')
+            self.finish_command.set()
+            return False
+        elif type(key) == keyboard.KeyCode and key.char == 'a':
+            self.get_logger().info(f'Command: {self.command}')
             curr_time = time.time()
-            _ = self.send_command(command)
+            _ = self.send_command(self.command)
             elapsed_time = time.time() - curr_time
             self.get_logger().info(f'Plan generated')
-            self.get_logger().info(f'Elapsed time: {elapsed_time}')
+            self.get_logger().info(f'Elapsed time: {elapsed_time:.2f} s\n')
             
+            self.finish_command.set()
+            self.finish_command.clear()
         
+    def send_batch(self):
+        self.get_logger().info('Press "a" to generate a command')
+        self.get_logger().info('Press "esc" to exit')
+        
+        listener = keyboard.Listener(on_press=self.on_press)
+        listener.start()
+
+        for i in range(self.num_commands):
+            self.command = ''
+            if i < len(self.predef_commands):
+                self.command = self.predef_commands[i]
+            else:
+                self.command = self.generator.generate_command_start(cmd_category="")
+                
+            self.command_event.set()
+            self.finish_command.wait()
+            
+            if not listener.running:
+                break
+            
+            self.command_event.clear()
+                    
     def send_command(self, command):
         self.generate_client.wait_for_service()
-        response = self.generate_client.call(GeneratePlan.Request(command=command))    
-        return response.bt_xml
+        future = self.generate_client.call_async(GeneratePlan.Request(command=command))
+        rclpy.spin_until_future_complete(self, future)
+        return future.result().bt_xml
     
     def read_data(self, file_path):
         with open(file_path, 'r') as file:
