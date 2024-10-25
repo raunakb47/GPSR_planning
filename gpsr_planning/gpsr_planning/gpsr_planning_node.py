@@ -55,6 +55,7 @@ class GpsrPlanningNode(Node):
         bt_element.setAttribute("ID", "BehaviorTree")
 
         sequence_element = bt_xml.createElement("Sequence")
+        include_set = set()
 
         for action in plan["actions"]:
 
@@ -63,6 +64,9 @@ class GpsrPlanningNode(Node):
 
             if action_name == "find_person" and "name" == action_args["search_by"]:
                 action_name = "find_person_by_name"
+            
+            if action_name == "describe_person" and "interest" == 'name':
+                action_name = "describe_person_by_name"
                 
             action_element = bt_xml.createElement("SubTree")
             action_element.setAttribute(
@@ -78,11 +82,13 @@ class GpsrPlanningNode(Node):
                 sequence_element.appendChild(blackboard_set)
 
             sequence_element.appendChild(action_element)
+            include_set.add(action_name)
 
-            include = bt_xml.createElement("include")
-            include.setAttribute(
-                "path", f"{ament_index_python.get_package_share_directory('gpsr_planning')}/bt_xml/{action_name}.xml")
-            root_element.appendChild(include)
+        for include in include_set:
+            include_element = bt_xml.createElement("include")
+            include_element.setAttribute(
+                "path", f"{ament_index_python.get_package_share_directory('gpsr_planning')}/bt_xml/{include}.xml")
+            root_element.appendChild(include_element)
 
         bt_element.appendChild(sequence_element)
         root_element.appendChild(bt_element)

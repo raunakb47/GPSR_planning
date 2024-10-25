@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="DescribePersonTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="DescribePersonTree">
+        <Sequence>
+            <RetryUntilSuccessful num_attempts="10000">
+                <Sequence>
+                    <ReactiveSequence>
+                        <RetryUntilSuccessful num_attempts="-1">
+                            <Condition ID="IsDetected" confidence="0.6" interest="person" frames=""
+                                max_depth="3" max_entities="1" order="depth_nearest" />
+                        </RetryUntilSuccessful>
+                        <Action ID="FilterEntity" frame="person_0" lambda="0.05" />
+                        <Action ID="Speak" say_text="What's your name?" />
+                    </ReactiveSequence>
+                    <ReactiveSequence>
+                        <RetryUntilSuccessful num_attempts="-1">
+                            <Condition ID="IsDetected" confidence="0.6" interest="person" frames=""
+                                max_depth="3" max_entities="1" order="depth_nearest" />
+                        </RetryUntilSuccessful>
+                        <Action ID="FilterEntity" frame="person_0" lambda="0.05" />
+                    </ReactiveSequence>
+
+                    <ReactiveSequence>
+                        <RetryUntilSuccessful num_attempts="-1">
+                            <Condition ID="IsDetected" confidence="0.6" interest="person" frames=""
+                                max_depth="3" max_entities="1" order="depth_nearest" />
+                        </RetryUntilSuccessful>
+                        <Action ID="FilterEntity" frame="person_0" lambda="0.05" />
+                        <Action ID="Listen" listen_text="{text_value}" />
+                    </ReactiveSequence>
+
+                    <ReactiveSequence>
+                        <RetryUntilSuccessful num_attempts="-1">
+                            <Condition ID="IsDetected" confidence="0.6" interest="person" frames=""
+                                max_depth="3" max_entities="1" order="depth_nearest" />
+                        </RetryUntilSuccessful>
+                        <Action ID="FilterEntity" frame="person_0" lambda="0.05" />
+                        <Action ID="Query" text="{text_value}" intention="name"
+                            intention_value="{result}" />
+                    </ReactiveSequence>
+
+                    <ReactiveSequence>
+                        <RetryUntilSuccessful num_attempts="-1">
+                            <Condition ID="IsDetected" confidence="0.6" interest="person" frames=""
+                                max_depth="3" max_entities="1" order="depth_nearest" />
+                        </RetryUntilSuccessful>
+                        <Action ID="FilterEntity" frame="person_0" lambda="0.05" />
+                        <Action ID="Speak" say_text="So you are" param="{result}" />
+                        <Action ID="Speak" say_text="Please say yes or no" />
+                    </ReactiveSequence>
+
+                    <ReactiveSequence>
+                        <RetryUntilSuccessful num_attempts="-1">  
+                            <Condition ID="IsDetected" confidence="0.6" interest="person" frames="" max_depth="3" max_entities="1" order="depth_nearest"/>
+                        </RetryUntilSuccessful>
+                        <Action ID="FilterEntity" frame="person_0" lambda="0.05"/> 
+                        <Action ID="DialogConfirmation" />
+                    </ReactiveSequence>
+                </Sequence>
+            </RetryUntilSuccessful>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="IsDetected">
+            <input_port name="cam_frame" />
+            <input_port name="confidence" />
+            <input_port name="person_id" />
+            <input_port name="interest" />
+            <input_port name="max_depth" />
+            <input_port name="max_entities" />
+            <input_port name="order" />
+            <input_port name="best_detection" />
+            <input_port name="frames" />
+        </Condition>
+        <Action ID="Listen">
+            <output_port name="listen_text">What the robot understood</output_port>
+        </Action>
+        <Action ID="Query">
+            <input_port default="name" name="Intention"/>
+            <output_port name="intention_value"/>
+            <input_port name="text">what human said</input_port>
+        </Action>
+        <Action ID="Speak">
+            <input_port name="say_text" />
+            <input_port name="param" />
+        </Action>
+        <Action ID="ExtractPersonDescription">
+            <input_port default="person" name="person_id"></input_port>
+            <input_port name="interest"></input_port>
+            <output_port name="description"></output_port>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
