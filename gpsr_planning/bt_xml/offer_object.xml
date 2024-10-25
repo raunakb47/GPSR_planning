@@ -3,7 +3,7 @@
     <!-- ////////// -->
     <BehaviorTree ID="OfferObjectTree">
         <Sequence>
-            <Action ID="MoveTo" is_truncated="true"  distance_tolerance="1.2" tf_frame="{location}"/>
+            <!-- <Action ID="MoveTo" is_truncated="true"  distance_tolerance="1.2" tf_frame="{location}"/> -->
             <Action ID="MoveToPredefined" pose="offer" group_name="arm_torso"/>
             <Action ID="Speak" param="" say_text="please take the object from my gripper"/>
             <Delay delay_msec="140">

@@ -9,14 +9,14 @@
                     <Condition ID="IsDetected" cam_frame="head_front_camera_rgb_optical_frame"
                                                         confidence="0.6"
                                                         frames="{frames}"
-                                                        interest="{object_type}"
+                                                        interest="{specific_item}"
                                                         max_depth="5"
                                                         max_entities="15"
                                                         order="depth"
                                                         best_detection="{best_detection}"/>
-                    <Action ID="ExtractObjectsFromScene" interest_class="{object_type}" detected_objects="{detected_objects}" objects_count="{result}"/>
+                    <Action ID="ExtractObjectsFromScene" interest_class="{specific_item}" detected_objects="{detected_objects}" objects_count="{result}"/>
                     <Action ID="GenerateTextFromObjects" detected_objects="{detected_objects}" output_text="{out_msg}" selected_object="{selected_object}" />
-                    <Action ID="FilterObject" frames="{frames}" class="{class}" objects_count="{result}"/>
+                    <Action ID="FilterObject" frames="{frames}" class="{category}" objects_count="{result}"/>
                 </Sequence>
             </RetryUntilSuccessful>
             <Action ID="Speak" say_text="I am detecting " param="{result}"/>
