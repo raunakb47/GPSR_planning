@@ -14,6 +14,7 @@ find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(bt_nodes REQUIRED)
 find_package(gpsr_msgs REQUIRED)
 find_package(rclcpp_cascade_lifecycle REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -24,6 +25,7 @@ set(dependencies
   bt_nodes
   gpsr_msgs
   rclcpp_cascade_lifecycle
+  ament_index_cpp
 )
 
 # follow_person test
