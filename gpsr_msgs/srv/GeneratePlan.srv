@@ -2,3 +2,4 @@ string command
 ---
 string bt_xml
 string[] action_list
+string plan_json

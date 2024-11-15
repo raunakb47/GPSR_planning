@@ -41,6 +41,7 @@ class GpsrPlanningNode(Node):
             response.action_list.append(action_name)
 
         response.bt_xml = self.action_parser(plan)
+        response.plan_json = json.dumps(plan, indent=4)
         self.get_logger().info(response.bt_xml)
 
         return response
@@ -74,6 +75,9 @@ class GpsrPlanningNode(Node):
             action_element.setAttribute("__shared_blackboard", "true")
 
             for arg_key in action_args:
+                if arg_key == "search_by":
+                    continue
+                
                 arg_value = str(action_args[arg_key])
 
                 blackboard_set = bt_xml.createElement("SetBlackboard")

@@ -48,7 +48,7 @@ class GpsrPlanner:
         # self.load_waypoints()
 
         self.llm = ChatLlamaROS(
-            temp=0.70,
+            temp=0.60,
             grammar_schema=self.grammar_schema
         )
         
@@ -59,25 +59,27 @@ class GpsrPlanner:
                 "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, "
                 "made up of the Rey Juan Carlos University of Madrid and the University of León. "
                 
-                + ("You have to generate plans, sequence of actions, to achive goals. "
-                "Use the least number of actions as possible and try to speak as much as you can. "
+                + ("You have to generate plans, sequence of actions, to achieve goals. "
+                # "Use the least number of actions as possible and try to speak as much as you can. " # Limiting the number of actions can lead to worse results
                 "Use only the actions listed below. " if not is_lora_added else "")
                 
-                + ("The format of the output of the plan should be a JSON object with the key 'actions' and a list of actions. "
-                "An action has {{explaination_of_next_actions, action}}, where explaination_of_next_actions you need to explain why "
-                "you choose the action and action you output the action and its parameters. " if not is_lora_added else '') +
+                + ("The output should be a JSON object with a key 'actions' containing a list of actions. "
+                   "Each action has 'explanation_of_next_actions', explaining the reason for the action, "
+                   "and an action-specific key (e.g. find_object) with its parameters. "
+                   "Only output the JSON object without any additional explanatory text or steps. " 
+                if not is_lora_added else '') +
 
-                # theorically better buy worse results
-                # "The format of the output of the plan should be {{explaination_of_next_actions, action}}[], "
-                # "where explaination_of_next_actions is a string with an explanation on why you choose the action, the action object key is the action name and the value is an object with the action parameters."
+                # theoretically better but worse results
+                # "The format of the output of the plan should be {{explanation_of_next_actions, action}}[], "
+                # "where explanation_of_next_actions is a string with an explanation on why you choose the action, the action object key is the action name and the value is an object with the action parameters."
                 
-                "Actions are performed at waypoints. "
-                "Rooms, furniture and tables are considered as waypoints. "
+                "Actions are performed at waypoints, so move to the waypoints to perform actions. "
+                "Rooms, furniture and tables are considered as waypoints and there are no need to find them. "
                 # "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
                 # "Answer only to the arguments you are asked for. "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
-                "You start at the instruction point. "
-                # "\n\n"
+                # "You start at the instruction point. "
+                "\n\n"
 
                 + ("ACTIONS:\n"
                 "{actions_descriptions}" if not is_lora_added else '')
@@ -207,13 +209,13 @@ class GpsrPlanner:
             action_def = {
                 "type": "object",
                 "properties": {
-                    "explaination_of_next_actions": {
+                    "explanation_of_next_actions": {
                         "type": "string",
                         "maxLength": 200
                     },
                     robot_act['name']: action_args
                 },
-                "required": ['explaination_of_next_actions', robot_act['name']]
+                "required": ['explanation_of_next_actions', robot_act['name']]
             }
             
             action_definitions[robot_act["name"]] = action_def
