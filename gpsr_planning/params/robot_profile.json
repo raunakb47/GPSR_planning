@@ -1,0 +1,180 @@
+{
+    "profiles": [
+      {
+        "name": "count_object",
+        "Quality Attribute(s)": [
+          "Object type is recognized correctly"
+        ],
+        "Robot Constraints": [
+          "Able to recognize and count objects of same type even with different visual attributes (e.g colour)"
+        ],
+        "Operational Constraints": [
+          "Ambient lighting is sufficient for object detection"
+        ]
+      },
+      {
+        "name": "count_people",
+        "Quality Attribute(s)": [
+          "Correct identification of people"
+        ],
+        "Robot Constraints": [
+          "Dress color/gesture/pose of the person is in defined types"
+        ],
+        "Operational Constraints": [
+          "Ambient lighting is enough for image and feature recognition"
+        ]
+      },
+      {
+        "name": "find_object",
+        "Quality Attribute(s)": [
+          "Correct identification of object property"
+        ],
+        "Robot Constraints": [
+          "Able to measure object identification property",
+          "Able to categorize object"
+        ],
+        "Operational Constraints": [
+          "Object is within the known item types"
+        ]
+      },
+      {
+        "name": "pick_object",
+        "Quality Attribute(s)": [
+          "Object is correctly identified",
+          "Object is held properly with correct grip"
+        ],
+        "Robot Constraints": [
+          "Able to adjust grip and pressure for different object types"
+        ],
+        "Operational Constraints": [
+          "Ambient lighting is sufficient for object detection"
+        ]
+      },
+      {
+        "name": "place_object",
+        "Quality Attribute(s)": [
+          "Placement location is correctly identified"
+        ],
+        "Robot Constraints": [
+          "Able to navigate autonomously to the location waypoint",
+          "Able to assume proper pose to place and orient object at desired location",
+          "Object is within payload capacity of robot",
+          "Camera can resolve objects well enough for identification"
+        ],
+        "Operational Constraints": [
+          "Location is a reachable area within robot’s capability"
+        ]
+      },
+      {
+        "name": "offer_object",
+        "Quality Attribute(s)": [
+          "Correct identification of object",
+          "Correct identification of person’s location"
+        ],
+        "Robot Constraints": [
+          "Able to identify and grasp object",
+          "Object is within payload capacity of robot",
+          "Camera can resolve objects well enough for identification",
+          "Able to perceive depth i.e distance to object for precise grasping"
+        ],
+        "Operational Constraints": [
+          "Location is a reachable area within robot’s capability"
+        ]
+      },
+      {
+        "name": "find_person",
+        "Quality Attribute(s)": [
+          "Person at the waypoint is correctly identified"
+        ],
+        "Robot Constraints": [
+          "Waypoint is a recognized label",
+          "Dress colour / gesture / pose of the person is in defined types"
+        ],
+        "Operational Constraints": [
+          "Ambient lighting is enough for image and feature recognition"
+        ]
+      },
+      {
+        "name": "describe_person",
+        "Quality Attribute(s)": [
+          "Correct identification of person’s description details in scope"
+        ],
+        "Robot Constraints": [
+          "Able to determine the posture and/or gesture from the person",
+          "Able to comprehend the posture and/or gesture from the person",
+          "Able to communicate to get the person’s name"
+        ],
+        "Operational Constraints": [
+          "Ambient lighting and sound within acceptable range"
+        ]
+      },
+      {
+        "name": "follow_person",
+        "Quality Attribute(s)": [
+          "Tracking the correct person until final location is reached"
+        ],
+        "Robot Constraints": [
+          "Able to locate person based on recognition feature",
+          "Location waypoints are recognized and localized",
+          "Navigation plan not in conflict with the person’s chosen path"
+        ],
+        "Operational Constraints": [
+          "The person stays within range of camera"
+        ]
+      },
+      {
+        "name": "guide_person",
+        "Quality Attribute(s)": [
+          "Able to correctly establish path to final location",
+          "Maintain good pace"
+        ],
+        "Robot Constraints": [
+          "Able to identify person by feature in initial location",
+          "Able to maintain a good speed to be followed by",
+          "Able to correctly recognize destination location",
+          "Able to establish most efficient path between the two locations"
+        ],
+        "Operational Constraints": [
+          "Person is at the specified start location"
+        ]
+      },
+      {
+        "name": "answer_quiz",
+        "Quality Attribute(s)": [
+          "Correct response to give question"
+        ],
+        "Robot Constraints": [
+          "Able to locate person",
+          "Able to understand the question",
+          "Able to generate response to the question"
+        ],
+        "Operational Constraints": [
+          "Ambient noise low enough to clearly register voice"
+        ]
+      },
+      {
+        "name": "speak",
+        "Quality Attribute(s)": [
+          "Clear communication to the correct person"
+        ],
+        "Robot Constraints": [
+          "Able to identify person at given location"
+        ],
+        "Operational Constraints": [
+          "Ambient noise low enough for conversation"
+        ]
+      },
+      {
+        "name": "move_to",
+        "Quality Attribute(s)": [
+          "Navigation to and from correct locations"
+        ],
+        "Robot Constraints": [
+          "Able to localize start and destination locations"
+        ],
+        "Operational Constraints": [
+          "Locations are recognized waypoints"
+        ]
+      }
+    ]
+  }
