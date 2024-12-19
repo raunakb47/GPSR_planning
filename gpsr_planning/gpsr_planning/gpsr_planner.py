@@ -34,8 +34,12 @@ from itertools import product
 
 class GpsrPlanner:
 
-    def __init__(self,
-                robot_actions_path: str = "robot_actions.json", waypoints_path: str = "waypoints.json", profile_path: str = "robot_profile.json"):
+    def __init__(
+            self,
+            robot_actions_path: str = "robot_actions.json",
+            waypoints_path: str = "waypoints.json",
+            profile_path: str = "robot_profile.json"
+            ):
         self.robot_actions = json.load(open(robot_actions_path))
         self.profile = json.load(open(profile_path))            # profile_path is the path to the action-specific NFR profile json file
         self.waypoints_path = waypoints_path
@@ -62,7 +66,8 @@ class GpsrPlanner:
                 "made up of the Rey Juan Carlos University of Madrid and the University of León. "
                 
                 + ("You have to generate plans, sequence of actions, to achieve goals. "
-                "Use only the actions listed below.\n\n"
+                # "Use the least number of actions as possible and try to speak as much as you can. " # Limiting the number of actions can lead to worse results
+                "Use only the actions listed below.\n" 
                 f"ACTIONS:\n{actions_descriptions}" if not is_lora_added else "")
                 
                 + ("The output should be a JSON object with a key 'actions' containing a list of actions. "
@@ -71,9 +76,16 @@ class GpsrPlanner:
                    "Only output the JSON object without any additional explanatory text or steps. " 
                 if not is_lora_added else '') +
 
+                # theoretically better but worse results
+                # "The format of the output of the plan should be {{explanation_of_next_actions, action}}[], "
+                # "where explanation_of_next_actions is a string with an explanation on why you choose the action, the action object key is the action name and the value is an object with the action parameters."
+
                 "Actions are performed at waypoints, so move to the waypoints to perform actions. "
                 "Rooms, furniture, and tables are considered as waypoints and there is no need to find them. "
+                # "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
+                # "Answer only to the arguments you are asked for. "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
+                # "You start at the instruction point. "
                 "\n\n"
             ),
             HumanMessagePromptTemplate.from_template(
