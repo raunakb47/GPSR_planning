@@ -35,26 +35,43 @@ from itertools import product
 class GpsrPlanner:
 
     def __init__(self,
-                robot_actions_path: str = "robot_actions.json", waypoints_path: str = "waypoints.json", profile_path: str = "robot_profile.json"):
+                robot_actions_path: str = "robot_actions.json",
+                waypoints_path: str = "waypoints.json", 
+                nfr_profiles_path: str = "nfr_profiles.json",   # Added NFR profiles path
+                ) -> None:
+        
         self.robot_actions = json.load(open(robot_actions_path))
-        self.profile = json.load(open(profile_path))            # profile_path is the path to the action-specific NFR profile json file
         self.waypoints_path = waypoints_path
 
+        # Load NFR profiles and select the specified one
+        self.nfr_profiles = json.load(open(nfr_profiles_path))["profiles"]
+        
         self.create_grammar()
         # self.load_waypoints()
 
+        # Initialize LLM
         self.llm = ChatLlamaROS(
             temp=0.60,
             grammar_schema=self.grammar_schema
         )
-        
+
         is_lora_added = False
 
-        # Filter actions based on profile capabilities
-        profile_actions = [action for action in self.robot_actions if action['name'] in self.profile.get('capabilities', [])]
+        # Build enhanced actions_descriptions with NFR constraints for all actions
+        self.actions_descriptions_with_nfr = ""
+        for robot_act in self.robot_actions:
+            # Find matching NFR profile
+            profile = next((p for p in self.nfr_profiles if p["name"] == robot_act["name"]), None)
+            if profile:
+                nfr_info = (
+                    f" (Quality Attributes: {', '.join(profile['Quality Attribute(s)'])}; "
+                    f"Robot Constraints: {', '.join(profile['Robot Constraints'])}; "
+                    f"Operational Constraints: {', '.join(profile['Operational Constraints'])})"
+                )
+            else:
+                nfr_info = " (No NFR profile available)"
+            self.actions_descriptions_with_nfr += f"- {robot_act['name']}: {robot_act['description']}{nfr_info}\n"
 
-        # Create action descriptions dynamically based on profile
-        actions_descriptions = "\n".join([f"- {action['name']}: {action['description']}" for action in profile_actions])
 
         chat_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
@@ -62,8 +79,7 @@ class GpsrPlanner:
                 "made up of the Rey Juan Carlos University of Madrid and the University of León. "
                 
                 + ("You have to generate plans, sequence of actions, to achieve goals. "
-                "Use only the actions listed below.\n\n"
-                f"ACTIONS:\n{actions_descriptions}" if not is_lora_added else "")
+                "Use only the actions listed below. "  if not is_lora_added else "")
                 
                 + ("The output should be a JSON object with a key 'actions' containing a list of actions. "
                    "Each action has 'explanation_of_next_actions', explaining the reason for the action, "
@@ -75,6 +91,9 @@ class GpsrPlanner:
                 "Rooms, furniture, and tables are considered as waypoints and there is no need to find them. "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
                 "\n\n"
+
+                + ("ACTIONS:\n"
+                "{actions_descriptions}" if not is_lora_added else '')
             ),
             HumanMessagePromptTemplate.from_template(
                 "You are at the instruction point, generate a plan to achieve your goal: {prompt}"
@@ -82,7 +101,6 @@ class GpsrPlanner:
         ])
 
         
-
         # create a chain with the llm and the prompt template
         self.chain = chat_prompt_template | self.llm | StrOutputParser()
 
@@ -104,7 +122,7 @@ class GpsrPlanner:
 
         response = self.chain.invoke({
             "prompt": prompt,
-            "actions_descriptions": self.actions_descriptions[:-1],
+            "actions_descriptions": self.actions_descriptions_with_nfr[:-1],  # Use NFR-enhanced descriptions
             "day": day,
             "tomorrow": tomorrow,
             "time_h": time_h
@@ -132,11 +150,12 @@ class GpsrPlanner:
 
         action_definitions = {}
         for robot_act in self.robot_actions:
-            action_args = {
-                "type": "object",
-                "properties": {},
-                "required": []
-            }
+            if robot_act["name"] == self.selected_profile["name"]:
+                action_args = {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
 
             if robot_act['arg_case'] == 'allOf' and len(robot_act['args'].keys()) != 0:                            
                 for arg in robot_act["args"]:
