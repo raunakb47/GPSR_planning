@@ -87,9 +87,16 @@ class GpsrPlanner:
                    "Only output the JSON object without any additional explanatory text or steps. " 
                 if not is_lora_added else '') +
 
+                # theoretically better but worse results
+                # "The format of the output of the plan should be {{explanation_of_next_actions, action}}[], "
+                # "where explanation_of_next_actions is a string with an explanation on why you choose the action, the action object key is the action name and the value is an object with the action parameters."
+
                 "Actions are performed at waypoints, so move to the waypoints to perform actions. "
                 "Rooms, furniture, and tables are considered as waypoints and there is no need to find them. "
+                # "Use the move_to action before each action that requires changing the waypoint and remember your current waypoint. "
+                # "Answer only to the arguments you are asked for. "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
+                # "You start at the instruction point. "
                 "\n\n"
 
                 + ("ACTIONS:\n"
