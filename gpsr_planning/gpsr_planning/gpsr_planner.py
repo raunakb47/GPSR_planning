@@ -79,7 +79,7 @@ class GpsrPlanner:
                 "made up of the Rey Juan Carlos University of Madrid and the University of León. "
                 
                 + ("You have to generate plans, sequence of actions, to achieve goals. "
-                "Use only the actions listed below. "  if not is_lora_added else "")
+                "Use only the actions listed below, respecting their associated constraints.  "  if not is_lora_added else "")  # MODIFIED: Added "respecting their associated constraints"
                 
                 + ("The output should be a JSON object with a key 'actions' containing a list of actions. "
                    "Each action has 'explanation_of_next_actions', explaining the reason for the action, "
