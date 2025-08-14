@@ -26,95 +26,90 @@ class GpsrPlanner:
         # Load NFR profiles
         self.nfr_profiles = json.load(open(nfr_profiles_path))["profiles"]
 
-        # Load allowed entities for prompt constraints
-        with open(self.objects_path, 'r') as f:
-            obj_json = json.load(f)
-            self.objects = sorted([o.replace(" ", "_") for o in obj_json['items']])
-            self.categories = sorted([c.replace(" ", "_") for c in obj_json['categories']])
-
-        with open(self.names_path, 'r') as f:
-            names_json = json.load(f)
-            self.names = sorted(names_json['names'])
-
-        with open(self.waypoints_path, 'r') as f:
-            wp_json = json.load(f)
-            self.waypoints = []
-            for ele in wp_json:
-                self.waypoints.append(ele['room'])
-                self.waypoints.extend(ele['locations'])
-            self.waypoints = sorted([w.replace(" ", "_") for w in self.waypoints])
-
-        # Build string representations for the prompt
-        self.objects_str = ", ".join(self.objects)
-        self.categories_str = ", ".join(self.categories)
-        self.names_str = ", ".join(self.names)
-        self.waypoints_str = ", ".join(self.waypoints)
+        # Load allowed entities for grammar (already used), but skip full lists in prompt to reduce length
+        # Summaries for prompt if needed
+        self.objects_summary = "Standard YCB objects (e.g., apple, banana, cup; full list per RoboCup@Home rules)"
+        self.categories_summary = "Standard categories (e.g., food, tools; full list per rules)"
+        self.names_summary = "Common names (e.g., Alice, Bob; full list per rules)"
+        self.waypoints_summary = "Arena waypoints (e.g., kitchen, table; full list per rules)"
 
         self.create_grammar()
-        # self.load_waypoints()  # Not needed anymore, as waypoints are loaded above
 
-        # Initialize LLM with lower temperature for less creativity/hallucinations
+        # Initialize LLM with low temperature
         self.llm = ChatLlamaROS(
-            temp=0.30,  # Reduced from 0.60 to minimize hallucinations
+            temp=0.30,
             grammar_schema=self.grammar_schema
         )
 
         is_lora_added = False
 
-        # Build enhanced actions_descriptions with NFR constraints for all actions
-        self.actions_descriptions_with_nfr = ""
+        # Build concise actions_descriptions (without full NFR appended to each)
+        self.actions_descriptions = ""
         for robot_act in self.robot_actions:
-            # Find matching NFR profile
-            profile = next((p for p in self.nfr_profiles if p["name"] == robot_act["name"]), None)
-            if profile:
-                nfr_info = (
-                    f" (Quality Attributes: {', '.join(profile['Quality Attribute(s)'])}; "
-                    f"Robot Constraints: {', '.join(profile['Robot Constraints'])}; "
-                    f"Operational Constraints: {', '.join(profile['Operational Constraints'])})"
-                )
-            else:
-                nfr_info = " (No NFR profile available)"
-            self.actions_descriptions_with_nfr += f"- {robot_act['name']}: {robot_act['description']}{nfr_info}\n"
+            self.actions_descriptions += f"- {robot_act['name']}: {robot_act['description']}\n"
 
-        chat_prompt_template = ChatPromptTemplate.from_messages([
+        # Build concise NFR summary section
+        self.nfr_summary = "NFR PROFILES (apply relevant constraints to actions):\n"
+        for profile in self.nfr_profiles:
+            self.nfr_summary += (
+                f"- {profile['name']}: Quality: {', '.join(profile['Quality Attribute(s)'])}; "
+                f"Robot Constraints: {', '.join(profile['Robot Constraints'])}; "
+                f"Operational Constraints: {', '.join(profile['Operational Constraints'])}\n"
+            )
+
+        # First chain: Generate base functional plan (shorter prompt, no full NFR or lists)
+        base_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 "You are a robot named Tiago participating in the Robocup with the Gentlebots team from Spain, "
                 "made up of the Rey Juan Carlos University of Madrid and the University of León. "
 
-                + ("You have to generate plans, sequence of actions, to achieve goals. "
-                   "Use only the actions listed below, respecting their associated constraints. "
-                   "Do not invent new actions, objects, categories, names, or waypoints. "
-                   "For each action, ensure it respects the Quality Attributes, Robot Constraints, and Operational Constraints. "
-                   "If necessary, add additional actions (e.g., checks, fallbacks, or verifications) to satisfy the NFR constraints without inventing new elements. " if not is_lora_added else "")
+                + ("You have to generate a base plan: sequence of actions to achieve goals. "
+                   "Use only the actions listed below. Do not invent new actions or parameters. "
+                   "Parameters must strictly match the robot's capabilities and environment (e.g., objects, waypoints). " if not is_lora_added else "")
 
                 + ("The output should be a JSON object with a key 'actions' containing a list of actions. "
-                   "Each action has 'explanation_of_next_actions', explaining the reason for the action (including how it addresses NFR if applicable), "
+                   "Each action has 'explanation_of_next_actions', explaining the reason for the action, "
                    "and an action-specific key (e.g., find_object) with its parameters. "
-                   "Only output the JSON object without any additional explanatory text or steps. "
+                   "Only output the JSON object without any additional text. "
                 if not is_lora_added else '')
 
-                + "Actions are performed at waypoints, so move to the waypoints to perform actions. "
-                "Rooms, furniture, and tables are considered as waypoints and there is no need to find them. "
+                + "Actions are performed at waypoints, so move to waypoints as needed. "
+                "Rooms, furniture, and tables are waypoints (no need to find them). "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
                 "\n\n"
 
                 + ("ACTIONS:\n"
                 "{actions_descriptions}" if not is_lora_added else '')
 
-                + "\nAllowed items (objects): {objects_str}\n"
-                "Allowed categories: {categories_str}\n"
-                "Allowed names: {names_str}\n"
-                "Allowed waypoints (locations): {waypoints_str}\n"
-                "When choosing parameters for actions, ONLY use values from these allowed lists above. "
-                "Stick strictly to the RoboCup@Home environment and Tiago's capabilities."
+                + "\nStick to allowed parameters: Objects: {objects_summary}; Categories: {categories_summary}; "
+                "Names: {names_summary}; Waypoints: {waypoints_summary}. "
+                "The grammar enforces valid choices—do not deviate."
             ),
             HumanMessagePromptTemplate.from_template(
-                "You are at the instruction point, generate a plan to achieve your goal: {prompt}"
+                "You are at the instruction point, generate a base plan for: {prompt}"
             )
         ])
 
-        # create a chain with the llm and the prompt template
-        self.chain = chat_prompt_template | self.llm | StrOutputParser()
+        self.base_chain = base_prompt_template | self.llm | StrOutputParser()
+
+        # Second chain: Refine with NFR (input base plan, apply constraints)
+        refine_prompt_template = ChatPromptTemplate.from_messages([
+            SystemMessagePromptTemplate.from_template(
+                "Refine the base plan by incorporating NFR constraints. "
+                "Add checks, fallbacks, or verifications as needed to satisfy NFR without inventing new elements. "
+                "Use only existing actions and valid parameters. "
+
+                + ("Output the refined JSON plan in the same format. "
+                   "Update explanations to include NFR reasoning if applicable. " if not is_lora_added else '')
+
+                + "\n{nfr_summary}"
+            ),
+            HumanMessagePromptTemplate.from_template(
+                "Base plan: {base_plan}\nRefine for goal: {prompt}"
+            )
+        ])
+
+        self.refine_chain = refine_prompt_template | self.llm | StrOutputParser()
 
     def cancel(self) -> None:
         self.llm.cancel()
@@ -132,36 +127,39 @@ class GpsrPlanner:
         time_h = today_dt.strftime("%H:%M")
         tomorrow = (today_dt + dt.timedelta(days=1)).strftime("%A")
 
-        response = self.chain.invoke({
+        # Step 1: Generate base plan
+        base_response = self.base_chain.invoke({
             "prompt": prompt,
-            "actions_descriptions": self.actions_descriptions_with_nfr[:-1],  # Use NFR-enhanced descriptions
-            "objects_str": self.objects_str,
-            "categories_str": self.categories_str,
-            "names_str": self.names_str,
-            "waypoints_str": self.waypoints_str,
+            "actions_descriptions": self.actions_descriptions[:-1],
+            "objects_summary": self.objects_summary,
+            "categories_summary": self.categories_summary,
+            "names_summary": self.names_summary,
+            "waypoints_summary": self.waypoints_summary,
             "day": day,
             "tomorrow": tomorrow,
             "time_h": time_h
         })
 
-        print(response)
+        base_plan = json.loads(base_response)
 
-        return json.loads(response), prompt
+        # Step 2: Refine with NFR
+        refined_response = self.refine_chain.invoke({
+            "base_plan": json.dumps(base_plan),
+            "prompt": prompt,
+            "nfr_summary": self.nfr_summary
+        })
 
-    def load_waypoints(self) -> None:
-        # Deprecated, as waypoints are loaded in __init__
-        pass
+        print(refined_response)
+
+        return json.loads(refined_response), prompt
 
     def create_grammar(self) -> None:
-        self.actions_descriptions = ""
         actions_refs = []
         for robot_act in self.robot_actions:
-            self.actions_descriptions += f"- {robot_act['name']}: {robot_act['description']}\n"
             actions_refs.append({"$ref": f"#/definitions/{robot_act['name']}"})
 
         action_definitions = {}
         for robot_act in self.robot_actions:
-            # Always define action_args base
             action_args = {
                 "type": "object",
                 "properties": {},
@@ -218,9 +216,7 @@ class GpsrPlanner:
                             'enum': robot_act['args'][search_by_option]['choices']
                         }
 
-                    # idk if we should let this here
                     if 'previously_found' in robot_act['args']:
-                        # option_obj["required"].append('previously_found')
                         option_obj["properties"]['previously_found'] = {
                             'type': 'boolean'
                         }
