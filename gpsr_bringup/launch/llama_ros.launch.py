@@ -12,8 +12,8 @@ def generate_launch_description():
             n_threads=-1,
             n_predict=2000,
 
-            # model_repo="cstr/Spaetzle-v60-7b-Q4_0-GGUF",
-            # model_filename="Spaetzle-v60-7b_Q4_0.gguf",
+            model_repo="cstr/Spaetzle-v60-7b-Q4_0-GGUF",
+            model_filename="Spaetzle-v60-7b_Q4_0.gguf",
             
             # model_repo="bartowski/Qwen2.5-7B-Instruct-GGUF",
             # model_filename="Qwen2.5-7B-Instruct-Q6_K_L.gguf",
@@ -21,8 +21,8 @@ def generate_launch_description():
             # model_repo="lmstudio-community/Llama-3.2-1B-Instruct-GGUF",
             # model_filename="Llama-3.2-1B-Instruct-Q8_0.gguf",
             
-            model_repo="Qwen/Qwen2.5-0.5B-Instruct-GGUF",
-            model_filename="qwen2.5-0.5b-instruct-fp16.gguf",
+            # model_repo="Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+            # model_filename="qwen2.5-0.5b-instruct-fp16.gguf",
             
             # model_repo="bartowski/Llama-3.2-3B-Instruct-GGUF",
             # model_filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
@@ -31,16 +31,16 @@ def generate_launch_description():
                             # , "</s>", "\n\n\n\n"
                             ],
 
-            lora_adapters= [
-                {
-                    "path": "/home/robotica/tools/unsloth/loras/Qwen2.5-0.5B-Instruct-GPSR-BF16-LoRA.gguf",
-                    "scale": 1.0
-                },
-                # {
-                #     "path": "/home/robotica/tools/unsloth/loras/Llama-3.2-3B-Instruct-GPSR-BF16-LoRA.gguf",
-                #     "scale": 1.0
-                # },
-            ],
+            # lora_adapters= [
+            #     # {
+            #     #     "path": "/home/robotica/tools/unsloth/loras/Qwen2.5-0.5B-Instruct-GPSR-BF16-LoRA.gguf",
+            #     #     "scale": 1.0
+            #     # },
+            #     # # {
+            #     # #     "path": "/home/robotica/tools/unsloth/loras/Llama-3.2-3B-Instruct-GPSR-BF16-LoRA.gguf",
+            #     # #     "scale": 1.0
+            #     # # },
+            # ],
 
             debug=True
         )
