@@ -36,7 +36,7 @@ class GpsrPlanner:
 
         # Initialize LLM
         self.llm = ChatLlamaROS(
-            temp=0.10,  # Lowered from 0.30 for more determinism, less garbage
+            temp=0.10,  # Lowered from 0.30 for more determinism
             grammar_schema=self.grammar_schema
         )
 
