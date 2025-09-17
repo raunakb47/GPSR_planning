@@ -4,7 +4,7 @@
 
 ```shell
 cd ~/ros2_ws/src
-git clone https://github.com/igonzf/GPSR_planning.git
+git https://github.com/raunakb47/GPSR_planning.git
 cd ~/ros2_ws
 colcon build
 ```
