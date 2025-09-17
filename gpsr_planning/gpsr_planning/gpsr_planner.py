@@ -15,7 +15,7 @@ class GpsrPlanner:
         waypoints_path: str = "waypoints.json",
         objects_path: str = "objects.json",
         names_path: str = "names.json",
-        nfr_profiles_path: str = "nfr_profiles.json"
+        nfr_profiles_path: str = "src/GPSR_planning/gpsr_planning/params/nfr_profiles.json"
     ) -> None:
 
         self.robot_actions = json.load(open(robot_actions_path))
@@ -26,8 +26,7 @@ class GpsrPlanner:
         # Load NFR profiles
         self.nfr_profiles = json.load(open(nfr_profiles_path))["profiles"]
 
-        # Load allowed entities for grammar (already used), but skip full lists in prompt to reduce length
-        # Summaries for prompt if needed
+        # Load summaries for prompt (concise)
         self.objects_summary = "Standard YCB objects (e.g., apple, banana, cup; full list per RoboCup@Home rules)"
         self.categories_summary = "Standard categories (e.g., food, tools; full list per rules)"
         self.names_summary = "Common names (e.g., Alice, Bob; full list per rules)"
@@ -35,29 +34,20 @@ class GpsrPlanner:
 
         self.create_grammar()
 
-        # Initialize LLM with low temperature
+        # Initialize LLM
         self.llm = ChatLlamaROS(
-            temp=0.30,
+            temp=0.10,  # Lowered from 0.30 for more determinism, less garbage
             grammar_schema=self.grammar_schema
         )
 
         is_lora_added = False
 
-        # Build concise actions_descriptions (without full NFR appended to each)
+        # Concise actions_descriptions
         self.actions_descriptions = ""
         for robot_act in self.robot_actions:
             self.actions_descriptions += f"- {robot_act['name']}: {robot_act['description']}\n"
 
-        # Build concise NFR summary section
-        self.nfr_summary = "NFR PROFILES (apply relevant constraints to actions):\n"
-        for profile in self.nfr_profiles:
-            self.nfr_summary += (
-                f"- {profile['name']}: Quality: {', '.join(profile['Quality Attribute(s)'])}; "
-                f"Robot Constraints: {', '.join(profile['Robot Constraints'])}; "
-                f"Operational Constraints: {', '.join(profile['Operational Constraints'])}\n"
-            )
-
-        # First chain: Generate base functional plan (shorter prompt, no full NFR or lists)
+        # First chain: Generate base functional plan 
         base_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 "You are a robot named Tiago participating in the Robocup with the Gentlebots team from Spain, "
@@ -92,15 +82,28 @@ class GpsrPlanner:
 
         self.base_chain = base_prompt_template | self.llm | StrOutputParser()
 
-        # Second chain: Refine with NFR (input base plan, apply constraints)
+        # Second chain: Refine chain prompt (strengthened for strict JSON output)
         refine_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
-                "Refine the base plan by incorporating NFR constraints. "
-                "Add checks, fallbacks, or verifications as needed to satisfy NFR without inventing new elements. "
-                "Use only existing actions and valid parameters. "
+                "Refine the base plan by incorporating NFR constraints only if they suggest adding improvements like checks or fallbacks. "
+                "Do not change existing actions, parameters, or explanations from the base plan unless absolutely necessary for NFR compliance. "
+                "Keep explanations clear, concise, and in plain English—avoid any special characters, numbers, or nonsense. "
+                "If no relevant NFR or no improvements needed, output the base plan unchanged. "
 
-                + ("Output the refined JSON plan in the same format. "
-                   "Update explanations to include NFR reasoning if applicable. " if not is_lora_added else '')
+                + ("The output should be a JSON object with a key 'actions' containing a list of actions. "
+                   "Each action has 'explanation_of_next_actions', explaining the reason for the action (including NFR reasoning if applicable), "
+                   "and an action-specific key (e.g., find_object) with its parameters. "
+                   "Only output the JSON object without any additional explanatory text or steps. " if not is_lora_added else '')
+
+                + "\nExample 1 (No refinement needed):\n"
+                "Base plan: {{\"actions\": [{{\"explanation_of_next_actions\": \"Move to kitchen.\", \"move_to\": {{\"destination\": \"kitchen\"}}}}]}}\n"
+                "NFR: - move_to: Quality: Accurate navigation.\n"
+                "Refined output: {{\"actions\": [{{\"explanation_of_next_actions\": \"Move to kitchen.\", \"move_to\": {{\"destination\": \"kitchen\"}}}}]}}\n\n"
+
+                + "Example 2 (Add fallback for grasp per NFR):\n"
+                "Base plan: {{\"actions\": [{{\"explanation_of_next_actions\": \"Pick object.\", \"pick_object\": {{\"object\": \"apple\"}}}}]}}\n"
+                "NFR: - pick_object: Quality: Secure grasping; Add fallback if grasp fails.\n"
+                "Refined output: {{\"actions\": [{{\"explanation_of_next_actions\": \"Pick object, with NFR fallback for grasp failure.\", \"pick_object\": {{\"object\": \"apple\"}}}}, {{\"explanation_of_next_actions\": \"Fallback if grasp fails (NFR compliance).\", \"speak\": {{\"say_text\": \"Grasp failed, retrying.\"}}}}]}}\n"
 
                 + "\n{nfr_summary}"
             ),
@@ -139,19 +142,72 @@ class GpsrPlanner:
             "tomorrow": tomorrow,
             "time_h": time_h
         })
+        print("Base Response:", base_response)  # For debugging
 
-        base_plan = json.loads(base_response)
+        try:
+            base_plan = json.loads(base_response)
+        except json.JSONDecodeError as e:
+            print(f"Base plan parse error: {e} - Using empty plan as fallback")
+            base_plan = {"actions": []}  # Fallback to avoid crash
 
-        # Step 2: Refine with NFR
+        # Step 2: Extract unique action names from base plan
+        action_names = set()
+        for action in base_plan.get("actions", []):
+            for key in action:
+                if key != "explanation_of_next_actions":
+                    action_names.add(key)
+
+        # Step 3: Build filtered NFR summary only for relevant actions
+        filtered_nfr_summary = "NFR PROFILES (apply only these relevant constraints to the actions in the base plan):\n"
+        has_relevant_nfr = False
+        for profile in self.nfr_profiles:
+            if profile['name'] in action_names:
+                has_relevant_nfr = True
+                filtered_nfr_summary += (
+                    f"- {profile['name']}: Quality: {', '.join(profile['Quality Attribute(s)'])}; "
+                    f"Robot Constraints: {', '.join(profile['Robot Constraints'])}; "
+                    f"Operational Constraints: {', '.join(profile['Operational Constraints'])}\n"
+                )
+        if not has_relevant_nfr:
+            print("No relevant NFR profiles—skipping refinement.")
+            return base_plan, prompt  # Bypass refinement entirely if no relevant NFR
+
+        # Step 4: Refine only if relevant NFR exists
         refined_response = self.refine_chain.invoke({
             "base_plan": json.dumps(base_plan),
             "prompt": prompt,
-            "nfr_summary": self.nfr_summary
+            "nfr_summary": filtered_nfr_summary
         })
+        print("Refined Response:", refined_response)  # For debugging
 
-        print(refined_response)
+        try:
+            refined_plan = json.loads(refined_response)
+            # Step 5: Validate refined plan (check for garbage or major changes)
+            if self._is_valid_refinement(base_plan, refined_plan):
+                return refined_plan, prompt
+            else:
+                print("Invalid or garbage refinement—falling back to base plan.")
+                return base_plan, prompt
+        except json.JSONDecodeError as e:
+            print(f"Refine parse error: {e} - Falling back to base plan")
+            return base_plan, prompt
 
-        return json.loads(refined_response), prompt
+    def _is_valid_refinement(self, base_plan, refined_plan):
+        """Simple validation: Check if actions are similar and no garbage in explanations."""
+        base_actions = [list(a.keys())[1] for a in base_plan.get('actions', []) if len(a) > 1]  # Action types
+        refined_actions = [list(a.keys())[1] for a in refined_plan.get('actions', []) if len(a) > 1]
+        
+        # Allow additions but check for complete mismatch
+        if set(base_actions) - set(refined_actions):  # Core base actions missing
+            return False
+        
+        # Check explanations for garbage (e.g., special chars, <unk>, short nonsense)
+        for action in refined_plan.get('actions', []):
+            exp = action.get('explanation_of_next_actions', '')
+            if len(exp) < 10 or re.search(r'<unk>|<s>|[\$#&@%*]{3,}', exp) or len(re.findall(r'[^a-zA-Z0-9\s\.,\?!]', exp)) / max(1, len(exp)) > 0.3:
+                return False
+        
+        return True
 
     def create_grammar(self) -> None:
         actions_refs = []
@@ -249,7 +305,7 @@ class GpsrPlanner:
                         "anyOf": actions_refs,
                     },
                     "minItems": 1,
-                    "maxItems": 15
+                    "maxItems": 10
                 },
             },
             "required": ["actions"]
