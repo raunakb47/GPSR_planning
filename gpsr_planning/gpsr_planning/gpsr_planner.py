@@ -36,7 +36,7 @@ class GpsrPlanner:
 
         # Initialize LLM
         self.llm = ChatLlamaROS(
-            temp=0.10,  # Lowered from 0.30 for more determinism
+            temp=0.30,  # Lowered for determinism
             grammar_schema=self.grammar_schema
         )
 
@@ -47,7 +47,7 @@ class GpsrPlanner:
         for robot_act in self.robot_actions:
             self.actions_descriptions += f"- {robot_act['name']}: {robot_act['description']}\n"
 
-        # First chain: Generate base functional plan 
+        # Base chain prompt (Functional Plan)
         base_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 "You are a robot named Tiago participating in the Robocup with the Gentlebots team from Spain, "
@@ -82,7 +82,7 @@ class GpsrPlanner:
 
         self.base_chain = base_prompt_template | self.llm | StrOutputParser()
 
-        # Second chain: Refine chain prompt (strengthened for strict JSON output)
+        # Refine chain prompt (strengthened for strict JSON output)
         refine_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 "Refine the base plan by incorporating NFR constraints only if they suggest adding improvements like checks or fallbacks. "
@@ -157,17 +157,18 @@ class GpsrPlanner:
                 if key != "explanation_of_next_actions":
                     action_names.add(key)
 
-        # Step 3: Build filtered NFR summary only for relevant actions
-        filtered_nfr_summary = "NFR PROFILES (apply only these relevant constraints to the actions in the base plan):\n"
+        # Step 3: Build filtered NFR summary only for relevant actions (concise)
+        filtered_nfr_summary = "NFR SUGGESTIONS (add only if improves plan, in few words):\n"
         has_relevant_nfr = False
         for profile in self.nfr_profiles:
             if profile['name'] in action_names:
                 has_relevant_nfr = True
-                filtered_nfr_summary += (
-                    f"- {profile['name']}: Quality: {', '.join(profile['Quality Attribute(s)'])}; "
-                    f"Robot Constraints: {', '.join(profile['Robot Constraints'])}; "
-                    f"Operational Constraints: {', '.join(profile['Operational Constraints'])}\n"
-                )
+                # Condense to short suggestion
+                quality = profile['Quality Attribute(s)'][0] if profile['Quality Attribute(s)'] else ""
+                robot_const = ", ".join(profile['Robot Constraints'])[:100] + "..." if profile['Robot Constraints'] else ""
+                op_const = ", ".join(profile['Operational Constraints'])[:100] + "..." if profile['Operational Constraints'] else ""
+                filtered_nfr_summary += f"- {profile['name']}: Suggestion - Ensure {quality[:50]}; Check {robot_const[:50]}; Verify {op_const[:50]}.\n"
+
         if not has_relevant_nfr:
             print("No relevant NFR profiles—skipping refinement.")
             return base_plan, prompt  # Bypass refinement entirely if no relevant NFR
@@ -176,7 +177,7 @@ class GpsrPlanner:
         refined_response = self.refine_chain.invoke({
             "base_plan": json.dumps(base_plan),
             "prompt": prompt,
-            "nfr_summary": filtered_nfr_summary
+            "nfr_summary": filtered_nfr_summary  # Concise to reduce length
         })
         print("Refined Response:", refined_response)  # For debugging
 
@@ -285,7 +286,7 @@ class GpsrPlanner:
                 "properties": {
                     "explanation_of_next_actions": {
                         "type": "string",
-                        "maxLength": 200
+                        "maxLength": 100  # Reduced from 200 for shorter explanations, less overflow risk
                     },
                     robot_act['name']: action_args
                 },
@@ -305,7 +306,7 @@ class GpsrPlanner:
                         "anyOf": actions_refs,
                     },
                     "minItems": 1,
-                    "maxItems": 10
+                    "maxItems": 10  # Reduced from 15 for shorter plans, faster generation
                 },
             },
             "required": ["actions"]
