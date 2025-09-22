@@ -12,11 +12,11 @@ def generate_launch_description():
             n_threads=-1,
             n_predict=2000,
 
-            model_repo="cstr/Spaetzle-v60-7b-Q4_0-GGUF",
-            model_filename="Spaetzle-v60-7b_Q4_0.gguf",
+            # model_repo="cstr/Spaetzle-v60-7b-Q4_0-GGUF",
+            # model_filename="Spaetzle-v60-7b_Q4_0.gguf",
             
-            # model_repo="bartowski/Qwen2.5-7B-Instruct-GGUF",
-            # model_filename="Qwen2.5-7B-Instruct-Q6_K_L.gguf",
+            model_repo="bartowski/Qwen2.5-7B-Instruct-GGUF",
+            model_filename="Qwen2.5-7B-Instruct-Q6_K_L.gguf",
             
             # model_repo="lmstudio-community/Llama-3.2-1B-Instruct-GGUF",
             # model_filename="Llama-3.2-1B-Instruct-Q8_0.gguf",

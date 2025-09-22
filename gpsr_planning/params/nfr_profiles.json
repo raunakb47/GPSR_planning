@@ -1,224 +1,173 @@
 {
-    "profiles": [
-      {
-        "name": "count_object",
-        "Quality Attribute(s)": [
-          "Object types recognized with high accuracy (>95%) under natural lighting conditions"
-        ],
-        "Robot Constraints": [
-          "Perception system (e.g., RGB-D camera) robust to variations in color, size, and orientation",
-          "Capable of detecting and counting multiple instances without occlusion issues",
-          "Limited to Tiago's single RGB-D camera field of view (e.g., 60° horizontal, range 0.5-5m)",
-          "No additional sensors for multi-angle counting; relies on head pan-tilt for scanning"
-        ],
-        "Operational Constraints": [
-          "Objects are from predefined YCB set or known categories in RoboCup@Home arena",
-          "Ambient lighting and noise levels typical of indoor home environment (no extreme variations)",
-          "Objects within arm reach if manipulation follows, but counting is vision-only"
-        ]
-      },
-      {
-        "name": "count_people",
-        "Quality Attribute(s)": [
-          "Accurate identification and counting of people (>90% reliability) in dynamic settings"
-        ],
-        "Robot Constraints": [
-          "Person detection via laser/RGB-D robust to clothing variations, poses, and gestures within competition-defined types",
-          "No reliance on external markers or specific attire",
-          "Limited to single RGB-D camera and laser scanner; detection range <5m for reliable features",
-          "Head pan-tilt used for wider scanning, but no 360° coverage without base rotation"
-        ],
-        "Operational Constraints": [
-          "People within sensor range (e.g., <5m for Tiago's RGB-D)",
-          "Ambient lighting sufficient for feature extraction; minimal crowd interference",
-          "No fast-moving crowds exceeding robot's processing speed"
-        ]
-      },
-      {
-        "name": "find_object",
-        "Quality Attribute(s)": [
-          "Precise identification of object properties (e.g., category, size, color) with low false positives"
-        ],
-        "Robot Constraints": [
-          "Vision system measures properties accurately using RGB-D depth data",
-          "Categorization based on pretrained models for RoboCup@Home objects",
-          "Limited to Tiago's RGB-D resolution (e.g., 640x480) and depth accuracy (±1-3cm at 1m)",
-          "Single arm implies find must precede grasp without dual-view support"
-        ],
-        "Operational Constraints": [
-          "Objects within known YCB dataset or categories; no occlusions or extreme angles",
-          "Task completed within test time limits (e.g., <5min for Stage I)",
-          "Objects at heights reachable by head camera (torso lift 0.35m adjustment)"
-        ]
-      },
-      {
-        "name": "pick_object",
-        "Quality Attribute(s)": [
-          "Secure grasping without damage to object or environment; success rate >80%"
-        ],
-        "Robot Constraints": [
-          "Gripper adjusts force and width (e.g., Tiago's parallel gripper up to 10cm opening, 3kg payload static, 1.5kg dynamic)",
-          "Arm kinematics allow precise approach and grasp planning with 7 DoF",
-          "Single arm only; no bimanual grasping or stabilization",
-          "Grasp planning limited to one-handed poses; arm reach ~0.8m from base"
-        ],
-        "Operational Constraints": [
-          "Object weight and size within robot limits; stable surface for picking",
-          "Natural lighting; no dynamic obstacles during manipulation",
-          "Object orientation suitable for single-arm top-down or side grasp"
-        ]
-      },
-      {
-        "name": "place_object",
-        "Quality Attribute(s)": [
-          "Accurate and stable placement at target location without dropping or collision"
-        ],
-        "Robot Constraints": [
-          "Autonomous navigation to waypoint with obstacle avoidance (laser-based)",
-          "Arm poses for gentle release; payload <3kg for Tiago",
-          "Perception resolves placement surface via RGB-D",
-          "Single arm limits placement to one-handed operations; torso lift adjusts height (1.1-1.45m total)",
-          "Arm reach constrains placement to ~0.8m radius from base position"
-        ],
-        "Operational Constraints": [
-          "Waypoints predefined and reachable in arena; no overcrowding",
-          "Time-efficient execution within overall task limits",
-          "Placement surfaces at heights compatible with arm kinematics (e.g., tables 0.7-1m)"
-        ]
-      },
-      {
-        "name": "offer_object",
-        "Quality Attribute(s)": [
-          "Safe handover to person with clear signaling and no contact initiation"
-        ],
-        "Robot Constraints": [
-          "Grasp and hold object stably; depth perception for 10-20cm handover distance",
-          "Payload and gripper limits as per Tiago specs; audio/visual cues for readiness",
-          "Single arm for offering; no dual-arm support for complex handovers",
-          "Arm extension limited to 7 DoF reach, requiring base positioning close to person"
-        ],
-        "Operational Constraints": [
-          "Person at reachable location; minimal ambient noise for interaction",
-          "Compliance with safety rules (e.g., no physical contact unless task-required)",
-          "Handover at human-compatible heights (adjustable via torso lift)"
-        ]
-      },
-      {
-        "name": "find_person",
-        "Quality Attribute(s)": [
-          "Reliable detection of target person at waypoint based on features"
-        ],
-        "Robot Constraints": [
-          "Waypoint localization via SLAM; person recognition via clothing/pose/gesture from RGB-D",
-          "Robust to partial occlusions in home-like arena",
-          "Limited to head-mounted RGB-D; pan-tilt for tracking but no rear sensors",
-          "Differential drive base requires turning for full 360° search"
-        ],
-        "Operational Constraints": [
-          "Features within competition-defined types; sufficient lighting for vision",
-          "No excessive crowd or dynamic movements interfering",
-          "Person within 0.5-5m range for accurate feature detection"
-        ]
-      },
-      {
-        "name": "describe_person",
-        "Quality Attribute(s)": [
-          "Accurate verbal description of person's attributes (e.g., posture, gesture, name)"
-        ],
-        "Robot Constraints": [
-          "Pose/gesture estimation from vision; speech recognition/synthesis for name query",
-          "Natural HRI with polite interaction as per rules",
-          "Microphone array limited to front-facing; noise cancellation via software",
-          "Single camera view requires positioning for clear observation"
-        ],
-        "Operational Constraints": [
-          "Ambient lighting and noise suitable for vision and audio (e.g., <70dB noise)",
-          "Person cooperative and within sensor range",
-          "Description limited to visible features; no tactile or multi-angle sensing"
-        ]
-      },
-      {
-        "name": "follow_person",
-        "Quality Attribute(s)": [
-          "Continuous tracking to destination with safe distance maintenance (0.5-1m)"
-        ],
-        "Robot Constraints": [
-          "Real-time person tracking via laser/RGB-D; dynamic path planning avoiding collisions",
-          "Speed matching human walking (~0.5-1 m/s for Tiago)",
-          "Differential drive limits smooth turning; may require stops for sharp maneuvers",
-          "Single front-facing sensor suite; risk of losing track if person turns behind"
-        ],
-        "Operational Constraints": [
-          "Person remains in sensor view; path free of unmapped obstacles",
-          "Compliance with no-standstill rule (>30s movement required)",
-          "Arena paths wide enough for base (width ~0.6m)"
-        ]
-      },
-      {
-        "name": "guide_person",
-        "Quality Attribute(s)": [
-          "Efficient path to destination; pace suitable for following person"
-        ],
-        "Robot Constraints": [
-          "Person identification at start; optimal path planning via SLAM",
-          "Controlled speed (max 1 m/s) with periodic checks for follower",
-          "Voice cues via speakers; visual checks via head turn, but limited by single arm/no gestures",
-          "Base mobility constrained to indoor flat surfaces"
-        ],
-        "Operational Constraints": [
-          "Start and end waypoints known; person follows without deviation",
-          "Arena environment stable during guidance",
-          "Path avoids tight spaces incompatible with differential drive"
-        ]
-      },
-      {
-        "name": "answer_quiz",
-        "Quality Attribute(s)": [
-          "Correct and timely response to questions with natural language understanding"
-        ],
-        "Robot Constraints": [
-          "NLP for question parsing; knowledge base for answers",
-          "Speech synthesis clear and polite",
-          "STT limited by microphone sensitivity; processing delay <2s",
-          "No arm gestures for emphasis; relies on voice and head movements"
-        ],
-        "Operational Constraints": [
-          "Low ambient noise for recognition; questions within GPSR grammar scope",
-          "Autonomous response without external aid",
-          "Interaction distance <3m for clear audio capture"
-        ]
-      },
-      {
-        "name": "speak",
-        "Quality Attribute(s)": [
-          "Intelligible and context-appropriate speech to target person"
-        ],
-        "Robot Constraints": [
-          "Person localization for directed speech; volume adjusted to environment",
-          "Speakers front-facing; head orientation for directionality",
-          "No physical pointing with arm unless task allows; voice-only if arm occupied"
-        ],
-        "Operational Constraints": [
-          "Noise levels allow audibility; no continuous loud emissions per rules",
-          "Interaction natural and friendly",
-          "Person within 1-5m for effective communication"
-        ]
-      },
-      {
-        "name": "move_to",
-        "Quality Attribute(s)": [
-          "Accurate and efficient navigation to waypoint with obstacle avoidance"
-        ],
-        "Robot Constraints": [
-          "SLAM and laser for localization; max speed 1 m/s with safety buffers",
-          "Differential drive base (turning radius ~0.3m); omnidirectional optional but not standard",
-          "Battery life >1 hour continuous operation; recharging not during tasks"
-        ],
-        "Operational Constraints": [
-          "Waypoints predefined in arena map; dynamic changes handled online",
-          "No standstill >30s; safe in crowded or public spaces",
-          "Floor surfaces flat and non-slippery; no stairs or uneven terrain"
-        ]
-      }
-    ]
-  }
+  "profiles": [
+    {
+      "name": "count_object",
+      "Quality Attribute(s)": [
+        "High accuracy object recognition (>95%)"
+      ],
+      "Robot Constraints": [
+        "RGB-D camera handles color/size variations",
+        "Counts without occlusion; single camera FOV limit"
+      ],
+      "Operational Constraints": [
+        "YCB objects only; standard indoor lighting"
+      ]
+    },
+    {
+      "name": "count_people",
+      "Quality Attribute(s)": [
+        "Reliable people counting (>90%)"
+      ],
+      "Robot Constraints": [
+        "Laser/RGB-D for detection <5m",
+        "Head pan-tilt for scan; no full rotation without turn"
+      ],
+      "Operational Constraints": [
+        "good lighting"
+      ]
+    },
+    {
+      "name": "find_object",
+      "Quality Attribute(s)": [
+        "Precise property ID with low false positives"
+      ],
+      "Robot Constraints": [
+        "RGB-D for depth/measurement; pretrained models",
+        "Resolution limit (640x480); precede grasp"
+      ],
+      "Operational Constraints": [
+        "Known YCB items; no occlusions; time <5min"
+      ]
+    },
+    {
+      "name": "pick_object",
+      "Quality Attribute(s)": [
+        "Secure grasp without damage (>80% success)"
+      ],
+      "Robot Constraints": [
+        "Gripper force/width adjust (10cm, 1.5kg dynamic)",
+        "7 DoF arm; single-arm only; reach ~0.8m"
+      ],
+      "Operational Constraints": [
+        "Object in limits; stable surface; no dynamics"
+      ]
+    },
+    {
+      "name": "place_object",
+      "Quality Attribute(s)": [
+        "Stable placement without drop/collision"
+      ],
+      "Robot Constraints": [
+        "Laser nav to waypoint; gentle release <3kg",
+        "Single arm; torso height adjust (1.1-1.45m)"
+      ],
+      "Operational Constraints": [
+        "Reachable waypoints; time-efficient; table heights"
+      ]
+    },
+    {
+      "name": "offer_object",
+      "Quality Attribute(s)": [
+        "Safe handover with no contact init"
+      ],
+      "Robot Constraints": [
+        "Stable hold; depth for 10-20cm distance",
+        "Single arm; audio cues; base positioning"
+      ],
+      "Operational Constraints": [
+        "Reachable person; height adjust"
+      ]
+    },
+    {
+      "name": "find_person",
+      "Quality Attribute(s)": [
+        "Reliable person detection at waypoint"
+      ],
+      "Robot Constraints": [
+        "Laser/RGB-D for detection <5m; pan-tilt scan",
+        "Turn for full rotation; robust to occlusions"
+      ],
+      "Operational Constraints": [
+        "Defined features; good lighting; range 0.5-5m"
+      ]
+    },
+    {
+      "name": "describe_person",
+      "Quality Attribute(s)": [
+        "Accurate attribute description"
+      ],
+      "Robot Constraints": [
+        "Vision for pose/gesture; speech for name",
+        "Front mic; position for clear view"
+      ],
+      "Operational Constraints": [
+        "Acceptable light/noise; cooperative person"
+      ]
+    },
+    {
+      "name": "follow_person",
+      "Quality Attribute(s)": [
+        "Continuous track with safe distance"
+      ],
+      "Robot Constraints": [
+        "Laser/RGB-D tracking; speed match 0.5-1m/s",
+        "Differential drive; reacquire if lost"
+      ],
+      "Operational Constraints": [
+        "In view; clear path; no standstill >30s"
+      ]
+    },
+    {
+      "name": "guide_person",
+      "Quality Attribute(s)": [
+        "short path; suitable pace"
+      ],
+      "Robot Constraints": [
+        "SLAM planning; speed max 1m/s; checks",
+        "Voice cues; indoor flat surfaces"
+      ],
+      "Operational Constraints": [
+        "Known waypoints; person follows"
+      ]
+    },
+    {
+      "name": "answer_quiz",
+      "Quality Attribute(s)": [
+        "Correct/timely response"
+      ],
+      "Robot Constraints": [
+        "NLP parsing; clear synthesis; delay <2s",
+        "Voice/head only; onboard compute"
+      ],
+      "Operational Constraints": [
+        "Low noise; GPSR scope; distance <3m"
+      ]
+    },
+    {
+      "name": "speak",
+      "Quality Attribute(s)": [
+        "Intelligible speech"
+      ],
+      "Robot Constraints": [
+        "Directed volume; front speakers/head orient",
+        "Voice-only if arm busy"
+      ],
+      "Operational Constraints": [
+        "Audible noise levels; distance 1-5m"
+      ]
+    },
+    {
+      "name": "move_to",
+      "Quality Attribute(s)": [
+        "Accurate navigation with avoidance"
+      ],
+      "Robot Constraints": [
+        "SLAM/laser; speed <2m/s; differential drive",
+        "Battery >1hr; safety buffers"
+      ],
+      "Operational Constraints": [
+        "Predefined map; no standstill >30s; flat floor"
+      ]
+    }
+  ]
+}

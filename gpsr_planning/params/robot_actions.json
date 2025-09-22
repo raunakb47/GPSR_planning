@@ -392,7 +392,7 @@
             }
         },
         "arg_case": "allOf",
-        "description": "take, escort, lead, or guide a person from your location to a destination waypoint. Waypoints can be forniture or rooms."
+        "description": "take, escort, lead, or guide a person from your location to a destination waypoint. Waypoints can be furniture or rooms."
     },
     {
         "name": "answer_quiz",
