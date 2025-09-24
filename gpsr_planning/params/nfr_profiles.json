@@ -2,170 +2,118 @@
   "profiles": [
     {
       "name": "count_object",
-      "Quality Attribute(s)": [
-        "High accuracy object recognition (>95%)"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "High accuracy object recognition (>95%)",
         "RGB-D camera handles color/size variations",
-        "Counts without occlusion; single camera FOV limit"
-      ],
-      "Operational Constraints": [
+        "Counts without occlusion; single camera FOV limit",
         "YCB objects only; standard indoor lighting"
       ]
     },
     {
       "name": "count_people",
-      "Quality Attribute(s)": [
-        "Reliable people counting (>90%)"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Reliable people counting (>90%)",
         "Laser/RGB-D for detection <5m",
-        "Head pan-tilt for scan; no full rotation without turn"
-      ],
-      "Operational Constraints": [
+        "Head pan-tilt for scan; no full rotation without turn",
         "good lighting"
       ]
     },
     {
       "name": "find_object",
-      "Quality Attribute(s)": [
-        "Precise property ID with low false positives"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Precise property ID with low false positives",
         "RGB-D for depth/measurement; pretrained models",
-        "Resolution limit (640x480); precede grasp"
-      ],
-      "Operational Constraints": [
-        "Known YCB items; no occlusions; time <5min"
+        "Resolution limit (640x480); precede grasp",
+        "Known YCB items; no occlusions"
       ]
     },
     {
       "name": "pick_object",
-      "Quality Attribute(s)": [
-        "Secure grasp without damage (>80% success)"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Secure grasp without damage (>95% confidence)",
         "Gripper force/width adjust (10cm, 1.5kg dynamic)",
-        "7 DoF arm; single-arm only; reach ~0.8m"
-      ],
-      "Operational Constraints": [
+        "7 DoF arm; single-arm only; reach ~0.8m",
         "Object in limits; stable surface; no dynamics"
       ]
     },
     {
       "name": "place_object",
-      "Quality Attribute(s)": [
-        "Stable placement without drop/collision"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Stable placement without drop/collision",
         "Laser nav to waypoint; gentle release <3kg",
-        "Single arm; torso height adjust (1.1-1.45m)"
-      ],
-      "Operational Constraints": [
+        "Single arm; torso height adjust (1.1-1.45m)",
         "Reachable waypoints; time-efficient; table heights"
       ]
     },
     {
       "name": "offer_object",
-      "Quality Attribute(s)": [
-        "Safe handover with no contact init"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Safe handover with no contact init",
         "Stable hold; depth for 10-20cm distance",
-        "Single arm; audio cues; base positioning"
-      ],
-      "Operational Constraints": [
+        "Single arm; audio cues; base positioning",
         "Reachable person; height adjust"
       ]
     },
     {
       "name": "find_person",
-      "Quality Attribute(s)": [
-        "Reliable person detection at waypoint"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Reliable person detection at waypoint",
         "Laser/RGB-D for detection <5m; pan-tilt scan",
-        "Turn for full rotation; robust to occlusions"
-      ],
-      "Operational Constraints": [
+        "Turn for full rotation; robust to occlusions",
         "Defined features; good lighting; range 0.5-5m"
       ]
     },
     {
       "name": "describe_person",
-      "Quality Attribute(s)": [
-        "Accurate attribute description"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Accurate attribute description",
         "Vision for pose/gesture; speech for name",
-        "Front mic; position for clear view"
-      ],
-      "Operational Constraints": [
+        "Front mic; position for clear view",
         "Acceptable light/noise; cooperative person"
       ]
     },
     {
       "name": "follow_person",
-      "Quality Attribute(s)": [
-        "Continuous track with safe distance"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Continuous track with safe distance",
         "Laser/RGB-D tracking; speed match 0.5-1m/s",
-        "Differential drive; reacquire if lost"
-      ],
-      "Operational Constraints": [
+        "Differential drive; reacquire if lost",
         "In view; clear path; no standstill >30s"
       ]
     },
     {
       "name": "guide_person",
-      "Quality Attribute(s)": [
-        "short path; suitable pace"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "short path; suitable pace",
         "SLAM planning; speed max 1m/s; checks",
-        "Voice cues; indoor flat surfaces"
-      ],
-      "Operational Constraints": [
+        "Voice cues; indoor flat surfaces",
         "Known waypoints; person follows"
       ]
     },
     {
       "name": "answer_quiz",
-      "Quality Attribute(s)": [
-        "Correct/timely response"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Correct/timely response",
         "NLP parsing; clear synthesis; delay <2s",
-        "Voice/head only; onboard compute"
-      ],
-      "Operational Constraints": [
+        "Voice/head only; onboard compute",
         "Low noise; GPSR scope; distance <3m"
       ]
     },
     {
       "name": "speak",
-      "Quality Attribute(s)": [
-        "Intelligible speech"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Intelligible speech",
         "Directed volume; front speakers/head orient",
-        "Voice-only if arm busy"
-      ],
-      "Operational Constraints": [
+        "Voice-only if arm busy",
         "Audible noise levels; distance 1-5m"
       ]
     },
     {
       "name": "move_to",
-      "Quality Attribute(s)": [
-        "Accurate navigation with avoidance"
-      ],
-      "Robot Constraints": [
+      "Constraints": [
+        "Accurate navigation with avoidance",
         "SLAM/laser; speed <2m/s; differential drive",
-        "Battery >1hr; safety buffers"
-      ],
-      "Operational Constraints": [
+        "Battery >1hr; safety buffers",
         "Predefined map; no standstill >30s; flat floor"
       ]
     }

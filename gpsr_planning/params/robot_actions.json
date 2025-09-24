@@ -311,7 +311,7 @@
             }
         },
         "arg_case": "oneOf",
-        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using either color or arm gesture or name or body posture or without defining any of these parameters. Can find an previously found person."
+        "description": "identify, locate, meet, look for, search for or find one person in a waypoint using either color or arm gesture or name or body posture or without defining any of these parameters. Can choose to find a previously found person."
     },
     {
         "name": "describe_person",
