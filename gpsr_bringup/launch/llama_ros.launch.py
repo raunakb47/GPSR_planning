@@ -12,8 +12,14 @@ def generate_launch_description():
             n_threads=-1,
             n_predict=2000,
 
-            model_repo="cstr/Spaetzle-v60-7b-Q4_0-GGUF",
-            model_filename="Spaetzle-v60-7b_Q4_0.gguf",
+            model_repo="Qwen/Qwen3-8B-GGUF",
+            model_filename="Qwen3-8B-Q8_0.gguf",
+
+            # model_repo="bartowski/nvidia_NVIDIA-Nemotron-Nano-9B-v2-GGUF",
+            # model_filename="nvidia_NVIDIA-Nemotron-Nano-9B-v2-Q8_0.gguf",
+
+            # model_repo="cstr/Spaetzle-v60-7b-Q4_0-GGUF",
+            # model_filename="Spaetzle-v60-7b_Q4_0.gguf",
             
             # model_repo="bartowski/Qwen2.5-7B-Instruct-GGUF",
             # model_filename="Qwen2.5-7B-Instruct-Q6_K_L.gguf",

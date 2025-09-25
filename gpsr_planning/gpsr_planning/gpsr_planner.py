@@ -31,7 +31,7 @@ class GpsrPlanner:
         
         is_lora_added = False
 
-        # Base chain prompt (matches original exactly for consistent functional plan)
+        # Base chain prompt (Based on original for consistent functional plan)
         base_prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 "You are a robot named Tiago who is participating in the Robocup with the Gentlebots team from Spain, "
@@ -46,7 +46,7 @@ class GpsrPlanner:
                    "Only output the JSON object without any additional explanatory text or steps. " 
                 if not is_lora_added else '') +
 
-                "Actions are performed at waypoints, so move to the waypoints to perform actions. "
+                "Actions are performed at waypoints, so must move to the waypoints to perform actions. "
                 "Rooms, furniture and tables are considered as waypoints and there is no need to find them. "
                 "Today is {day}, tomorrow is {tomorrow} and the time is {time_h}. "
                 "\n\n"
