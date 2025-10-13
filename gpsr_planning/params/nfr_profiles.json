@@ -3,6 +3,7 @@
     {
       "name": "count_object",
       "Constraints": [
+        "Move to the object's expected location if not already there",
         "high accuracy object recognition (>95%)",
         "RGB-D camera handles color/size variations",
         "counts without occlusion; single camera FOV limit",
@@ -12,6 +13,7 @@
     {
       "name": "count_people",
       "Constraints": [
+        "Move to the expected location if not already there",
         "reliable people counting (>90%)",
         "Laser/RGB-D for detection <5m",
         "head pan-tilt for scan; no full rotation without turn",
@@ -21,6 +23,7 @@
     {
       "name": "find_object",
       "Constraints": [
+        "Move to the object's expected location if not already there",
         "precise property ID with low false positives",
         "RGB-D for depth/measurement; pretrained models",
         "resolution limit (640x480); precede grasp",
@@ -57,6 +60,7 @@
     {
       "name": "find_person",
       "Constraints": [
+        "Move to the person's expected location if not already there",
         "reliable person detection at waypoint",
         "laser/RGB-D for detection <5m; pan-tilt scan",
         "turn for full rotation; robust to occlusions",
@@ -75,6 +79,7 @@
     {
       "name": "follow_person",
       "Constraints": [
+        "Move to the person's expected location if not already there",
         "continuous track with safe distance",
         "laser/RGB-D tracking; speed match 0.5-1m/s",
         "differential drive; reacquire if lost",
