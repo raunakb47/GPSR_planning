@@ -51,7 +51,7 @@
     {
       "name": "offer_object",
       "Constraints": [
-        "safe handover with no contact init",
+        "safe handover with no contact approach",
         "stable hold; depth for 10-20cm distance",
         "single arm; audio cues; base positioning",
         "reachable person; height adjust"
@@ -89,6 +89,7 @@
     {
       "name": "guide_person",
       "Constraints": [
+        "tell the person politely to follow",
         "short path; suitable pace",
         "SLAM planning; speed max 1m/s; checks",
         "voice cues; indoor flat surfaces",
